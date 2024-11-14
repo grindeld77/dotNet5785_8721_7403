@@ -9,6 +9,7 @@ namespace targil0
             Welcome8721();
             Welcome7403();
             Console.ReadKey();
+
         }
         static partial void Welcome7403();
         private static void Welcome8721()
@@ -16,6 +17,7 @@ namespace targil0
             Console.WriteLine("Enter your name:");
             string name = Console.ReadLine();
             Console.WriteLine("{0}, welcome to my first console application", name);
+
         }
     }
 }
