@@ -14,6 +14,7 @@ public enum DistanceType
 
 public enum CallType
 {
+    NotAllocated,        // Not allocated yet
     MedicalEmergency,   // Medical emergency
     PatientTransport,    // Patient transport
     TrafficAccident,     // Traffic accident
