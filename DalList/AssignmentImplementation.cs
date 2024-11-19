@@ -1,8 +1,8 @@
 ﻿namespace Dal;
 using DalApi;
-using DalList;///למה צריך את זה?
+using DalList;
 using DO;
-internal class AssignmentImplementation : IAssignment
+public class AssignmentImplementation : IAssignment
 {
     public int Create(Assignment item)
     {

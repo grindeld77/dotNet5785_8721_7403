@@ -2,10 +2,10 @@
 using DalApi;
 using DO;
 
-using DalList;///למה צריך את זה?
+using DalList;
 
 
-internal class VolunteerImplementation : IVolunteer
+public class VolunteerImplementation : IVolunteer
 {
     public void Create(Volunteer item)
     {

@@ -1,8 +1,8 @@
 ﻿namespace Dal;
 using DalApi;
-using DalList;///למה צריך את זה?
+using DalList;
 using DO;
-internal class CallImplementation : ICall
+public class CallImplementation : ICall
 {
     public int Create(Call item)
     {

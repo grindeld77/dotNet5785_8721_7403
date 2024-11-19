@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Runtime.Intrinsics.X86;
 using System.Security.AccessControl;
 using System;
+using System.Collections;
+using Dal;
 
 public static class Initialization
 {
@@ -419,5 +421,20 @@ public static class Initialization
         }
 
     }
+    public static void Do(IAssignment? dalAssignment, ICall? dalCall, IVolunteer? Volunteer, IConfig? Config) //stage 1
+    {
+        //s_dalStudent = dalStudent ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        //                                                                                              //...
+
+        //Console.WriteLine("Reset Configuration values and List values...");
+        //s_dalConfig.Reset(); //stage 1
+        //s_dalStudent.DeleteAll(); //stage 1
+        //                          //...
+        //Console.WriteLine("Initializing Students list ...");
+        //createStudents();
+        //...
+    }
+
+
 }
 
