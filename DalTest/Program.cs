@@ -305,6 +305,10 @@ $@"        Select an option to proceed
                             break;
                         case assignmentMenu.Add:
                             {
+                                Console.WriteLine("Enter the call id");
+                                int callId = ConvertStringToNumber();
+                                if(s_dalCall.Read(callId) == null)
+                                    throw new Exception($"An object of type Call with such ID={callId} does not exist");
                                 Console.WriteLine("Enter the VolunteerId id");
                                 int volunteerId = ConvertStringToNumber();
                                 if (s_Volunteer.Read(volunteerId) == null)
