@@ -217,15 +217,11 @@ $@"        Select an option to proceed
                             break;
                         case callMenu.Add:
                             {
-                                Console.WriteLine("Enter the Call ID");
-                                int callI = ConvertStringToNumber();
-                                if (s_dalCall.Read(callI) != null)
-                                    throw new Exception($"An object of type Call with such ID={callI} already exists");
                                 Console.WriteLine("Enter the call description");
                                 string callDescription = Console.ReadLine();
                                 Console.WriteLine("Enter the call address");
                                 string callAddress = Console.ReadLine();
-                                s_dalCall.Create(new Call() { Id = callI, Description = callDescription, Address = callAddress });
+                                s_dalCall.Create(new Call() {Description = callDescription, Address = callAddress });
                                 break;
                             }
                         case callMenu.Display:
@@ -309,15 +305,11 @@ $@"        Select an option to proceed
                             break;
                         case assignmentMenu.Add:
                             {
-                                Console.WriteLine("Enter the assignment ID");
-                                int assignmentI = ConvertStringToNumber();
-                                if (s_dalAssignment.Read(assignmentI) != null)
-                                    throw new Exception($"An object of type Call with such ID={assignmentI} already exists");
-                                Console.WriteLine("Enter the call id");
-                                int callId = ConvertStringToNumber();
                                 Console.WriteLine("Enter the VolunteerId id");
                                 int volunteerId = ConvertStringToNumber();
-                                s_dalAssignment.Create(new Assignment() { Id = assignmentI, CallId = callId, VolunteerId = volunteerId });
+                                if (s_Volunteer.Read(volunteerId) == null)
+                                    throw new Exception($"An object of type Volunteer with such ID={volunteerId} does not exist");
+                                s_dalAssignment.Create(new Assignment() {CallId = callId, VolunteerId = volunteerId });
                                 break;
                             }
                         case assignmentMenu.Display:
