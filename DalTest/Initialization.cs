@@ -401,9 +401,9 @@ public static class Initialization
             int index = s_rand.Next(0, volunteersList.Count); // Select a random volunteer from the list
             Volunteer selectedVolunteer = volunteersList[index];
 
-            DateTime treatmentStartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, 36)); 
-            DateTime? treatmentEndTime = s_dalConfig.Clock; 
-
+            DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, 36)); 
+            DateTime? EndTime = s_dalConfig.Clock; 
+                
             CompletionStatus status;
 
             switch (s_rand.Next(0, 3)) // Assign different statuses in a randomized order
@@ -413,29 +413,29 @@ public static class Initialization
                     break;
                 case 1: // Self-cancellation
                     status = CompletionStatus.SelfCancel;
-                    treatmentEndTime = call.MaxCompletionTime;
+                    EndTime = call.MaxCompletionTime;
                     break;
                 case 2: // Completed by manager
                     status = CompletionStatus.AdminCancel;
-                    treatmentEndTime = treatmentStartTime.AddHours(s_rand.Next(1, 24));
+                    EndTime = StartTime.AddHours(s_rand.Next(1, 24));
                     if (call.MaxCompletionTime.HasValue)
-                        if (call.MaxCompletionTime.Value < treatmentEndTime)
-                            treatmentEndTime = call.MaxCompletionTime.Value.AddHours(-1); // Ensure within valid range
+                        if (call.MaxCompletionTime.Value < EndTime)
+                            EndTime = call.MaxCompletionTime.Value.AddHours(-1); // Ensure within valid range
                     break;
                 default: // Expired call, no treatment
                     status = CompletionStatus.Expired;
 
                     if (call.MaxCompletionTime.HasValue)
-                        treatmentEndTime = call.MaxCompletionTime.Value.AddHours(-s_rand.Next(1, 36)); // Ensure end time is before MaxCompletionTime
+                        EndTime = call.MaxCompletionTime.Value.AddHours(-s_rand.Next(1, 36)); // Ensure end time is before MaxCompletionTime
                     else
-                        treatmentEndTime = currentTime.AddHours(-s_rand.Next(1, 36)); // Ensure end time is in the past
+                        EndTime = currentTime.AddHours(-s_rand.Next(1, 36)); // Ensure end time is in the past
 
-                    if (treatmentEndTime >= currentTime)
-                        treatmentEndTime = currentTime.AddHours(-s_rand.Next(1, 36)); // Force it into the past
+                    if (EndTime >= currentTime)
+                        EndTime = currentTime.AddHours(-s_rand.Next(1, 36)); // Force it into the past
                     break;
             }
 
-            Assignment assignmentToAdd = new Assignment(id, call.Id, selectedVolunteer.Id, treatmentStartTime, treatmentEndTime, status);
+            Assignment assignmentToAdd = new Assignment(id, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
             s_dalAssignment.Create(assignmentToAdd); // Create the assignment
         }
     }
