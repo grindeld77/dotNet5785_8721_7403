@@ -221,7 +221,7 @@ $@"        Select an option to proceed
                                 string callDescription = Console.ReadLine();
                                 Console.WriteLine("Enter the call address");
                                 string callAddress = Console.ReadLine();
-                                s_dalCall.Create(new Call() {Description = callDescription, Address = callAddress });
+                                s_dalCall.Create(new Call() { Description = callDescription, Address = callAddress });
                                 break;
                             }
                         case callMenu.Display:
@@ -241,7 +241,7 @@ $@"        Select an option to proceed
                             }
                         case callMenu.DisplayAll:
                             {
-                                List<Call> calls = s_dalCall.ReadAll();
+                                List<Call>? calls = s_dalCall.ReadAll();
                                 foreach (Call c in calls)
                                 {
                                     Console.WriteLine(c);
