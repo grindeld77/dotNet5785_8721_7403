@@ -2,14 +2,13 @@
 using DalApi;
 using DalList;
 using DO;
-public class CallImplementation : ICall
+internal class CallImplementation : ICall
 {
-    public int Create(Call item)
+    public void Create(Call item)
     {
         int id = Config.NextCallId;
         Call copy = item with { Id = id };
         DataSource.Calls.Add(copy);
-        return id;
     }
 
     public void Delete(int id)

@@ -5,7 +5,7 @@ using DO;
 using DalList;
 
 
-public class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer 
 {
     public void Create(Volunteer item)
     {
@@ -14,6 +14,7 @@ public class VolunteerImplementation : IVolunteer
                 ($"An object of type Volunteer with such ID={item.Id} already exists");
         else
             DataSource.Volunteers.Add(item);
+
     }
 
     public void Delete(int id)

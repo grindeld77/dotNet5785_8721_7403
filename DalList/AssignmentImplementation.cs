@@ -2,14 +2,13 @@
 using DalApi;
 using DalList;
 using DO;
-public class AssignmentImplementation : IAssignment
+internal class AssignmentImplementation : IAssignment
 {
-    public int Create(Assignment item)
+    public void Create(Assignment item)
     {
         int id = Config.NextAssignmentId;
         Assignment copy = item with { Id = id };
         DataSource.Assignments.Add(copy);
-        return id;
     }
 
     public void Delete(int id)
