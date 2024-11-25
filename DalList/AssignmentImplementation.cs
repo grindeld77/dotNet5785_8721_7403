@@ -1,7 +1,7 @@
-﻿namespace Dal;
-using DalApi;
+﻿using DalApi;
 using DalList;
 using DO;
+namespace Dal;
 internal class AssignmentImplementation : IAssignment
 {
     public void Create(Assignment item)
@@ -13,8 +13,9 @@ internal class AssignmentImplementation : IAssignment
 
     public void Delete(int id)
     {
-        if(Read(id) != null)
-            DataSource.Assignments.Remove(DataSource.Assignments.Find(Value => Value.Id == id));
+        Assignment tamp = Read(id);
+        if (tamp != null)
+            DataSource.Assignments.Remove(tamp);
         else
             throw new Exception
                 ($"An object of type Assignment with such ID={id} does not exist");
@@ -27,10 +28,8 @@ internal class AssignmentImplementation : IAssignment
 
     public Assignment? Read(int id)
     {
-        if (DataSource.Assignments.Exists(Value => Value.Id == id))
-            return DataSource.Assignments.Find(Value => Value.Id == id);
-        else
-            return null;
+         return DataSource.Assignments.FirstOrDefault(Value => Value.Id == id);
+
     }
 
     public List<Assignment> ReadAll()

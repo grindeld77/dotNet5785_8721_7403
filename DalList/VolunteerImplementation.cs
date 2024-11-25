@@ -1,8 +1,7 @@
-﻿namespace Dal;
-using DalApi;
+﻿using DalApi;
 using DO;
-
 using DalList;
+namespace Dal;
 
 
 internal class VolunteerImplementation : IVolunteer 
@@ -19,8 +18,9 @@ internal class VolunteerImplementation : IVolunteer
 
     public void Delete(int id)
     {
-        if(Read(id) != null)
-            DataSource.Volunteers.Remove(DataSource.Volunteers.Find(Value => Value.Id == id));
+        Volunteer tamp = Read(id);
+        if (tamp != null)
+            DataSource.Volunteers.Remove(tamp);
         else
             throw new Exception
                 ($"An object of type Volunteer with such ID={id} does not exist");
@@ -33,10 +33,7 @@ internal class VolunteerImplementation : IVolunteer
 
     public Volunteer? Read(int id)
     {
-        if(DataSource.Volunteers.Exists(Value => Value.Id == id))
-            return DataSource.Volunteers.Find(Value => Value.Id == id);
-        else
-            return null;
+            return DataSource.Volunteers.FirstOrDefault(Value => Value.Id == id);
     }
 
     public List<Volunteer> ReadAll()
@@ -46,9 +43,10 @@ internal class VolunteerImplementation : IVolunteer
 
     public void Update(Volunteer item)
     {
-        if(Read(item.Id) != null)
+        Volunteer tamp = Read(item.Id);
+        if (tamp != null)
         {
-            Delete(item.Id);
+            DataSource.Volunteers.Remove(tamp);
             DataSource.Volunteers.Add(item);
         }
         else

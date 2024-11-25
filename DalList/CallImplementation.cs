@@ -1,7 +1,7 @@
-﻿namespace Dal;
-using DalApi;
+﻿using DalApi;
 using DalList;
 using DO;
+namespace Dal;
 internal class CallImplementation : ICall
 {
     public void Create(Call item)
@@ -13,8 +13,9 @@ internal class CallImplementation : ICall
 
     public void Delete(int id)
     {
-        if(Read(id) != null)
-            DataSource.Calls.Remove(DataSource.Calls.Find(Value => Value.Id == id));
+        Call tamp = Read(id);
+        if (tamp != null)
+            DataSource.Calls.Remove(tamp);
         else
             throw new Exception
                 ($"An object of type Call with such ID={id} does not exist");
@@ -27,10 +28,7 @@ internal class CallImplementation : ICall
 
     public Call? Read(int id)
     {
-        if (DataSource.Calls.Exists(Value => Value.Id == id))
-            return DataSource.Calls.Find(Value => Value.Id == id);
-        else
-            return null;
+         return DataSource.Calls.FirstOrDefault(Value => Value.Id == id);
     }
 
     public List<Call> ReadAll()

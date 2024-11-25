@@ -1,9 +1,8 @@
-﻿
-using DalApi;
+﻿using DalApi;
+
 
 namespace Dal;
-
-internal class DalList : IDal
+public class DalList : IDal
 {
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
 
