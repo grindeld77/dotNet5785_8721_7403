@@ -416,16 +416,18 @@ public static class Initialization
     }
     private static void createAssignments()
     {
-        List<Volunteer> volunteersList = s_dal!.Volunteer.ReadAll();
-        List<Call> callsList = s_dal!.Call.ReadAll();
+        IEnumerable<Volunteer> volunteersList = s_dal!.Volunteer.ReadAll();
+        IEnumerable<Call> callsList = s_dal!.Call.ReadAll();
 
         DateTime currentTime = DateTime.Now; // Get the current system time
 
         foreach (var call in callsList) // Iterate over all calls
         {
             int id = call.Id;
-            int index = s_rand.Next(0, volunteersList.Count); // Select a random volunteer from the list
-            Volunteer selectedVolunteer = volunteersList[index];
+
+
+             int index = s_rand.Next(0, volunteersList.Count()); // Select a random volunteer from the list
+             Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
 
             DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, 36));
             DateTime? EndTime = s_dal!.Config.Clock;

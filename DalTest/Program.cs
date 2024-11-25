@@ -147,7 +147,7 @@ $@"        Select an option to proceed
                         }
                     case volunteerMenu.DisplayAll:
                         {
-                            List<Volunteer> volunteers = s_dal.Volunteer.ReadAll();
+                            IEnumerable<Volunteer> volunteers = s_dal.Volunteer.ReadAll();
                             foreach (Volunteer v in volunteers)
                             {
                                 Console.WriteLine(v);
@@ -237,7 +237,7 @@ $@"        Select an option to proceed
                         }
                     case callMenu.DisplayAll:
                         {
-                            List<Call>? calls = s_dal.Call.ReadAll();
+                             IEnumerable <Call> ? calls = s_dal.Call.ReadAll();
                             foreach (Call c in calls)
                             {
                                 Console.WriteLine(c);
@@ -329,7 +329,7 @@ $@"        Select an option to proceed
                         }
                     case assignmentMenu.DisplayAll:
                         {
-                            List<Assignment> assignments = s_dal.Assignment.ReadAll();
+                            IEnumerable<Assignment> assignments = s_dal.Assignment.ReadAll();
                             foreach (Assignment a in assignments)
                             {
                                 Console.WriteLine(a);

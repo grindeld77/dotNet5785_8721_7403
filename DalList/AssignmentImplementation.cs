@@ -13,11 +13,10 @@ internal class AssignmentImplementation : IAssignment
 
     public void Delete(int id)
     {
-        Assignment tamp = Read(id);
-        if (tamp != null)
-            DataSource.Assignments.Remove(tamp);
+        if(Read(id) != null)
+            DataSource.Assignments.Remove(DataSource.Assignments.Find(Value => Value.Id == id));
         else
-            throw new Exception
+            throw new DalDoesNotExistException
                 ($"An object of type Assignment with such ID={id} does not exist");
     }
 
@@ -25,17 +24,16 @@ internal class AssignmentImplementation : IAssignment
     {
         DataSource.Assignments.Clear();
     }
-
     public Assignment? Read(int id)
     {
-         return DataSource.Assignments.FirstOrDefault(Value => Value.Id == id);
+        return DataSource.Assignments.FirstOrDefault(Value => Value.Id == id);
 
     }
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
+      => filter == null
+        ? DataSource.Assignments.Select(item => item)
+        : DataSource.Assignments.Where(filter);
 
-    public List<Assignment> ReadAll()
-    {
-        return new List<Assignment>(DataSource.Assignments);
-    }
 
     public void Update(Assignment item)
     {
@@ -45,7 +43,12 @@ internal class AssignmentImplementation : IAssignment
             DataSource.Assignments.Add(item);
         }
         else
-            throw new Exception
+            throw new DalDoesNotExistException
                 ($"An object of type Assignment with such ID={item.Id}  does not existsst");
+    }
+
+    public Assignment? Read(Func<Assignment, bool> filter)
+    {
+        return DataSource.Assignments.FirstOrDefault(filter);
     }
 }
