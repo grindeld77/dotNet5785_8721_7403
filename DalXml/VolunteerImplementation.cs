@@ -11,7 +11,7 @@ internal class VolunteerImplementation : IVolunteer
     {
         return new DO.Volunteer()
         {
-            Id = vol.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
+            Id = vol.ToIntNullable("Id") ?? 0,
             FullName = (string?)vol.Element("Name") ?? "",
             MobilePhone = (string?)vol.Element("MobilePhone") ?? "",
             Email = (string?)vol.Element("Email") ?? "",
@@ -51,7 +51,7 @@ internal class VolunteerImplementation : IVolunteer
         if (volunteerRootElem.Elements().Any(vol => (int?)vol.Element("Id") == item.Id))
             throw new DO.DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists");
 
-        volunteerRootElem.Add(new XElement("Volunteer", createVolunteerElement(item)));
+        volunteerRootElem.Add(createVolunteerElement(item));
 
         XMLTools.SaveListToXMLElement(volunteerRootElem, Config.s_volunteers_xml);
     }
@@ -72,9 +72,8 @@ internal class VolunteerImplementation : IVolunteer
 
     public void DeleteAll()
     {
-        XElement volunteerRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
-        volunteerRootElem.Elements().Remove();
-        XMLTools.SaveListToXMLElement(volunteerRootElem, Config.s_volunteers_xml);
+        XElement volunteersRootElem = new XElement("Volunteers");  // Create an empty root element
+        XMLTools.SaveListToXMLElement(volunteersRootElem, Config.s_volunteers_xml);
     }
 
     public Volunteer? Read(int id)
