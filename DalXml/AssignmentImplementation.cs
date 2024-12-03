@@ -11,9 +11,8 @@ internal class AssignmentImplementation : IAssignment
     public void Create(Assignment item)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
-        int id = Config.NextAssignmentId; // get next assignment id
-        Assignment copy = item with { Id = id }; // create a copy of the assignment with the new id
-        assignments.Add(item); // add new assignment to list 
+        Assignment Item = item with { Id = Config.NextAssignmentId }; // creates new item with the correct ID
+        assignments.Add(Item); // add new assignment to list 
         XMLTools.SaveListToXMLSerializer(assignments, Config.s_assignments_xml); // save updated list of assignments to XML
     }
 
