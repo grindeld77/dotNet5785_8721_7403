@@ -269,11 +269,11 @@ $@"        Select an option to proceed
                         {
                             Console.WriteLine("Enter the Call ID");
                             int callI = ConvertStringToNumber();
-                            s_dal.Volunteer.Delete(callI);
+                            s_dal.Call.Delete(callI);
                             break;
                         }
                     case callMenu.DeleteAll:
-                        s_dal.Volunteer.DeleteAll();
+                        s_dal.Call.DeleteAll();
                         break;
                     default:
                         Console.WriteLine("Invalid selection, please try again.");
