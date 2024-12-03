@@ -2,8 +2,8 @@
 using DalApi;
 using DO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+//using System.Collections.Generic;
+//using System.Linq;
 
 internal class CallImplementation : ICall
 {
@@ -22,17 +22,22 @@ internal class CallImplementation : ICall
         if (calls.RemoveAll(it => it.Id == id) == 0) // remove all calls with ID==id
             throw new DalDoesNotExistException($"Call with ID={id} does Not exist"); // if no calls were removed, throw exception
         XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml); // save updated list of calls to XML
-        throw new NotImplementedException();
     }
 
     public void DeleteAll()
     {
-        XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml); // save empty list of calls to XML 
+         XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml); // save empty list of calls to XML 
+
+        //List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
+        //calls.Clear(); // Remove all elements from the list
+        //XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml); // save updated list (empty in this case)
+
+
     }
 
     public Call? Read(int id)
     {
-        List<Call> calls  = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
+        List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
         Call? toReturn = calls.FirstOrDefault(Value => Value.Id == id);
         if (toReturn == null) // if call with ID==id does not exist
             throw new DalDoesNotExistException($"Call with ID={id} does Not exist"); // throw exception

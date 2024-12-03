@@ -27,7 +27,8 @@ internal class VolunteerImplementation : IVolunteer
     }
     public XElement createVolunteerElement(Volunteer item)
     {
-        return new XElement("Volunteer",
+            return
+            new XElement("Volunteer",
             new XElement("Id", item.Id),
             new XElement("Name", item.FullName),
             new XElement("MobilePhone", item.MobilePhone),
@@ -57,11 +58,23 @@ internal class VolunteerImplementation : IVolunteer
 
     public void Delete(int id)
     {
+        XElement volunteerRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
+        XElement? volunteerToDelete = volunteerRootElem.Elements().FirstOrDefault(vol => (int?)vol.Element("Id") == id);
 
+        if (volunteerToDelete is null)
+        {
+            throw new DO.DalDoesNotExistException($"Volunteer with ID={id} does Not exist");
+        }
+
+        volunteerToDelete.Remove();
+        XMLTools.SaveListToXMLElement(volunteerRootElem, Config.s_volunteers_xml);
     }
 
     public void DeleteAll()
     {
+        XElement volunteerRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
+        volunteerRootElem.Elements().Remove();
+        XMLTools.SaveListToXMLElement(volunteerRootElem, Config.s_volunteers_xml);
     }
 
     public Volunteer? Read(int id)
@@ -77,7 +90,16 @@ internal class VolunteerImplementation : IVolunteer
 
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
     {
+        XElement volunteerRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
+        IEnumerable<Volunteer> volunteers = volunteerRootElem.Elements()
+            .Select(vol => getVolunteer(vol));
 
+        if (filter != null)
+        {
+            volunteers = volunteers.Where(filter);
+        }
+
+        return volunteers;
     }
 
     public void Update(Volunteer item)

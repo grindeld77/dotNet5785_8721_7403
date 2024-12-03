@@ -426,8 +426,8 @@ public static class Initialization
             int id = call.Id;
 
 
-             int index = s_rand.Next(0, volunteersList.Count()); // Select a random volunteer from the list
-             Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
+            int index = s_rand.Next(0, volunteersList.Count()); // Select a random volunteer from the list
+            Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
 
             DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, 36));
             DateTime? EndTime = s_dal!.Config.Clock;
@@ -473,6 +473,6 @@ public static class Initialization
         Console.WriteLine("Reset Configuration values and List values...");
         createVolunteers();
         createCalls();
-        createAssignments();
+       createAssignments();
     }
 }

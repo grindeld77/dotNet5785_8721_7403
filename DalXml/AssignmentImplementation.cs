@@ -23,7 +23,6 @@ internal class AssignmentImplementation : IAssignment
         if (assignments.RemoveAll(it => it.Id == id) == 0) // remove all assignments with ID==id
             throw new DalDoesNotExistException($"Call with ID={id} does Not exist"); // if no assignments were removed, throw exception
         XMLTools.SaveListToXMLSerializer(assignments, Config.s_assignments_xml); // save updated list of assignments to XML
-        throw new NotImplementedException();
     }
 
     public void DeleteAll()
@@ -33,8 +32,8 @@ internal class AssignmentImplementation : IAssignment
 
     public Assignment? Read(int id)
     {
-        List<Assignment> calls = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
-        Assignment? toReturn = calls.FirstOrDefault(Value => Value.Id == id);
+        List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
+        Assignment? toReturn = assignments.FirstOrDefault(Value => Value.Id == id);
         if (toReturn == null) // if assignment with ID==id does not exist
             throw new DalDoesNotExistException($"Call with ID={id} does Not exist"); // throw exception
         return toReturn; // return assignment with ID==id

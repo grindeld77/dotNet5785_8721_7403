@@ -1,3 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall>
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Call>
+    <Id>0</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Heart attack reported.</Description>
+    <Address>Weizmann St 2, Rehovot</Address>
+    <Latitude>31.8938</Latitude>
+    <Longitude>34.8113</Longitude>
+    <OpenedAt>2022-12-03T16:16:58</OpenedAt>
+    <MaxCompletionTime>2022-12-03T17:13:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>PatientTransport</Type>
+    <Description>Elderly transport to hospital.</Description>
+    <Address>Eli Cohen St 18, Beersheba</Address>
+    <Latitude>31.2417</Latitude>
+    <Longitude>34.7976</Longitude>
+    <OpenedAt>2022-12-03T16:15:58</OpenedAt>
+    <MaxCompletionTime>2022-12-03T16:49:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident with multiple injuries.</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2023-12-03T16:06:58</OpenedAt>
+    <MaxCompletionTime>2023-12-03T16:49:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>FirstAid</Type>
+    <Description>First aid for an injured person.</Description>
+    <Address>Hashalom St 12, Herzliya</Address>
+    <Latitude>32.1676</Latitude>
+    <Longitude>34.8346</Longitude>
+    <OpenedAt>2019-12-03T16:18:58</OpenedAt>
+    <MaxCompletionTime>2019-12-03T16:50:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue operation for a trapped individual.</Description>
+    <Address>Emek Refaim St 34, Jerusalem</Address>
+    <Latitude>31.7614</Latitude>
+    <Longitude>35.2219</Longitude>
+    <OpenedAt>2021-12-03T15:46:58</OpenedAt>
+    <MaxCompletionTime>2021-12-03T17:13:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>FireEmergency</Type>
+    <Description>Fire in a residential building.</Description>
+    <Address>Balfour St 45, Bat Yam</Address>
+    <Latitude>32.0212</Latitude>
+    <Longitude>34.7515</Longitude>
+    <OpenedAt>2022-12-03T16:25:58</OpenedAt>
+    <MaxCompletionTime>2022-12-03T17:17:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>Cardiac arrest requiring immediate attention.</Description>
+    <Address>HaGalil St 90, Tiberias</Address>
+    <Latitude>32.7889</Latitude>
+    <Longitude>35.5373</Longitude>
+    <OpenedAt>2016-12-03T16:26:58</OpenedAt>
+    <MaxCompletionTime>2016-12-03T17:03:58</MaxCompletionTime>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>Poisoning</Type>
+    <Description>Chemical poisoning incident.</Description>
+    <Address>Sokolov St 50, Ramat Gan</Address>
+    <Latitude>32.0836</Latitude>
+    <Longitude>34.8248</Longitude>
+    <OpenedAt>2023-12-03T16:05:58</OpenedAt>
+    <MaxCompletionTime>2023-12-03T17:21:58</MaxCompletionTime>
+  </Call>
 </ArrayOfCall>
