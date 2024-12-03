@@ -26,12 +26,6 @@ internal class CallImplementation : ICall
     public void DeleteAll()
     {
          XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml); // save empty list of calls to XML 
-
-        //List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
-        //calls.Clear(); // Remove all elements from the list
-        //XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml); // save updated list (empty in this case)
-
-
     }
 
     public Call? Read(int id)
