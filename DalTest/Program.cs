@@ -3,12 +3,12 @@ using DalApi;
 using DO;
 using Dal;
 using System.Data.SqlTypes;
-
-
 internal class Program
 {
     //static readonly IDal s_dal = new DalList(); //stage 2
-    static readonly IDal s_dal = new DalXml(); //stage 3
+    //static readonly IDal s_dal = new DalXml(); //stage 3
+    static readonly IDal s_dal = Factory.Get; //stage 4
+
     enum Menu
     {
         Exit = 0,
@@ -151,7 +151,7 @@ $@"        Select an option to proceed
                         {
                             IEnumerable<Volunteer> volunteers = s_dal.Volunteer.ReadAll();
                             foreach (Volunteer v in volunteers)
-                            {
+                             {
                                 Console.WriteLine(v);
                             }
                             break;
@@ -471,7 +471,8 @@ $@"        Select an option to proceed
                         AssignmentMenu();
                         break;
                     case Menu.Initialize:
-                        Initialization.Do(s_dal);
+                        //Initialization.Do(s_dal); //stage 2
+                        Initialization.Do(); //stage 4
                         break;
                     case Menu.DisplayAll:
                         Console.WriteLine("All data in the database:\n volunteer\n");
