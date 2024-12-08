@@ -1,8 +1,11 @@
-﻿using DalApi;
-namespace Dal;
+﻿namespace Dal;
+using DalApi;
+using System.Diagnostics;
 
-sealed public class DalXml :IDal
+sealed internal class DalXml :IDal
 {
+    public static IDal Instance { get; } = new DalXml();
+    private DalXml() { }
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
 
     public IConfig Config { get; } = new ConfigImplementation();
