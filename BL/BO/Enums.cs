@@ -1,6 +1,5 @@
 ﻿namespace BO;
 
-
 public enum Role//role
 {
     Manager,
@@ -44,4 +43,14 @@ public enum DistanceType//distance type
     Aerial, //air distance
     Walking, //walking distance
     Driving //driving distance
+}
+
+// Enumeration for time units to advance the clock.
+public enum TimeUnit
+{
+    Minute,
+    Hour,
+    Day,
+    Month,
+    Year
 }

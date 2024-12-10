@@ -31,7 +31,6 @@
         public DateTime OpenTime { get; set; }// זמן פתיחת הקריאה
         public DateTime? EndTime { get; set; } // זמן סגירת הקריאה
         public DateTime StartTime { get; set; }// זמן התחלת הטיפול
-
         public double DistanceFromVolunteer { get; set; } // מרחק מהמתנדב
         public CallStatus Status { get; set; } // ENUM: InProgress, AtRisk
     }

@@ -2,7 +2,7 @@
 
 public class Call
 {
-    public int Id { get; init; }//קוד קריאה
+    public int Id { get; init; } //קוד קריאה
     public CallType Type { get; set; }//סוג קריאה
     public string? Description { get; set; }//תיאור הקריאה
     public string? FullAddress { get; set; }//כתובת מלאה
