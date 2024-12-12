@@ -2,7 +2,7 @@
 
 public enum Role//role
 {
-    Manager,
+    Admin,
     Volunteer
 }
 public enum CallType//call type

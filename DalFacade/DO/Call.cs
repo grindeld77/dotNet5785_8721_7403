@@ -11,6 +11,7 @@
 /// <param name="Longitude">Longitude of the call's location, used for calculating distances</param>
 /// <param name="OpenedAt">Date and time when the call was opened</param>
 /// <param name="MaxCompletionTime">Optional maximum completion time for the call</param>
+/// <param name="Status">Status of the call (e.g., open, in progress, completed)</param> 
 public record Call
 (
     int Id,
@@ -20,7 +21,8 @@ public record Call
     double Latitude,
     double Longitude,
     DateTime OpenedAt,
-    DateTime? MaxCompletionTime = null
+    DateTime? MaxCompletionTime = null,
+    CallStatus Status = CallStatus.Open
 )
 {
     /// <summary>

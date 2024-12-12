@@ -23,7 +23,7 @@ public interface ICall
     void AddCall(Call call);
 
     // return a list of calls that are closed and have been handled by a specific volunteer.
-    IEnumerable<CallInList> GetClosedCallsByVolunteer(int volunteerId, CallType? filterType, CallStatus? sortField);
+    IEnumerable<ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, CallStatus? filterField, CallStatus? sortField);
 
     // return a list of open calls available for a volunteer, including their distance from the volunteer.
     IEnumerable<OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, CallType? filterType, CallStatus? sortField);

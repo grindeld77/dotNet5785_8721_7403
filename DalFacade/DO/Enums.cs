@@ -1,7 +1,7 @@
 ﻿namespace DO;
 public enum Role
 {
-    Manager, 
+    Admin, 
     Volunteer 
 }
 
@@ -33,4 +33,13 @@ public enum CompletionStatus
     SelfCancel, //volunteer canceled the call
     AdminCancel,    // admin canceled the call
     Expired // call expired
+}
+public enum CallStatus//call status
+{
+    Open,               //call is open
+    InProgress,         //call is in progress
+    Closed,             //call is closed
+    Expired,            //call expired
+    OpenAtRisk,         //call is open and at risk
+    InProgressAtRisk    //call is in progress and at risk
 }
