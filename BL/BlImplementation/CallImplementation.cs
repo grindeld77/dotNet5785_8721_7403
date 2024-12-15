@@ -1,7 +1,8 @@
 ﻿namespace BlImplementation;
 using BlApi;
-using BO;
+//using BO;
 using Helpers;
+using System;
 
 internal class CallImplementation : ICall
 {
@@ -11,16 +12,16 @@ internal class CallImplementation : ICall
     {
         // Validate the call object
         if (boCall == null)
-            throw new ArgumentNullException(nameof(boCall));
+            throw new BO.BloesNotExistException(nameof(boCall));
 
         if (string.IsNullOrWhiteSpace(boCall.FullAddress))
-            throw new ArgumentException("Address is required.");
+            throw new BO.BlInvalidAddressException("Address is required.");
 
         if (boCall.OpenTime >= boCall.MaxEndTime)
-            throw new ArgumentException("Open time must be earlier than the maximum finish time.");
+            throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
         if (!Tools.IsValidAddress(boCall.FullAddress, out double latitude, out double longitude))
-            throw new ArgumentException("Address is not valid.");
+            throw new BO.BlInvalidAddressException("Address is not valid.");
 
         // Assign latitude and longitude to the call object
         boCall.Latitude = latitude;
@@ -43,35 +44,37 @@ internal class CallImplementation : ICall
         {
             _dal.Call.Create(doCall);
         }
-        catch (CallAlreadyExistsException ex)
+        catch (Exception ex)
         {
-            throw new InvalidOperationException("A call with the same ID already exists.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("A call with the same ID already exists.", ex);
         }
     }
+    /**/
 
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
         // Validate inputs
         if (volunteerId < 200000000 || volunteerId > 400000000)
-            throw new ArgumentException("Invalid volunteer ID.", nameof(volunteerId));
+            throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
         if (callId < 0)
-            throw new ArgumentException("Invalid call ID.", nameof(callId));
+            throw new BO.BlInvalidCallIdException("Invalid call ID.", nameof(callId));
 
         // Retrieve the call and volunteer from the data layer
         var call = _dal.Call.Read(callId);
         if (call == null)
-            throw new InvalidOperationException($"Call with ID {callId} does not exist.");
+            throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
 
         var volunteer = _dal.Volunteer.Read(volunteerId);
         if (volunteer == null)
-            throw new InvalidOperationException($"Volunteer with ID {volunteerId} does not exist.");
+            throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
 
         // Check if the call is valid for assignment
         if (call.Status != DO.CallStatus.Open)
-            throw new InvalidOperationException("The call is not open for assignment or already assigned.");
+            throw new BO.BlInvalidOperationException("The call is not open for assignment or already assigned.");
 
         if (call.MaxCompletionTime <= ClockManager.Now)
-            throw new InvalidOperationException("The call has expired.");
+            throw new BO.BlInvalidOperationException("The call has expired.");
 
         // Create a new assignment entity
         var newAssignment = new DO.Assignment
@@ -90,43 +93,44 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            // Translate the exception to a higher-level exception for the presentation layer
-            throw new InvalidOperationException("Failed to assign volunteer to the call.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to assign volunteer to the call.", ex);
         }
     }
+ 
 
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         // Validate input parameters
         if (requesterId < 200000000 || requesterId > 400000000)
-            throw new ArgumentException("Invalid requester ID.", nameof(requesterId));
+            throw new BO.BlInvalidAssignmentIdException("Invalid requester ID.", nameof(requesterId));
         if (assignmentId < 0)
-            throw new ArgumentException("Invalid assignment ID.", nameof(assignmentId));
+            throw new BO.BlInvalidAssignmentIdException("Invalid assignment ID.", nameof(assignmentId));
 
         // Retrieve the assignment from the data layer
         var assignment = _dal.Assignment.Read(assignmentId);
         if (assignment == null)
-            throw new InvalidOperationException($"Assignment with ID {assignmentId} does not exist.");
+            throw new BO.BloesNotExistException($"Assignment with ID {assignmentId} does not exist.");
 
         // Retrieve the volunteer associated with the assignment
         var volunteer = _dal.Volunteer.Read(assignment.VolunteerId);
         if (volunteer == null)
-            throw new InvalidOperationException($"Volunteer with ID {assignment.VolunteerId} does not exist.");
+            throw new BO.BloesNotExistException($"Volunteer with ID {assignment.VolunteerId} does not exist.");
 
         // Check authorization: requester must be the volunteer or an admin
         var requester = _dal.Volunteer.Read(requesterId);
         if (requester == null)
-            throw new InvalidOperationException($"Requester with ID {requesterId} does not exist.");
+            throw new BO.BloesNotExistException($"Requester with ID {requesterId} does not exist.");
 
         if (requester.Role != DO.Role.Admin && requesterId != volunteer.Id)
-            throw new UnauthorizedAccessException("Requester is not authorized to cancel this assignment.");
+            throw new BO.BlInvalidRequestException("Requester is not authorized to cancel this assignment.");
 
         // Check that the assignment is still open (not completed or expired)
         if (assignment.CompletionTime != null)
-            throw new InvalidOperationException("The assignment has already been completed or canceled.");
+            throw new BO.BlInvalidOperationException("The assignment has already been completed or canceled.");
 
         if (ClockManager.Now > assignment.CompletionTime)
-            throw new InvalidOperationException("The assignment has expired.");
+            throw new BO.BlInvalidOperationException("The assignment has expired.");
 
         var updatedAssignment = assignment with
         {
@@ -142,8 +146,8 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            // Translate data layer exception to a higher-level exception
-            throw new InvalidOperationException("Failed to cancel the assignment.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to cancel the assignment.", ex);
         }
     }
 
@@ -153,30 +157,30 @@ internal class CallImplementation : ICall
         {
             // Validate input parameters
             if (volunteerId < 200000000 || volunteerId > 400000000)
-                throw new ArgumentException("Invalid volunteer ID.", nameof(volunteerId));
+                throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
             if (assignmentId < 0)
-                throw new ArgumentException("Invalid assignment ID.", nameof(assignmentId));
+                throw new BO.BlInvalidAssignmentIdException("Invalid assignment ID.", nameof(assignmentId));
 
             // Retrieve the assignment from the data layer
             var assignment = _dal.Assignment.Read(assignmentId);
             if (assignment == null)
-                throw new InvalidOperationException($"Assignment with ID {assignmentId} does not exist.");
+                throw new BO.BloesNotExistException($"Assignment with ID {assignmentId} does not exist.");
 
             // Retrieve the volunteer associated with the assignment
             var volunteer = _dal.Volunteer.Read(volunteerId);
             if (volunteer == null)
-                throw new InvalidOperationException($"Volunteer with ID {volunteerId} does not exist.");
+                throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
 
             // Check authorization: volunteer must be the one who took the assignment
             if (volunteer.Id != assignment.VolunteerId)
-                throw new UnauthorizedAccessException("Volunteer is not authorized to complete this assignment.");
+                throw new BO.BlInvalidRequestException("Volunteer is not authorized to complete this assignment.");
 
             // Check that the assignment is still open (not completed or expired)
             if (assignment.CompletionTime != null)
-                throw new InvalidOperationException("The assignment has already been completed or canceled.");
+                throw new BO.BlInvalidOperationException("The assignment has already been completed or canceled.");
 
             if (ClockManager.Now > assignment.CompletionTime)
-                throw new InvalidOperationException("The assignment has expired.");
+                throw new BO.BlInvalidOperationException("The assignment has expired.");
 
             var updatedAssignment = assignment with
             {
@@ -186,16 +190,10 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            // Translate data layer exception to a higher-level exception
-            throw new InvalidOperationException("Failed to complete the assignment.", ex);
-        }
-        catch (BO.NotFoundException ex)
-        {
-            // Handle the case where the assignment does not exist in the data layer
-            throw new BO.NotFoundException($"Assignment with ID {assignmentId} was not found in the system.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to complete the assignment.", ex);
         }
     }
-
     void ICall.DeleteCall(int callId)
     {
         // Validate input parameter
@@ -214,7 +212,7 @@ internal class CallImplementation : ICall
         // Check if the call was ever assigned to a volunteer
         if (_dal.Assignment.Read(callId).VolunteerId != null)
         {
-            throw new BO.InvalidOperationException("Calls that were assigned to volunteers cannot be deleted.");
+            throw new BO.BlInvalidRequestException("Calls that were assigned to volunteers cannot be deleted.");
         }
 
         // Attempt to delete the call from the data layer
@@ -224,12 +222,12 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            // Translate data layer exception to a higher-level exception
-            throw new InvalidOperationException("Failed to delete the call.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to delete the call.", ex);
+
         }
     }
-
-    int[] ICall.GetCallCountsByStatus()
+        int[] ICall.GetCallCountsByStatus()
     {
         try
         {
@@ -255,10 +253,10 @@ internal class CallImplementation : ICall
             }
             return result;
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.DataLayerException("Failed to retrieve call counts by status.", ex);
+            throw new BO.BlGeneralException("Failed to retrieve call counts by status.", ex);
         }
     }
 
@@ -269,7 +267,7 @@ internal class CallImplementation : ICall
             // Retrieve the call from the data layer
             var doCall = _dal.Call.Read(callId);
             if (doCall == null)
-                throw new BO.NotFoundException($"Call with ID {callId} does not exist.");
+                throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
 
             // Convert the DO.Call object to a BO.Call object
             return new BO.Call
@@ -283,10 +281,10 @@ internal class CallImplementation : ICall
                 Status = (BO.CallStatus)doCall.Status
             };
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.DataLayerException("Failed to retrieve call details.", ex);
+            throw new BO.BlGeneralException("Failed to retrieve call details.", ex);
         }
     }
 
@@ -337,10 +335,10 @@ internal class CallImplementation : ICall
                 Status = (BO.CallStatus)call.Status
             });
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.DataLayerException("Failed to retrieve calls.", ex);
+            throw new BO.BlGeneralException("Failed to retrieve calls.", ex);
         }
     }
 
@@ -396,10 +394,10 @@ internal class CallImplementation : ICall
                 Status = BO.CompletionStatus.Handled,
             });
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.DataLayerException("Failed to retrieve closed calls for the volunteer.", ex);
+            throw new BO.BlGeneralException("Failed to retrieve closed calls for the volunteer.", ex);
         }
     }
 
@@ -454,10 +452,10 @@ internal class CallImplementation : ICall
                 DistanceFromVolunteer = (double)Tools.CalculateDistance(call.Latitude, call.Longitude, volunteerId),
             });
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.DataLayerException("Failed to retrieve open calls for the volunteer.", ex);
+            throw new BO.BlGeneralException("Failed to retrieve open calls for the volunteer.", ex);
         }
     }
 
@@ -497,10 +495,10 @@ internal class CallImplementation : ICall
         {
             _dal.Call.Update(doCall);
         }
-        catch (DO.DataException ex)
+        catch (Exception ex)
         {
-            // Translate data layer exception to a higher-level exception
-            throw new InvalidOperationException("Failed to update the call.", ex);
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to update the call.", ex);
         }
     }
 }

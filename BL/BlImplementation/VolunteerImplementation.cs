@@ -7,18 +7,19 @@ internal class VolunteerImplementation : IVolunteer
 
     string IVolunteer.Login(string username, string password)
     {
-        try
-        {
-            return _dal.Volunteer.ReadAll()
+
+            var volunteer = _dal.Volunteer.ReadAll()
                 .FirstOrDefault(v => v.FullName == username && v.Password == password)
-                .Role
-                .ToString();
-        }
-        catch (DO.DalDoesNotExistException)
-        {
-            throw new BO.BlInvalidIdentificationException("The username or ID entered is invalid.");
-        }
+                ?? throw new BO.BlInvalidIdentificationException("The username or ID entered is invalid.");
+            return volunteer.Role.ToString();
     }
+
+    /// <summary>
+    /// //////////////
+    /// </summary>
+    /// <param name="volunteer"></param>
+    /// <exception cref="BO.BlAlreadyExistsException"></exception>
+    /// <exception cref="BO.BlException"></exception>
     void IVolunteer.AddVolunteer(BO.Volunteer volunteer)
     {
         try
