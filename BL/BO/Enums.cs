@@ -68,3 +68,4 @@ public enum VolunteerFieldVolunteerInList
     CurrentCallId,
     CurrentCallType,
 }
+}
