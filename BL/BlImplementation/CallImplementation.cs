@@ -50,7 +50,6 @@ internal class CallImplementation : ICall
             throw new BO.BlGeneralException("A call with the same ID already exists.", ex);
         }
     }
-    /**/
 
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
@@ -98,7 +97,6 @@ internal class CallImplementation : ICall
         }
     }
  
-
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         // Validate input parameters
@@ -227,7 +225,7 @@ internal class CallImplementation : ICall
 
         }
     }
-        int[] ICall.GetCallCountsByStatus()
+    int[] ICall.GetCallCountsByStatus()
     {
         try
         {
