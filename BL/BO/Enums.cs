@@ -54,3 +54,17 @@ public enum TimeUnit
     Month,
     Year
 }
+
+
+
+public enum VolunteerFieldVolunteerInList
+{
+    Id,
+    FullName,
+    IsActive,
+    TotalCompletedCalls,
+    TotalCancelledCalls,
+    TotalExpiredCalls,
+    CurrentCallId,
+    CurrentCallType,
+}

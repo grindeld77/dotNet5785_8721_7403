@@ -1,4 +1,5 @@
 ﻿using BO;
+using System.Reflection.Metadata;
 
 namespace BlApi;
 public interface IVolunteer
@@ -8,7 +9,7 @@ public interface IVolunteer
 
     // get collection of active volunteers in the system, if isActive is null return all volunteers,
     // if callType is null return sorted by id
-    IEnumerable<VolunteerInList> GetVolunteers(bool? isActive, CallType? callType);
+    IEnumerable<VolunteerInList> GetVolunteers(bool? isActive, VolunteerFieldVolunteerInList? VolunteerParameter);
 
     // get volunteer details by id, return the BO object, else if not found throw exception
     Volunteer GetVolunteerDetails(int id);
