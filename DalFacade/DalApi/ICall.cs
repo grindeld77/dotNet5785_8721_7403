@@ -3,4 +3,7 @@ using System.Net.Http.Headers;
 
 namespace DalApi;
 
-public interface ICall  : ICrud<Call> { }
+public interface ICall : ICrud<Call>
+{
+    IEnumerable<Call> Read(object call);
+}

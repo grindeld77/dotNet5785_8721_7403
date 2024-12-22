@@ -15,7 +15,7 @@ public interface IVolunteer
     Volunteer GetVolunteerDetails(int id);
 
     // update volunteer details, if not found throw exception
-    void UpdateVolunteer(int requesterId, Volunteer volunteer);
+    void UpdateVolunteer(int requesterId, BO.Volunteer updatedVolunteer);
 
     // delete volunteer from the system, if not found throw exception 
     void DeleteVolunteer(int id);

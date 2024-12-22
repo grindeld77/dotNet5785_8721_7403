@@ -29,7 +29,7 @@
         public string? Description { get; set; }// תיאור הקריאה
         public string FullAddress { get; set; }// כתובת מלאה
         public DateTime OpenTime { get; set; }// זמן פתיחת הקריאה
-        public DateTime? EndTime { get; set; } // זמן סגירת הקריאה
+        public DateTime? MaxCompletionTime { get; set; } // זמן סיום מירבי
         public DateTime StartTime { get; set; }// זמן התחלת הטיפול
         public double DistanceFromVolunteer { get; set; } // מרחק מהמתנדב
         public CallStatus Status { get; set; } // ENUM: InProgress, AtRisk

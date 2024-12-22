@@ -37,6 +37,11 @@ public class BlInvalidAddressException : BlException//Invalid address
     public BlInvalidAddressException(string? message) : base(message) { }
 }
 [Serializable]
+public class BlPoneNomber : BlException//Invalid address
+{
+    public BlPoneNomber(string? message) : base(message) { }
+}
+[Serializable]
 public class BlInvalidTimeException : BlException//Invalid time
 {
     public BlInvalidTimeException(string? message) : base(message) { }
@@ -44,7 +49,7 @@ public class BlInvalidTimeException : BlException//Invalid time
 [Serializable]
 public class BlInvalidIdentityNumberException : BlException//Invalid identity number
 {
-    public BlInvalidIdentityNumberException(string message, string v) : base(message) { }
+    public BlInvalidIdentityNumberException(string message) : base(message) { }
 }
 [Serializable]
 public class BlInvalidCallIdException : BlException//Invalid call ID
@@ -84,6 +89,12 @@ public class BlGeneralException : BlException//General exception
     {
         Data = data;
     }
+}
+
+[Serializable]
+public class InvalidEmailException : BlException
+{
+    public InvalidEmailException(string message) : base(message) { }
 }
 
 ///BlException: שגיאה כללית

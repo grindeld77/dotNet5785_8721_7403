@@ -1,235 +1,25 @@
 ﻿namespace BlImplementation;
 using BlApi;
-using BO;
-/*
- *     int Id,
-string FullName,
-string MobilePhone,
-string Email,
-Role Role,
-bool IsActive,
-string? Password = null,
-string? CurrentAddress = null,
-double? Latitude = null,
-double? Longitude = null,
-double? MaxCallDistance = null,
-DistanceType DistancePreference = DistanceType.Aerial
-         public int Id { get; init; }//קוד מתנדב
-public string FullName { get; set; }//שם מלא
-public string PhoneNumber { get; set; }//טלפון
-public string Email { get; set; }//כתובת מייל   
-public string? PasswordHash { get; set; }//סיסמה מוצפנת
-public string? FullAddress { get; set; }//כתובת מלאה
-public double? Latitude { get; set; }//קו רוחב
-public double? Longitude { get; set; }//קו אורך
-public Role Role { get; set; }//ENUM: Admin, Volunteer
-public bool IsActive { get; set; }//האם המתנדב פעיל
-public double? MaxDistanceForCall { get; set; }//מרחק מקסימלי לקריאה
-public DistanceType DistanceType { get; set; } = DistanceType.Aerial;//ENUM: Aerial, Road
-public int TotalCompletedCalls { get; set; }//סה"כ שיחות
-public int TotalCancelledCalls { get; set; }//סה"כ שיחות שבוטלו
-public int TotalExpiredCalls { get; set; }//סה"כ שיחות שלא טופלו בזמן
-public BO.CallInProgress? CurrentCall { get; set; }//קריאה נוכחית*/
-internal class VolunteerImplementation : IVolunteer
+using Helpers;
+using System.Security.AccessControl;
+
+
+ internal class VolunteerImplementation : IVolunteer
 {
+
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
     string IVolunteer.Login(string username, string password)
     {
 
-            var volunteer = _dal.Volunteer.ReadAll()
-                .FirstOrDefault(v => v.FullName == username && v.Password == password)
-                ?? throw new BO.BlInvalidIdentificationException("The username or ID entered is invalid.");
-            return volunteer.Role.ToString();
-    }
-    IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, VolunteerFieldVolunteerInList? VolunteerParameter)
-    {
-        List<BO.Volunteer> volunteers;
-        IEnumerable<DO.Volunteer> doVolunteers;
-        try
-        {
-            
-
-            if (isActive.HasValue)
-            {
-                doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
-            }
-            else
-            {
-                doVolunteers = _dal.Volunteer.ReadAll();
-            }
-            volunteers= doVolunteers is null ? null : doVolunteers.Select(v => new BO.Volunteer
-            {
-                Id = v.Id,
-                FullName = v.FullName,
-                IsActive = v.IsActive,
-                PhoneNumber = v.MobilePhone,
-                Email = v.Email,
-                Role = (Role)v.Role,
-                PasswordHash = v.Password,
-                FullAddress = v.CurrentAddress,
-                Latitude = v.Latitude,
-                Longitude = v.Longitude,
-                MaxDistanceForCall = v.MaxCallDistance,
-                DistanceType = (DistanceType)v.DistancePreference,
-            }).ToList();
-
-
-            if (VolunteerParameter.HasValue)
-            {
-                switch (VolunteerParameter.Value)
-                {
-                    case VolunteerFieldVolunteerInList.TotalCompletedCalls:
-                        // סדר לפי סך השיחות שהושלמו בהצלחה
-                        volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Completed));
-                        break;
-                    case VolunteerFieldVolunteerInList.TotalCancelledCalls:
-                        // סדר לפי סך השיחות שבוטלו
-                        volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Cancelled));
-                        break;
-                    case VolunteerFieldVolunteerInList.TotalExpiredCalls:
-                        // סדר לפי סך השיחות שפג תוקפן
-                        volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Expired));
-                        break;
-                    // הוסף מקרים נוספים לפי שדות ה-VolunteerField
-                    case VolunteerFieldVolunteerInList.CurrentCallId:
-                        // מיון לפי מזהה השיחה הנוכחית (צריך להגדיר לוגיקה)
-                        break;
-                    case VolunteerFieldVolunteerInList.CurrentCallType:
-                        // מיון לפי סוג השיחה הנוכחית (צריך להגדיר לוגיקה)
-                        break;
-                    default:
-                        break;
-                }
-
-
-
-            }
-        }
-        catch (DO.DalException ex)
-        {
-            throw new BO.BlException("An error occurred while retrieving volunteers.", ex);
-        }
-    }
-    /*IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, VolunteerFieldVolunteerInList? VolunteerParameter)
-{
-    List<BO.Volunteer> volunteers;
-
-    try
-    {
-        // קבל את רשימת המתנדבים מה-DAL
-        if (isActive.HasValue)
-        {
-            doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
-        }
-        else
-        {
-            doVolunteers = _dal.Volunteer.ReadAll();
-        }
-
-        // המרת רשימת המתנדבים ל-BO.Volunteer (אופציונלי)
-        volunteers = doVolunteers?.Select(v => new BO.Volunteer
-        {
-            Id = v.Id,
-            FullName = v.FullName,
-            IsActive = v.IsActive,
-            PhoneNumber = v.MobilePhone,
-            Email = v.Email,
-            Role = (Role)v.Role,
-            PasswordHash = v.Password,
-            FullAddress = v.CurrentAddress,
-            Latitude = v.Latitude,
-            Longitude = v.Longitude,
-            MaxDistanceForCall = v.MaxCallDistance,
-            DistanceType = (DistanceType)v.DistancePreference,
-        }).ToList();
-
-        // סינון ומיון לפי VolunteerParameter
-        if (VolunteerParameter.HasValue)
-        {
-            switch (VolunteerParameter.Value)
-            {
-                case VolunteerFieldVolunteerInList.TotalCompletedCalls:
-                    // סדר לפי סך השיחות שהושלמו בהצלחה
-                    volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Completed));
-                    break;
-                case VolunteerFieldVolunteerInList.TotalCancelledCalls:
-                    // סדר לפי סך השיחות שבוטלו
-                    volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Cancelled));
-                    break;
-                case VolunteerFieldVolunteerInList.TotalExpiredCalls:
-                    // סדר לפי סך השיחות שפג תוקפן
-                    volunteers = volunteers.OrderByDescending(v => v.Calls.Count(c => c.Status == DO.CallStatus.Expired));
-                    break;
-                // הוסף מקרים נוספים לפי שדות ה-VolunteerField
-                case VolunteerFieldVolunteerInList.CurrentCallId:
-                    // מיון לפי מזהה השיחה הנוכחית (צריך להגדיר לוגיקה)
-                    break;
-                case VolunteerFieldVolunteerInList.CurrentCallType:
-                    // מיון לפי סוג השיחה הנוכחית (צריך להגדיר לוגיקה)
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // המרת רשימת המתנדבים ל-BO.VolunteerInList
-        var result = volunteers.Select(v => new BO.VolunteerInList
-        {
-            Id = v.Id,
-            FullName = v.FullName,
-            IsActive = v.IsActive,
-            // הוסף שדות נוספים לפי הצורך
-            TotalCompletedCalls = v.Calls.Count(c => c.Status == DO.CallStatus.Completed)
-        });
-
-        return result;
-    }
-    catch (DO.DalException ex)
-    {
-        throw new BO.BlException("An error occurred while retrieving volunteers.", ex);
-    }
-}*/
-    void IVolunteer.AddVolunteer(BO.Volunteer volunteer)
-    {
-        try
-        {
-            DO.Volunteer doVolunteer = new DO.Volunteer
-            {
-                Id = volunteer.Id,
-                FullName = volunteer.FullName,
-                Password = volunteer.PasswordHash, // חשוב להאריך כאן את הטיפול בסיסמאות (הצפנה, בדיקות תקפות)
-                Role = volunteer.Role,
-                IsActive = volunteer.IsActive,
-                // ... הוסף את שאר המאפיינים של DO.Volunteer 
-            };
-            _dal.Volunteer.Create(doVolunteer);
-        }
-        catch (DO.DalAlreadyExistsException)
-        {
-            throw new BO.BlAlreadyExistsException("Volunteer with this ID already exists.");
-        }
-        catch (DO.DalException ex)
-        {
-            throw new BO.BlException("An error occurred while adding the volunteer.", ex);
-        }
+        DO.Volunteer volunteer = _dal.Volunteer.ReadAll()
+            .FirstOrDefault(v => v.FullName == username && v.Password == password)
+            ?? throw new BO.BlInvalidIdentificationException("The username or ID entered is invalid.");
+        return volunteer.Role.ToString();
     }
 
-    void IVolunteer.DeleteVolunteer(int id)
-    {
-        try
-        {
-            _dal.Volunteer.Delete(id);
-        }
-        catch (DO.DalDoesNotExistException)
-        {
-            throw new BO.BlDoesNotExistException($"Volunteer with ID {id} does not exist.");
-        }
-        catch (DO.DalException ex)
-        {
-            throw new BO.BlException("An error occurred while deleting the volunteer.", ex);
-        }
-    }
+
+
 
     BO.Volunteer IVolunteer.GetVolunteerDetails(int id)
     {
@@ -238,20 +28,76 @@ internal class VolunteerImplementation : IVolunteer
             var doVolunteer = _dal.Volunteer.Read(id);
             if (doVolunteer == null)
             {
-                throw new BO.BlDoesNotExistException($"Volunteer with ID {id} does not exist.");
+                throw new BO.BloesNotExistException($"Volunteer with ID {id} does not exist.");
             }
 
-            return new BO.Volunteer
-            {
-                Id = doVolunteer.Id,
-                FullName = doVolunteer.FullName,
-                // ... הוסף את שאר המאפיינים של BO.Volunteer 
-            };
+            BO.Volunteer v = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer);
+            return v;
+
         }
         catch (DO.DalException ex)
         {
-            throw new BO.BlException("An error occurred while retrieving volunteer details.", ex);
+            throw new BO.BlGeneralException("An error occurred while retrieving volunteer details.", ex);
         }
+    }
+
+
+    void IVolunteer.DeleteVolunteer(int id)
+    {
+        DO.Assignment chak = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == id);
+        if (chak != null)
+        {
+            throw new BO.BlInvalidOperationException("The volunteer is assigned to a call and cannot be deleted.");
+        }
+        try
+        {
+            _dal.Volunteer.Delete(id);
+        }
+        catch (DO.DalDoesNotExistException)
+        {
+            throw new BO.BloesNotExistException($"Volunteer with ID {id} does not exist.");
+        }
+        catch (DO.DalException ex)
+        {
+            throw new BO.BlGeneralException("An error occurred while deleting the volunteer.", ex);
+        }
+    }
+
+
+    public void AddVolunteer(BO.Volunteer volunteer)
+    {
+
+        VolunteerManager.ValidateVolunteerData(volunteer);         //בדיקת תקינות הנתונים
+        try
+        {
+
+            DO.Volunteer doVolunteer = new DO.Volunteer
+            {
+                Id = volunteer.Id,
+                FullName = volunteer.FullName,
+                MobilePhone = volunteer.PhoneNumber,
+                Email = volunteer.Email,
+                Role = (DO.Role)volunteer.Role,
+                IsActive = volunteer.IsActive,
+                Password = volunteer.PasswordHash,
+                CurrentAddress = volunteer.FullAddress,
+                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
+                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                MaxCallDistance = volunteer.MaxDistanceForCall,
+                DistancePreference = (DO.DistanceType)volunteer.DistanceType,
+            };
+
+            _dal.Volunteer.Create(doVolunteer);   //נסיון בקשת הוספה
+        }
+        catch (DO.DalAlreadyExistsException)
+        {
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID {volunteer.Id}is  already exist.");
+        }
+        catch (DO.DalException)
+        {
+            throw new BO.BlException("An error occurred while updating the volunteer.");
+        }
+
     }
 
 
@@ -260,21 +106,93 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-            DO.Volunteer doVolunteer = new DO.Volunteer
+            // בדיקת זהות המבקש
+            if (!VolunteerManager.IsAuthorizedToUpdate(requesterId, volunteer.Id))
+            {
+                throw new BO.BlInvalidRequestException("You are not authorized to update this volunteer.");
+            }
+            var doVolunteere = _dal.Volunteer.Read(volunteer.Id);//בדיקה אם המתנדב קיים
+            VolunteerManager.ValidateVolunteerData(volunteer);//בדיקת תקינות נתונים
+            BO.Role Pos = volunteer.Role;
+            if ((doVolunteere.Role.ToString() != volunteer.Role.ToString()) && Pos != BO.Role.Admin)            //בדיקה אם המתנדב יכול לשנות תפקיד
+            {
+                throw new Exception("A volunteer could not change roles");
+            }
+            DO.Volunteer doVolunteerNew = new DO.Volunteer
             {
                 Id = volunteer.Id,
                 FullName = volunteer.FullName,
-                // ... הוסף את שאר המאפיינים של DO.Volunteer 
+                MobilePhone = volunteer.PhoneNumber,
+                Email = volunteer.Email,
+                Role = (DO.Role)volunteer.Role,
+                IsActive = volunteer.IsActive,
+                Password = volunteer.PasswordHash,
+                CurrentAddress = volunteer.FullAddress,
+                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
+                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                MaxCallDistance = volunteer.MaxDistanceForCall,
+                DistancePreference = (DO.DistanceType)volunteer.DistanceType,
             };
-            _dal.Volunteer.Update(doVolunteer);
+            _dal.Volunteer.Update(doVolunteerNew);
         }
+
         catch (DO.DalDoesNotExistException)
         {
-            throw new BO.BlDoesNotExistException($"Volunteer with ID {volunteer.Id} does not exist.");
+            throw new BO.BloesNotExistException($"Volunteer with ID {volunteer.Id} does not exist.");//בדיקה אם המתנדב קיים
         }
         catch (DO.DalException ex)
         {
-            throw new BO.BlException("An error occurred while updating the volunteer.", ex);
+            throw new BO.BlGeneralException("An error occurred while updating the volunteer.", ex);
         }
+    }
+
+    IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter)
+    {
+
+        IEnumerable<BO.VolunteerInList> volunteerInLists;
+        IEnumerable<DO.Volunteer> doVolunteers;
+
+        if (isActive.HasValue)
+        {
+            doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
+        }
+        else
+        {
+            doVolunteers = _dal.Volunteer.ReadAll();
+        }
+        volunteerInLists = doVolunteers is null ? null : doVolunteers.Select(v => VolunteerManager.converterFromDoToBoVolunteerInList(v));
+
+        switch (VolunteerParameter.Value)
+        {
+            case BO.VolunteerFieldVolunteerInList.FullName:
+                // סדר לפי שם המתנדב
+                volunteerInLists = volunteerInLists.OrderBy(v => v.FullName);
+                break;
+            case BO.VolunteerFieldVolunteerInList.TotalCompletedCalls:
+                // סדר לפי סך השיחות שהושלמו בהצלחה (שימוש במשתנה קיים)
+                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCompletedCalls);
+                break;
+            case BO.VolunteerFieldVolunteerInList.TotalCancelledCalls:
+                // סדר לפי סך השיחות שבוטלו
+                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCancelledCalls);
+                break;
+            case BO.VolunteerFieldVolunteerInList.TotalExpiredCalls:
+                // סדר לפי סך השיחות שפג תוקפן
+                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalExpiredCalls);
+                break;
+            case BO.VolunteerFieldVolunteerInList.CurrentCallId:
+                // מיון לפי מזהה השיחה הנוכחית 
+                volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallId);
+                break;
+            case BO.VolunteerFieldVolunteerInList.CurrentCallType:
+                // מיון לפי סוג השיחה הנוכחית 
+                volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
+                break;
+            default:
+                // סדר לפי קוד המתנדב
+                volunteerInLists = volunteerInLists.OrderBy(v => v.Id);
+                break;
+        }
+        return volunteerInLists;
     }
 }

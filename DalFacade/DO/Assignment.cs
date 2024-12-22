@@ -22,5 +22,5 @@ public record Assignment
     /// <summary>
     /// Default constructor for stage 3, initializes the assignment with default values.
     /// </summary>
-    public Assignment() : this(0, 0, 0, DateTime.MinValue) { } 
+    public Assignment() : this(0, 0, 0, DateTime.MinValue) { }
 }
