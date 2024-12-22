@@ -198,7 +198,7 @@ public static bool IsValidAddress(string fullAddress, out double latitude, out d
         }
         try
         {
-            var (lat, lon) = GeocodingHelper.GetCoordinates(volunteer.Address);
+            var (lat, lon) = GeocodingHelper.GetCoordinates(volunteer.FullAddress);
             const double tolerance = 0.0001;
             bool isLatitudeMatch = Math.Abs(volunteer.Latitude.Value - lat) < tolerance;
             bool isLongitudeMatch = Math.Abs(volunteer.Longitude.Value - lon) < tolerance;
@@ -217,10 +217,10 @@ public static bool IsValidAddress(string fullAddress, out double latitude, out d
     {
         try
         {
-            var (lat, lon) = GeocodingHelper.GetCoordinates(call.Address);
+            var (lat, lon) = GeocodingHelper.GetCoordinates(call.FullAddress);
             const double tolerance = 0.0001;
-            bool isLatitudeMatch = Math.Abs(call.Latitude - lat) < tolerance;
-            bool isLongitudeMatch = Math.Abs(call.Longitude - lon) < tolerance;
+            bool isLatitudeMatch = Math.Abs((double)(call.Latitude - lat)) < tolerance;
+            bool isLongitudeMatch = Math.Abs((double)(call.Longitude - lon)) < tolerance;
             return isLatitudeMatch && isLongitudeMatch;
         }
         catch (BLUnValidAddress)
@@ -233,26 +233,26 @@ public static bool IsValidAddress(string fullAddress, out double latitude, out d
     {
         var now = DateTime.Now;
 
-        var activeAssignment = assignments.FirstOrDefault(a => a.CallId == call.Id && a.EndTime == null);
+        var activeAssignment = assignments.FirstOrDefault(a => a.CallId == call.Id && a.CompletionTime == null);
         if (activeAssignment != null)
         {
-            return BO.CallStatus.InTreatment;
+            return BO.CallStatus.InProgress;
         }
 
-        if (call.DeadLine.HasValue && now > call.DeadLine.Value)
+        if (call.MaxCompletionTime.HasValue && now > call.MaxCompletionTime.Value)
         {
-            return BO.CallStatus.expired;
+            return BO.CallStatus.Expired;
         }
 
-        var finishedAssignment = assignments.FirstOrDefault(a => a.CallId == call.Id && a.EndTime.HasValue);
+        var finishedAssignment = assignments.FirstOrDefault(a => a.CallId == call.Id && a.CompletionTime.HasValue);
         if (finishedAssignment != null)
         {
-            return BO.CallStatus.closed;
+            return BO.CallStatus.Closed;
         }
 
-        if (call.DeadLine.HasValue && now > call.DeadLine.AddHours(1))
+        if (call.MaxCompletionTime.HasValue && now > call.MaxCompletionTime.AddHours(1))
         {
-            return BO.CallStatus.openAtRisk;
+            return BO.CallStatus.OpenAtRisk;
         }
 
         return BO.CallStatus.Open;

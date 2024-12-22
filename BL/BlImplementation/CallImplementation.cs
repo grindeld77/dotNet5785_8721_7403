@@ -95,7 +95,7 @@ internal class CallImplementation : ICall
             throw new BO.BlGeneralException("Failed to assign volunteer to the call.", ex);
         }
     }
- 
+
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         // Validate input parameters
@@ -368,7 +368,7 @@ internal class CallImplementation : ICall
             }
 
             // Sort the calls based on the specified field (if provided)
-            if (sortField != null )
+            if (sortField != null)
             {
                 doCalls = doCalls.OrderBy(call =>
                 {
