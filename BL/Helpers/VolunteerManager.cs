@@ -268,7 +268,7 @@ internal static class VolunteerManager
 
         if (!IsValidID(volunteer.Id))
         {
-            throw new BO.BlInvalidIdentityNumberException("Invalid ID number");
+            throw new BO.InvalidEmailException("Invalid ID number");
         }
         if (!CorrectAddress(volunteer))
         {

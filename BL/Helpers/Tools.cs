@@ -223,9 +223,9 @@ public static bool IsValidAddress(string fullAddress, out double latitude, out d
             bool isLongitudeMatch = Math.Abs((double)(call.Longitude - lon)) < tolerance;
             return isLatitudeMatch && isLongitudeMatch;
         }
-        catch (BLUnValidAddress)
+        catch (Exception e)
         {
-            throw new BLUnValidAddress("Error fetching coordinates for the volunteer address.");
+            throw new Exception("Error fetching coordinates for the volunteer address.");
         }
     }
 
@@ -250,11 +250,37 @@ public static bool IsValidAddress(string fullAddress, out double latitude, out d
             return BO.CallStatus.Closed;
         }
 
-        if (call.MaxCompletionTime.HasValue && now > call.MaxCompletionTime.AddHours(1))
+        if (call.MaxCompletionTime.HasValue && now > call.MaxCompletionTime.Value.AddHours(1))
         {
             return BO.CallStatus.OpenAtRisk;
         }
 
         return BO.CallStatus.Open;
+    }
+
+
+    private static readonly HttpClient clientInstance = new HttpClient();// A reusable HttpClient instance for making HTTP requests
+    public static (double? Latitude, double? Longitude) RetrieveLocationData(string? locationQuery)// Get the latitude and longitude of a location using a geocoding service
+    {
+        if (string.IsNullOrWhiteSpace(locationQuery))
+            return (null, null); try
+        {
+            var apiKey = "67682f9834e26342582965lfv4f746b";
+            var url = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(locationQuery)}&api_key={apiKey}";
+            var result = clientInstance.GetAsync(url).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            if (!result.IsSuccessStatusCode) throw new HttpRequestException();
+            var parsedResponse = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, object>>>(content);
+            if (parsedResponse != null && parsedResponse.Count > 0)
+            {
+                var firstEntry = parsedResponse[0];
+                var longitude = firstEntry.ContainsKey("lon") ? double.Parse(firstEntry["lon"].ToString()) : (double?)null;
+                var latitude = firstEntry.ContainsKey("lat") ? double.Parse(firstEntry["lat"].ToString()) : (double?)null;
+                return (latitude, longitude);
+            }
+        }
+        catch (HttpRequestException) { return (null, null); }
+        catch (Exception) { return (null, null); }
+        return (null, null);
     }
 }

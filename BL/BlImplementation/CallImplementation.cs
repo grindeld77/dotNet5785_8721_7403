@@ -59,8 +59,8 @@ internal class CallImplementation : ICall
             throw new BO.BlInvalidCallIdException("Invalid call ID.", nameof(callId));
 
         // Retrieve the call and volunteer from the data layer
-        var call = _dal.Call.Read(callId);
-        if (call == null)
+        DO.Call doCall = (DO.Call)_dal.Call.Read(callId);
+        if (doCall == null)
             throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
 
         var volunteer = _dal.Volunteer.Read(volunteerId);
@@ -68,10 +68,10 @@ internal class CallImplementation : ICall
             throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
 
         // Check if the call is valid for assignment
-        if (call.Status != DO.CallStatus.Open)
+        if (doCall.Status != DO.CallStatus.Open)
             throw new BO.BlInvalidOperationException("The call is not open for assignment or already assigned.");
 
-        if (call.MaxCompletionTime <= ClockManager.Now)
+        if (doCall.MaxCompletionTime <= ClockManager.Now)
             throw new BO.BlInvalidOperationException("The call has expired.");
 
         // Create a new assignment entity
@@ -198,12 +198,12 @@ internal class CallImplementation : ICall
             throw new ArgumentException("Invalid call ID.", nameof(callId));
 
         // Retrieve the call from the data layer
-        var call = _dal.Call.Read(callId);
-        if (call == null)
+        DO.Call doCall = (DO.Call)_dal.Call.Read(callId);
+        if (doCall == null)
             throw new InvalidOperationException($"Call with ID {callId} does not exist.");
 
         // Check that the call is open and unassigned
-        if (call.Status != DO.CallStatus.Open)
+        if (doCall.Status != DO.CallStatus.Open)
             throw new InvalidOperationException("The call is not open for deletion.");
 
         // Check if the call was ever assigned to a volunteer
@@ -262,7 +262,7 @@ internal class CallImplementation : ICall
         try
         {
             // Retrieve the call from the data layer
-            var doCall = _dal.Call.Read(callId);
+            DO.Call doCall = (DO.Call)_dal.Call.Read(callId);
             if (doCall == null)
                 throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
 

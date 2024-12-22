@@ -49,7 +49,7 @@ public class BlInvalidTimeException : BlException//Invalid time
 [Serializable]
 public class BlInvalidIdentityNumberException : BlException//Invalid identity number
 {
-    public BlInvalidIdentityNumberException(string message) : base(message) { }
+    public BlInvalidIdentityNumberException(string message, string v) : base(message) { }
 }
 [Serializable]
 public class BlInvalidCallIdException : BlException//Invalid call ID
