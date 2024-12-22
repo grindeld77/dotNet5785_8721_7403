@@ -168,7 +168,7 @@ namespace BlTest
                         break;
                     case volunteerMenu.Update:
                         {
-                            // Request for the ID (Taz) of the volunteer to be updated
+                            // Request for the ID  of the volunteer to be updated
                             Console.WriteLine("Enter the ID of the volunteer to update:");
                             int id = ConvertStringToNumber(); // Volunteer ID
 
@@ -594,15 +594,34 @@ namespace BlTest
                             Initialization.Do(); //stage 4
                             break;
                         case Menu.DisplayAll:
-                            Console.WriteLine("All data in the database:\n volunteer:\n");
-                            foreach (var volunteer in s_bl.Volunteer.GetVolunteers(null, null))
+                            Console.WriteLine("All data in the database:\n");
+                            Console.WriteLine("Volunteer List:\n");
+                            var volunteers = s_bl.Volunteer.GetVolunteers(null, null);
+
+                            if (volunteers != null && volunteers.Any())
                             {
-                                Console.WriteLine(volunteer);
+                                foreach (var volunteer in volunteers)
+                                {
+                                    Console.WriteLine(volunteer?.ToString() ?? "Volunteer data is null");
+                                }
                             }
-                            Console.WriteLine("call:\n");
-                            foreach (var call in s_bl.Call.GetCalls(null, null, null))
+                            else
                             {
-                                Console.WriteLine(call);
+                                Console.WriteLine("No volunteers found.");
+                            }
+                            Console.WriteLine("call List:\n");
+                            var calls = s_bl.Call.GetCalls(null,null, null);
+
+                            if (calls != null && calls.Any())
+                            {
+                                foreach (var call in calls)
+                                {
+                                    Console.WriteLine(call?.ToString() ?? "Call data is null");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No volunteers found.");
                             }
                             break;
                         case Menu.Reset:

@@ -46,6 +46,7 @@ internal class CallImplementation : ICall
         return toReturn; // return call that matches the filter
     }
 
+
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML

@@ -329,7 +329,12 @@ internal class CallImplementation : ICall
             {
                 Id = call.Id,
                 OpenTime = call.OpenedAt,
-                Status = (BO.CallStatus)call.Status
+                Status = (BO.CallStatus)call.Status,
+                RemainingTime = call.MaxCompletionTime - ClockManager.Now,
+                TotalHandlingTime = call.MaxCompletionTime.HasValue ? call.MaxCompletionTime.Value - call.OpenedAt : TimeSpan.Zero,
+                CallType = call.Type.ToString(),
+                LastVolunteer = _dal.Volunteer.Read(volunteer => volunteer.Id == _dal.Assignment.Read(assignment => assignment.CallId == call.Id).VolunteerId).FullName,
+                TotalAssignments = _dal.Assignment.ReadAll().Count(assignment => assignment.CallId == call.Id),
             });
         }
         catch (Exception ex)

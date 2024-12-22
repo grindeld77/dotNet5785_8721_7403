@@ -148,8 +148,7 @@ using System.Security.AccessControl;
 
     IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter)
     {
-
-        IEnumerable<BO.VolunteerInList> volunteerInLists;
+        IEnumerable<BO.VolunteerInList> volunteerInLists = Enumerable.Empty<BO.VolunteerInList>();
         IEnumerable<DO.Volunteer> doVolunteers;
 
         if (isActive.HasValue)
@@ -160,39 +159,40 @@ using System.Security.AccessControl;
         {
             doVolunteers = _dal.Volunteer.ReadAll();
         }
-        volunteerInLists = doVolunteers is null ? null : doVolunteers.Select(v => VolunteerManager.converterFromDoToBoVolunteerInList(v));
 
-        switch (VolunteerParameter.Value)
+        if (doVolunteers != null)
         {
-            case BO.VolunteerFieldVolunteerInList.FullName:
-                // סדר לפי שם המתנדב
-                volunteerInLists = volunteerInLists.OrderBy(v => v.FullName);
-                break;
-            case BO.VolunteerFieldVolunteerInList.TotalCompletedCalls:
-                // סדר לפי סך השיחות שהושלמו בהצלחה (שימוש במשתנה קיים)
-                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCompletedCalls);
-                break;
-            case BO.VolunteerFieldVolunteerInList.TotalCancelledCalls:
-                // סדר לפי סך השיחות שבוטלו
-                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCancelledCalls);
-                break;
-            case BO.VolunteerFieldVolunteerInList.TotalExpiredCalls:
-                // סדר לפי סך השיחות שפג תוקפן
-                volunteerInLists = volunteerInLists.OrderBy(v => v.TotalExpiredCalls);
-                break;
-            case BO.VolunteerFieldVolunteerInList.CurrentCallId:
-                // מיון לפי מזהה השיחה הנוכחית 
-                volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallId);
-                break;
-            case BO.VolunteerFieldVolunteerInList.CurrentCallType:
-                // מיון לפי סוג השיחה הנוכחית 
-                volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
-                break;
-            default:
-                // סדר לפי קוד המתנדב
-                volunteerInLists = volunteerInLists.OrderBy(v => v.Id);
-                break;
+            volunteerInLists = doVolunteers.Select(v => VolunteerManager.converterFromDoToBoVolunteerInList(v));
         }
-        return volunteerInLists;
+
+        if (volunteerInLists != null && VolunteerParameter.HasValue)
+        {
+            switch (VolunteerParameter.Value)
+            {
+                case BO.VolunteerFieldVolunteerInList.FullName:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.FullName);
+                    break;
+                case BO.VolunteerFieldVolunteerInList.TotalCompletedCalls:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCompletedCalls);
+                    break;
+                case BO.VolunteerFieldVolunteerInList.TotalCancelledCalls:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.TotalCancelledCalls);
+                    break;
+                case BO.VolunteerFieldVolunteerInList.TotalExpiredCalls:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.TotalExpiredCalls);
+                    break;
+                case BO.VolunteerFieldVolunteerInList.CurrentCallId:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallId);
+                    break;
+                case BO.VolunteerFieldVolunteerInList.CurrentCallType:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
+                    break;
+                default:
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.Id);
+                    break;
+            }
+        }
+
+        return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
 }

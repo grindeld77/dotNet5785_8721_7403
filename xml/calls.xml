@@ -7,8 +7,9 @@
     <Address>Weizmann St 2, Rehovot</Address>
     <Latitude>31.8938</Latitude>
     <Longitude>34.8113</Longitude>
-    <OpenedAt>2018-12-07T19:36:37</OpenedAt>
-    <MaxCompletionTime>2018-12-07T20:40:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T22:50:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:15:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>1</Id>
@@ -17,8 +18,9 @@
     <Address>Eli Cohen St 18, Beersheba</Address>
     <Latitude>31.2417</Latitude>
     <Longitude>34.7976</Longitude>
-    <OpenedAt>2019-12-07T19:18:37</OpenedAt>
-    <MaxCompletionTime>2019-12-07T20:05:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:24:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:03:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>2</Id>
@@ -27,8 +29,9 @@
     <Address>Allenby St 35, Tel Aviv</Address>
     <Latitude>32.0673</Latitude>
     <Longitude>34.7702</Longitude>
-    <OpenedAt>2023-12-07T19:24:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:13:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T22:49:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:24:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>3</Id>
@@ -37,8 +40,9 @@
     <Address>Hashalom St 12, Herzliya</Address>
     <Latitude>32.1676</Latitude>
     <Longitude>34.8346</Longitude>
-    <OpenedAt>2022-12-07T19:54:37</OpenedAt>
-    <MaxCompletionTime>2022-12-07T20:17:37</MaxCompletionTime>
+    <OpenedAt>2018-12-22T23:44:45</OpenedAt>
+    <MaxCompletionTime>2018-12-22T23:59:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>4</Id>
@@ -47,8 +51,9 @@
     <Address>Emek Refaim St 34, Jerusalem</Address>
     <Latitude>31.7614</Latitude>
     <Longitude>35.2219</Longitude>
-    <OpenedAt>2023-12-07T19:42:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:36:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T22:50:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:00:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>5</Id>
@@ -57,8 +62,9 @@
     <Address>Balfour St 45, Bat Yam</Address>
     <Latitude>32.0212</Latitude>
     <Longitude>34.7515</Longitude>
-    <OpenedAt>2016-12-07T18:59:37</OpenedAt>
-    <MaxCompletionTime>2016-12-07T20:34:37</MaxCompletionTime>
+    <OpenedAt>2021-12-22T23:42:45</OpenedAt>
+    <MaxCompletionTime>2021-12-23T00:01:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>6</Id>
@@ -67,8 +73,9 @@
     <Address>HaGalil St 90, Tiberias</Address>
     <Latitude>32.7889</Latitude>
     <Longitude>35.5373</Longitude>
-    <OpenedAt>2016-12-07T19:32:37</OpenedAt>
-    <MaxCompletionTime>2016-12-07T20:06:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T23:44:45</OpenedAt>
+    <MaxCompletionTime>2023-12-23T00:32:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>7</Id>
@@ -77,8 +84,9 @@
     <Address>Sokolov St 50, Ramat Gan</Address>
     <Latitude>32.0836</Latitude>
     <Longitude>34.8248</Longitude>
-    <OpenedAt>2022-12-07T19:44:37</OpenedAt>
-    <MaxCompletionTime>2022-12-07T20:19:37</MaxCompletionTime>
+    <OpenedAt>2022-12-22T22:58:45</OpenedAt>
+    <MaxCompletionTime>2022-12-23T00:20:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>8</Id>
@@ -87,8 +95,9 @@
     <Address>Hagalim Blvd 25, Caesarea</Address>
     <Latitude>32.5115</Latitude>
     <Longitude>34.9039</Longitude>
-    <OpenedAt>2017-12-07T19:23:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:19:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:28:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:05:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>9</Id>
@@ -97,8 +106,9 @@
     <Address>Palmach St 10, Nahariya</Address>
     <Latitude>33.0081</Latitude>
     <Longitude>35.0952</Longitude>
-    <OpenedAt>2023-12-07T19:05:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:19:37</MaxCompletionTime>
+    <OpenedAt>2021-12-22T23:03:45</OpenedAt>
+    <MaxCompletionTime>2021-12-23T00:11:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>10</Id>
@@ -107,8 +117,9 @@
     <Address>Ben Yehuda St 28, Tel Aviv</Address>
     <Latitude>32.0795</Latitude>
     <Longitude>34.7689</Longitude>
-    <OpenedAt>2021-12-07T19:03:37</OpenedAt>
-    <MaxCompletionTime>2021-12-07T20:16:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:17:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:35:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>11</Id>
@@ -117,8 +128,9 @@
     <Address>Ayalon St 6, Modi'in</Address>
     <Latitude>31.9015</Latitude>
     <Longitude>35.0051</Longitude>
-    <OpenedAt>2023-12-07T19:47:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:36:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:45:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:13:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>12</Id>
@@ -127,8 +139,9 @@
     <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
     <Latitude>31.6648</Latitude>
     <Longitude>34.5784</Longitude>
-    <OpenedAt>2017-12-07T19:09:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:42:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:30:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:33:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>13</Id>
@@ -137,8 +150,9 @@
     <Address>Hechalutz St 8, Kiryat Shmona</Address>
     <Latitude>33.2085</Latitude>
     <Longitude>35.5721</Longitude>
-    <OpenedAt>2022-12-07T19:23:37</OpenedAt>
-    <MaxCompletionTime>2022-12-07T20:25:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T23:31:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:33:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>14</Id>
@@ -147,8 +161,9 @@
     <Address>Haifa St 120, Karmiel</Address>
     <Latitude>32.9187</Latitude>
     <Longitude>35.2938</Longitude>
-    <OpenedAt>2018-12-07T19:25:37</OpenedAt>
-    <MaxCompletionTime>2018-12-07T20:34:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:30:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:34:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>15</Id>
@@ -157,8 +172,9 @@
     <Address>Shenkin St 4, Tel Aviv</Address>
     <Latitude>32.0683</Latitude>
     <Longitude>34.7735</Longitude>
-    <OpenedAt>2019-12-07T19:47:37</OpenedAt>
-    <MaxCompletionTime>2019-12-07T20:23:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T22:58:45</OpenedAt>
+    <MaxCompletionTime>2020-12-22T23:58:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>16</Id>
@@ -167,8 +183,9 @@
     <Address>Ben Ami St 14, Acre</Address>
     <Latitude>32.9249</Latitude>
     <Longitude>35.0723</Longitude>
-    <OpenedAt>2022-12-07T19:04:37</OpenedAt>
-    <MaxCompletionTime>2022-12-07T20:14:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T23:25:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:04:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>17</Id>
@@ -177,8 +194,9 @@
     <Address>Herzog St 22, Holon</Address>
     <Latitude>32.0135</Latitude>
     <Longitude>34.7713</Longitude>
-    <OpenedAt>2023-12-07T19:45:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:43:37</MaxCompletionTime>
+    <OpenedAt>2018-12-22T23:22:45</OpenedAt>
+    <MaxCompletionTime>2018-12-23T00:31:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>18</Id>
@@ -187,8 +205,9 @@
     <Address>Almog St 7, Eilat</Address>
     <Latitude>29.5581</Latitude>
     <Longitude>34.9529</Longitude>
-    <OpenedAt>2021-12-07T19:22:37</OpenedAt>
-    <MaxCompletionTime>2021-12-07T20:40:37</MaxCompletionTime>
+    <OpenedAt>2022-12-22T23:25:45</OpenedAt>
+    <MaxCompletionTime>2022-12-23T00:01:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>19</Id>
@@ -197,8 +216,9 @@
     <Address>Kibbutz Galuyot St 32, Haifa</Address>
     <Latitude>32.8197</Latitude>
     <Longitude>34.9983</Longitude>
-    <OpenedAt>2021-12-07T19:02:37</OpenedAt>
-    <MaxCompletionTime>2021-12-07T20:32:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T23:33:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:22:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>20</Id>
@@ -207,8 +227,9 @@
     <Address>Hertzl St 15, Rishon LeZion</Address>
     <Latitude>31.9645</Latitude>
     <Longitude>34.8006</Longitude>
-    <OpenedAt>2020-12-07T19:23:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:21:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:39:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:23:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>21</Id>
@@ -217,8 +238,9 @@
     <Address>Mishol Hagefen 9, Givatayim</Address>
     <Latitude>32.0705</Latitude>
     <Longitude>34.8071</Longitude>
-    <OpenedAt>2020-12-07T19:27:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:34:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T22:53:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:10:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>22</Id>
@@ -227,8 +249,9 @@
     <Address>Mevo HaShaked 12, Kfar Saba</Address>
     <Latitude>32.1748</Latitude>
     <Longitude>34.9031</Longitude>
-    <OpenedAt>2021-12-07T19:40:37</OpenedAt>
-    <MaxCompletionTime>2021-12-07T20:12:37</MaxCompletionTime>
+    <OpenedAt>2016-12-22T23:31:45</OpenedAt>
+    <MaxCompletionTime>2016-12-23T00:13:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>23</Id>
@@ -237,8 +260,9 @@
     <Address>Neve Zohar 1, Dead Sea</Address>
     <Latitude>31.1357</Latitude>
     <Longitude>35.3671</Longitude>
-    <OpenedAt>2020-12-07T19:36:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:15:37</MaxCompletionTime>
+    <OpenedAt>2016-12-22T23:28:45</OpenedAt>
+    <MaxCompletionTime>2016-12-23T00:10:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>24</Id>
@@ -247,8 +271,9 @@
     <Address>Yitzhak Rabin Blvd 50, Petah Tikva</Address>
     <Latitude>32.0973</Latitude>
     <Longitude>34.8774</Longitude>
-    <OpenedAt>2019-12-07T19:20:37</OpenedAt>
-    <MaxCompletionTime>2019-12-07T20:21:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:12:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:04:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>25</Id>
@@ -257,8 +282,9 @@
     <Address>Hanasi St 100, Zichron Yaakov</Address>
     <Latitude>32.5734</Latitude>
     <Longitude>35.0067</Longitude>
-    <OpenedAt>2015-12-07T19:04:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:32:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T23:19:45</OpenedAt>
+    <MaxCompletionTime>2023-12-23T00:19:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>26</Id>
@@ -267,8 +293,9 @@
     <Address>Meir Dizengoff St 88, Tel Aviv</Address>
     <Latitude>32.0753</Latitude>
     <Longitude>34.7737</Longitude>
-    <OpenedAt>2015-12-07T19:40:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:16:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T23:35:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:25:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>27</Id>
@@ -277,8 +304,9 @@
     <Address>Eilat St 10, Hadera</Address>
     <Latitude>32.4396</Latitude>
     <Longitude>34.9203</Longitude>
-    <OpenedAt>2023-12-07T19:45:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:21:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:35:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:01:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>28</Id>
@@ -287,8 +315,9 @@
     <Address>Gordon St 3, Rishon LeZion</Address>
     <Latitude>31.9743</Latitude>
     <Longitude>34.7979</Longitude>
-    <OpenedAt>2018-12-07T19:01:37</OpenedAt>
-    <MaxCompletionTime>2018-12-07T20:07:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:24:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:22:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>29</Id>
@@ -297,8 +326,9 @@
     <Address>King David St 20, Jerusalem</Address>
     <Latitude>31.7767</Latitude>
     <Longitude>35.2273</Longitude>
-    <OpenedAt>2015-12-07T19:19:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:43:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T23:41:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:08:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>30</Id>
@@ -307,8 +337,9 @@
     <Address>Tchernichovsky St 4, Netanya</Address>
     <Latitude>32.3274</Latitude>
     <Longitude>34.8498</Longitude>
-    <OpenedAt>2020-12-07T19:38:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:31:37</MaxCompletionTime>
+    <OpenedAt>2017-12-22T23:24:45</OpenedAt>
+    <MaxCompletionTime>2017-12-23T00:05:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>31</Id>
@@ -317,8 +348,9 @@
     <Address>Arlozorov St 56, Tel Aviv</Address>
     <Latitude>32.0847</Latitude>
     <Longitude>34.7829</Longitude>
-    <OpenedAt>2017-12-07T19:24:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:24:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T23:04:45</OpenedAt>
+    <MaxCompletionTime>2023-12-23T00:13:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>32</Id>
@@ -327,8 +359,9 @@
     <Address>HaNassi St 14, Nesher</Address>
     <Latitude>32.7441</Latitude>
     <Longitude>35.0453</Longitude>
-    <OpenedAt>2017-12-07T19:20:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:37:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T23:29:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:19:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>33</Id>
@@ -337,8 +370,9 @@
     <Address>Hatsedef St 12, Herzliya</Address>
     <Latitude>32.1591</Latitude>
     <Longitude>34.8417</Longitude>
-    <OpenedAt>2021-12-07T19:37:37</OpenedAt>
-    <MaxCompletionTime>2021-12-07T20:43:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T22:48:45</OpenedAt>
+    <MaxCompletionTime>2023-12-23T00:31:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>34</Id>
@@ -347,8 +381,9 @@
     <Address>Shlomo Hamelech St 5, Ramat HaSharon</Address>
     <Latitude>32.1457</Latitude>
     <Longitude>34.8357</Longitude>
-    <OpenedAt>2019-12-07T19:06:37</OpenedAt>
-    <MaxCompletionTime>2019-12-07T20:16:37</MaxCompletionTime>
+    <OpenedAt>2019-12-22T23:16:45</OpenedAt>
+    <MaxCompletionTime>2019-12-23T00:18:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>35</Id>
@@ -357,8 +392,9 @@
     <Address>Rabin Blvd 23, Be'er Yaakov</Address>
     <Latitude>31.9353</Latitude>
     <Longitude>34.8345</Longitude>
-    <OpenedAt>2015-12-07T19:12:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:07:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T23:05:45</OpenedAt>
+    <MaxCompletionTime>2023-12-22T23:57:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>36</Id>
@@ -367,8 +403,9 @@
     <Address>Ha'Aliya St 70, Lod</Address>
     <Latitude>31.9517</Latitude>
     <Longitude>34.8943</Longitude>
-    <OpenedAt>2015-12-07T19:40:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:38:37</MaxCompletionTime>
+    <OpenedAt>2018-12-22T23:44:45</OpenedAt>
+    <MaxCompletionTime>2018-12-23T00:22:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>37</Id>
@@ -377,8 +414,9 @@
     <Address>Menachem Begin Blvd 35, Ashdod</Address>
     <Latitude>31.8017</Latitude>
     <Longitude>34.6672</Longitude>
-    <OpenedAt>2020-12-07T19:07:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:32:37</MaxCompletionTime>
+    <OpenedAt>2018-12-22T23:34:45</OpenedAt>
+    <MaxCompletionTime>2018-12-23T00:03:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>38</Id>
@@ -387,8 +425,9 @@
     <Address>The German Colony, Haifa</Address>
     <Latitude>32.8184</Latitude>
     <Longitude>35.0047</Longitude>
-    <OpenedAt>2020-12-07T19:22:37</OpenedAt>
-    <MaxCompletionTime>2020-12-07T20:17:37</MaxCompletionTime>
+    <OpenedAt>2022-12-22T22:53:45</OpenedAt>
+    <MaxCompletionTime>2022-12-23T00:35:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>39</Id>
@@ -397,8 +436,9 @@
     <Address>HaYarkon St 105, Tel Aviv</Address>
     <Latitude>32.0892</Latitude>
     <Longitude>34.7712</Longitude>
-    <OpenedAt>2023-12-07T19:46:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:05:37</MaxCompletionTime>
+    <OpenedAt>2015-12-22T23:24:45</OpenedAt>
+    <MaxCompletionTime>2015-12-23T00:06:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>40</Id>
@@ -407,8 +447,9 @@
     <Address>Hapoel St 13, Afula</Address>
     <Latitude>32.6123</Latitude>
     <Longitude>35.2902</Longitude>
-    <OpenedAt>2023-12-07T18:58:37</OpenedAt>
-    <MaxCompletionTime>2023-12-07T20:14:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T23:00:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:22:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>41</Id>
@@ -417,8 +458,9 @@
     <Address>Lev Ha'ir 9, Sderot</Address>
     <Latitude>31.5183</Latitude>
     <Longitude>34.6004</Longitude>
-    <OpenedAt>2017-12-07T19:42:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:20:37</MaxCompletionTime>
+    <OpenedAt>2016-12-22T23:39:45</OpenedAt>
+    <MaxCompletionTime>2016-12-23T00:00:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>42</Id>
@@ -427,8 +469,9 @@
     <Address>Neve Tzedek, Tel Aviv</Address>
     <Latitude>32.0615</Latitude>
     <Longitude>34.7711</Longitude>
-    <OpenedAt>2017-12-07T19:37:37</OpenedAt>
-    <MaxCompletionTime>2017-12-07T20:18:37</MaxCompletionTime>
+    <OpenedAt>2016-12-22T22:51:45</OpenedAt>
+    <MaxCompletionTime>2016-12-23T00:34:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>43</Id>
@@ -437,8 +480,9 @@
     <Address>Hertzl St 98, Hadera</Address>
     <Latitude>32.4383</Latitude>
     <Longitude>34.9202</Longitude>
-    <OpenedAt>2022-12-07T19:29:37</OpenedAt>
-    <MaxCompletionTime>2022-12-07T20:13:37</MaxCompletionTime>
+    <OpenedAt>2023-12-22T23:00:45</OpenedAt>
+    <MaxCompletionTime>2023-12-23T00:26:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>44</Id>
@@ -447,8 +491,9 @@
     <Address>Yigal Alon Blvd 76, Tel Aviv</Address>
     <Latitude>32.0622</Latitude>
     <Longitude>34.7889</Longitude>
-    <OpenedAt>2015-12-07T19:13:37</OpenedAt>
-    <MaxCompletionTime>2015-12-07T20:18:37</MaxCompletionTime>
+    <OpenedAt>2020-12-22T23:06:45</OpenedAt>
+    <MaxCompletionTime>2020-12-23T00:07:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>45</Id>
@@ -457,8 +502,9 @@
     <Address>Einstein St 40, Haifa</Address>
     <Latitude>32.7755</Latitude>
     <Longitude>35.0223</Longitude>
-    <OpenedAt>2024-12-01T18:11:37</OpenedAt>
-    <MaxCompletionTime>2024-12-01T20:06:37</MaxCompletionTime>
+    <OpenedAt>2024-12-21T22:37:45</OpenedAt>
+    <MaxCompletionTime>2024-12-22T00:03:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>46</Id>
@@ -467,8 +513,9 @@
     <Address>Mivtza Sinai St 5, Eilat</Address>
     <Latitude>29.5534</Latitude>
     <Longitude>34.9523</Longitude>
-    <OpenedAt>2024-12-02T18:47:37</OpenedAt>
-    <MaxCompletionTime>2024-12-02T20:11:37</MaxCompletionTime>
+    <OpenedAt>2024-12-15T21:58:45</OpenedAt>
+    <MaxCompletionTime>2024-12-15T23:58:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>47</Id>
@@ -477,8 +524,9 @@
     <Address>HaZait St 30, Kiryat Malakhi</Address>
     <Latitude>31.7313</Latitude>
     <Longitude>34.7467</Longitude>
-    <OpenedAt>2024-12-03T18:23:37</OpenedAt>
-    <MaxCompletionTime>2024-12-03T20:09:37</MaxCompletionTime>
+    <OpenedAt>2024-12-14T22:28:45</OpenedAt>
+    <MaxCompletionTime>2024-12-15T00:04:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>48</Id>
@@ -487,8 +535,9 @@
     <Address>Begin Blvd 12, Ashkelon</Address>
     <Latitude>31.6852</Latitude>
     <Longitude>34.5789</Longitude>
-    <OpenedAt>2024-12-04T18:34:37</OpenedAt>
-    <MaxCompletionTime>2024-12-04T20:09:37</MaxCompletionTime>
+    <OpenedAt>2024-12-20T22:11:45</OpenedAt>
+    <MaxCompletionTime>2024-12-21T00:01:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>49</Id>
@@ -497,8 +546,9 @@
     <Address>HaRav Kook St 25, Safed</Address>
     <Latitude>32.9653</Latitude>
     <Longitude>35.4972</Longitude>
-    <OpenedAt>2024-11-28T18:50:37</OpenedAt>
-    <MaxCompletionTime>2024-11-28T20:07:37</MaxCompletionTime>
+    <OpenedAt>2024-12-16T22:41:45</OpenedAt>
+    <MaxCompletionTime>2024-12-16T23:57:45</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>50</Id>
@@ -506,8 +556,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-01T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-13T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>51</Id>
@@ -515,8 +566,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-05T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-18T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>52</Id>
@@ -524,8 +576,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-11-29T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-15T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>53</Id>
@@ -533,8 +586,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-01T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-13T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>54</Id>
@@ -542,8 +596,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-06T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-21T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>55</Id>
@@ -551,8 +606,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-11-28T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-17T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>56</Id>
@@ -560,8 +616,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-03T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-16T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>57</Id>
@@ -569,8 +626,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-06T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-14T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>58</Id>
@@ -578,8 +636,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-05T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-14T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>59</Id>
@@ -587,8 +646,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-01T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-16T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>60</Id>
@@ -596,8 +656,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-01T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-15T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>61</Id>
@@ -605,8 +666,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-03T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-13T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>62</Id>
@@ -614,8 +676,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-01T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-17T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>63</Id>
@@ -623,8 +686,9 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-04T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-19T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
   <Call>
     <Id>64</Id>
@@ -632,7 +696,8 @@
     <Address />
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
-    <OpenedAt>2024-12-06T19:55:37</OpenedAt>
+    <OpenedAt>2024-12-19T23:46:45</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
   </Call>
 </ArrayOfCall>

@@ -226,7 +226,7 @@ $@"        Select an option to proceed
                         {
                             Console.WriteLine("Enter the Call ID");
                             int callI = ConvertStringToNumber();
-                            Call c = s_dal.Call.Read(callI);
+                            Call c = (Call)s_dal.Call.Read(callI);
                             if (c != null)
                             {
                                 Console.WriteLine(c);
@@ -250,7 +250,7 @@ $@"        Select an option to proceed
                         {
                             Console.WriteLine("Enter the Call ID");
                             int callI = ConvertStringToNumber();
-                            Call call = s_dal.Call.Read(callI);
+                            Call call = (Call)s_dal.Call.Read(callI);
                             if (call != null)
                             {
                                 Console.WriteLine("Enter the call description");

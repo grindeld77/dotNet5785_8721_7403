@@ -5,5 +5,5 @@ namespace DalApi;
 
 public interface ICall : ICrud<Call>
 {
-    IEnumerable<Call> Read(object call);
+
 }

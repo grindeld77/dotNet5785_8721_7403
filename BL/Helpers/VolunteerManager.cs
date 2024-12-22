@@ -45,22 +45,25 @@ internal static class VolunteerManager
 
     public static BO.VolunteerInList converterFromDoToBoVolunteerInList(DO.Volunteer v)
     {
-        IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
-        IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignment.Any(a => a.CallId == c.Id));
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignments.Any(a => a.CallId == c.Id));
+
         BO.VolunteerInList volunteerInList = new BO.VolunteerInList
         {
             Id = v.Id,
-            FullName = v.FullName,
+            FullName = v.FullName ?? "Unknown", // טיפול במקרה של null בשם המלא
             IsActive = v.IsActive,
-            TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
-            TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
-            TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
-            CurrentCallId = assignment.FirstOrDefault(a => a.CompletionTime == null)?.CallId,
-            CurrentCallType = (BO.CallType)(BO.CallStatus)calls.FirstOrDefault(a => a.Status == DO.CallStatus.InProgress)?.Type,
+            TotalCompletedCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
+            TotalCancelledCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+            TotalExpiredCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
+            CurrentCallId = assignments.FirstOrDefault(a => a.CompletionTime == null)?.CallId ?? -1, // ערך ברירת מחדל ל-CallId
+            CurrentCallType = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Type != null
+                ? (BO.CallType)(BO.CallStatus)calls.First(c => c.Status == DO.CallStatus.InProgress).Type
+                : BO.CallType.None, // ערך ברירת מחדל ל-CallType
         };
+
         return volunteerInList;
     }
-
     public static BO.Volunteer converterFromDoToBoVolunteer(DO.Volunteer v)
     {
         IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);

@@ -10,4 +10,14 @@ public class VolunteerInList
     public int TotalExpiredCalls { get; set; }//סה"כ שיחות שלא טופלו בזמן
     public int? CurrentCallId { get; init; }//קוד הקריאה הנוכחית של המתנדב אם קיימת
     public CallType CurrentCallType { get; set; }//סוג הקריאה הנוכחית של המתנדב
+
+    public override string ToString()
+    {
+        return $"ID: {Id}, Full Name: {FullName ?? "N/A"}, " +
+               $"Total Completed Calls: {TotalCompletedCalls.ToString() ?? "N/A"}, " +
+               $"Total Cancelled Calls: {TotalCancelledCalls.ToString() ?? "N/A"}, " +
+               $"Total Expired Calls: {TotalExpiredCalls.ToString() ?? "N/A"}, " +
+               $"Current Call ID: {CurrentCallId?.ToString() ?? "N/A"}, " +
+               $"Current Call Type: {CurrentCallType.ToString() ?? "N/A"}";
+    }
 }
