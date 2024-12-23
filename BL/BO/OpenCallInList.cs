@@ -9,4 +9,14 @@ public class OpenCallInList
     public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
     public DateTime? MaxEndTime { get; set; }//זמן סיום מירבי
     public double DistanceFromVolunteer { get; set; }//מרחק מהמתנדב
+    public override string ToString()
+    {
+        return $"ID: {Id}, " +
+               $"Type: {Type}, " +
+               $"Description: {Description ?? "N/A"}, " +
+               $"Full Address: {FullAddress}, " +
+               $"Open Time: {OpenTime}, " +
+               $"Max End Time: {MaxEndTime?.ToString() ?? "N/A"}, " +
+               $"Distance From Volunteer: {DistanceFromVolunteer}";
+    }
 }

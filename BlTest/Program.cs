@@ -14,7 +14,7 @@ namespace BlTest
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        
+
         enum Menu
         {
             Exit = 0,
@@ -95,9 +95,10 @@ namespace BlTest
         /*ToDo:*/
         public static void VolunteerMenu()
         {
-            int choice;
+            int choice=0;
             do
             {
+                try { 
                 Console.WriteLine(
         @"    Select an option to proceed:
 0. Exit
@@ -264,13 +265,19 @@ namespace BlTest
                     default:
                         throw new ArgumentException("Invalid selection, please try again.");
                 }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (choice != 0);
         }
         public static void CallMenu()
         {
-            int choice;
+            int choice=0;
             do
             {
+                try {
                 Console.WriteLine(
                     @"    Select an option to proceed:
 0. Exit
@@ -448,7 +455,7 @@ namespace BlTest
                                 Console.WriteLine("Invalid input for Volunteer ID. Please enter a valid integer.");
                                 break;
                             }
-                            s_bl.Call.AssignVolunteerToCall(volunteerId,callId);
+                            s_bl.Call.AssignVolunteerToCall(volunteerId, callId);
                         }
                         break;
                     case callMenu.DisplayAmountOfCallsByStatus:
@@ -491,15 +498,22 @@ namespace BlTest
                         Console.WriteLine("Invalid selection, please try again.");
                         break;
                 }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
             } while (choice != 0);
         }
         public static void AdminMenu()
         {
-            int choice;
+            int choice=0;
             do
             {
-                Console.WriteLine(
+                try
+                {
+                    Console.WriteLine(
                     @"    Select an option to proceed:
 0. Exit
 1. Advance Clock by 1 minute
@@ -514,58 +528,65 @@ namespace BlTest
 10. Reset Database
 11. Initialize Database
 ");
-                choice = ConvertStringToNumber();
-                switch ((adminMenu)choice)
-                {
-                    case adminMenu.Exit:
-                        mainMenu(); // Return to main menu
-                        break;
-                    case adminMenu.AdvanceMinute:
-                        s_bl.Admin.ForwardClock(TimeUnit.Minute); // Advance Clock by 1 minute logic here
-                        break;
-                    case adminMenu.AdvanceHour:
-                        s_bl.Admin.ForwardClock(TimeUnit.Hour); // Advance Clock by 1 hour logic here
-                        break;
-                    case adminMenu.AdvanceDay:
-                        s_bl.Admin.ForwardClock(TimeUnit.Day); // Advance Clock by 1 day logic here
-                        break;
-                    case adminMenu.AdvanceMonth:
-                        s_bl.Admin.ForwardClock(TimeUnit.Month); // Advance Clock by 1 month logic here
-                        break;
-                    case adminMenu.AdvanceYear:
-                        s_bl.Admin.ForwardClock(TimeUnit.Month); // Advance Clock by 1 month logic here
-                        break;
-                    case adminMenu.DisplayClock:
-                        DateTime time = s_bl.Admin.GetClock(); // Display Clock logic here
-                        Console.WriteLine(time);
-                        break;
-                    case adminMenu.SetClock:
-                        break;
-                    case adminMenu.DisplayRiskTime:
-                        TimeSpan range = s_bl.Admin.GetMaxRange(); // Display Risk Time logic here
-                        Console.WriteLine(range);
-                        break;
-                    case adminMenu.SetRiskTime:
-                        int hours = 0, minutes = 0, seconds = 0;
-                        Console.WriteLine("enter hours, minutes and second: ");
-                        hours = ConvertStringToNumber();
-                        minutes = ConvertStringToNumber();
-                        seconds = ConvertStringToNumber();
-                        s_bl.Admin.SetMaxRange(new TimeSpan(hours, minutes, seconds)); // Set Risk Time logic here
-                        break;
-                    case adminMenu.Reset:
-                        s_bl.Admin.ResetDB(); // Reset logic here
-                        break;
 
-                    case adminMenu.Initialize:
-                        s_bl.Admin.InitializeDB(); // Initialize logic here
-                        break;
-                    default:
-                        Console.WriteLine("Invalid selection, please try again.");
-                        break;
+                    choice = ConvertStringToNumber();
+                    switch ((adminMenu)choice)
+                    {
+                        case adminMenu.Exit:
+                            mainMenu(); // Return to main menu
+                            break;
+                        case adminMenu.AdvanceMinute:
+                            s_bl.Admin.ForwardClock(TimeUnit.Minute); // Advance Clock by 1 minute logic here
+                            break;
+                        case adminMenu.AdvanceHour:
+                            s_bl.Admin.ForwardClock(TimeUnit.Hour); // Advance Clock by 1 hour logic here
+                            break;
+                        case adminMenu.AdvanceDay:
+                            s_bl.Admin.ForwardClock(TimeUnit.Day); // Advance Clock by 1 day logic here
+                            break;
+                        case adminMenu.AdvanceMonth:
+                            s_bl.Admin.ForwardClock(TimeUnit.Month); // Advance Clock by 1 month logic here
+                            break;
+                        case adminMenu.AdvanceYear:
+                            s_bl.Admin.ForwardClock(TimeUnit.Month); // Advance Clock by 1 month logic here
+                            break;
+                        case adminMenu.DisplayClock:
+                            DateTime time = s_bl.Admin.GetClock(); // Display Clock logic here
+                            Console.WriteLine(time);
+                            break;
+                        case adminMenu.SetClock:
+                            break;
+                        case adminMenu.DisplayRiskTime:
+                            TimeSpan range = s_bl.Admin.GetMaxRange(); // Display Risk Time logic here
+                            Console.WriteLine(range);
+                            break;
+                        case adminMenu.SetRiskTime:
+                            int hours = 0, minutes = 0, seconds = 0;
+                            Console.WriteLine("enter hours, minutes and second: ");
+                            hours = ConvertStringToNumber();
+                            minutes = ConvertStringToNumber();
+                            seconds = ConvertStringToNumber();
+                            s_bl.Admin.SetMaxRange(new TimeSpan(hours, minutes, seconds)); // Set Risk Time logic here
+                            break;
+                        case adminMenu.Reset:
+                            s_bl.Admin.ResetDB(); // Reset logic here
+                            break;
+
+                        case adminMenu.Initialize:
+                            s_bl.Admin.InitializeDB(); // Initialize logic here
+                            break;
+                        default:
+                            Console.WriteLine("Invalid selection, please try again.");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             } while (choice != 0);
         }
+    
 
         static void Main(string[] args)
         {

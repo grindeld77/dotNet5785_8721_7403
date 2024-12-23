@@ -12,4 +12,16 @@ public class Call
     public DateTime MaxEndTime { get; set; }//זמן סיום מירבי
     public CallStatus Status { get; set; }// ENUM עבור סטטוס הקריאה
     public List<BO.CallAssignInList>? Assignments { get; set; } =null;//רשימת הקצאות
+
+    public override string ToString()
+    {
+        return $"Call: {Id}\n" +
+               $"Type: {Type}\n" +
+               $"Description: {Description}\n" +
+               $"Address: {FullAddress}\n" +
+               $"Open Time: {OpenTime}\n" +
+               $"Max End Time: {MaxEndTime}\n" +
+               $"Status: {Status}\n" +
+               $"Assignments: {(Assignments != null ? string.Join("\n", Assignments) : "None")}";
+    }
 }
