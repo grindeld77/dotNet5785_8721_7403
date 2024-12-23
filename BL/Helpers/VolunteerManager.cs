@@ -64,82 +64,154 @@ internal static class VolunteerManager
 
         return volunteerInList;
     }
+    //public static BO.Volunteer converterFromDoToBoVolunteer(DO.Volunteer v)
+    //{
+    //    IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
+    //    DO.Assignment assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionTime == null);
+    //    DO.Call callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
+    //    //IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignment.Any(a => a.CallId == c.Id));
+    //    BO.Volunteer volunteer = new BO.Volunteer
+    //    {
+    //        Id = v.Id,
+    //        FullName = v.FullName ?? "Unknown",
+    //        PhoneNumber = v.MobilePhone,
+    //        Email = v.Email,
+    //        PasswordHash = v.Password,
+    //        FullAddress = v.FullName,
+    //        Latitude = v.Latitude,
+    //        Longitude = v.Longitude,
+    //        Role = (BO.Role)v.Role,
+    //        IsActive = v.IsActive,
+    //        MaxDistanceForCall = v.MaxCallDistance,
+    //        DistanceType = (BO.DistanceType)v.DistancePreference,
+    //        TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
+    //        TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+    //        TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
+    //        CurrentCall = new BO.CallInProgress
+    //        {
+    //            Id = assignmentOpen.Id,
+    //            CallId = assignmentOpen.CallId,
+    //            Call = (BO.CallType)callOpen.Type,
+    //            Description = callOpen.Description,
+    //            FullAddress = callOpen.Address,
+    //            OpenTime = callOpen.OpenedAt,
+    //            MaxCompletionTime = callOpen.MaxCompletionTime,
+    //            StartTime = assignmentOpen.EntryTime,
+    //            DistanceFromVolunteer = CalculateDistance((double)v.Latitude, (double)v.Longitude, callOpen.Latitude, callOpen.Longitude),
+    //            Status = (BO.CallStatus)callOpen.Status
+    //        }
+    //    };
+    //    return volunteer;
+    //}
     public static BO.Volunteer converterFromDoToBoVolunteer(DO.Volunteer v)
     {
-        IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
-        DO.Assignment assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionTime == null);
-        DO.Call callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
-        //IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignment.Any(a => a.CallId == c.Id));
-        BO.Volunteer volunteer = new BO.Volunteer
+        if (v == null)
         {
-            Id = v.Id,
-            FullName = v.FullName,
-            PhoneNumber = v.MobilePhone,
-            Email = v.Email,
-            PasswordHash = v.Password,
-            FullAddress = v.FullName,
-            Latitude = v.Latitude,
-            Longitude = v.Longitude,
-            Role = (BO.Role)v.Role,
-            IsActive = v.IsActive,
-            MaxDistanceForCall = v.MaxCallDistance,
-            DistanceType = (BO.DistanceType)v.DistancePreference,
-            TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
-            TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
-            TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
-            CurrentCall = new BO.CallInProgress
-            {
-                Id = assignmentOpen.Id,
-                CallId = assignmentOpen.CallId,
-                Call = (BO.CallType)callOpen.Type,
-                Description = callOpen.Description,
-                FullAddress = callOpen.Address,
-                OpenTime = callOpen.OpenedAt,
-                MaxCompletionTime = callOpen.MaxCompletionTime,
-                StartTime = assignmentOpen.EntryTime,
-                DistanceFromVolunteer = CalculateDistance((double)v.Latitude, (double)v.Longitude, callOpen.Latitude, callOpen.Longitude),
-                Status = (BO.CallStatus)callOpen.Status
-            }
-        };
-        return volunteer;
-    }
+            return null;
+        }
 
-    public static bool IsAuthorizedToUpdate(int volunteerId, int callId)
-    {
-        DO.Volunteer volunteer = _dal.Volunteer.Read(volunteerId);
-        if (volunteerId == callId)
-            return true;
-        else if (volunteer.Role == DO.Role.Admin)
-            return true;
-        return false;
+        IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
+        DO.Assignment assignmentOpen = null;
+        if (assignment.Any())
+        {
+            assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionTime == null);
+        }
+
+        DO.Call callOpen = null;
+        if (assignmentOpen != null)
+        {
+            callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
+        }
+        if (callOpen != null) {
+            BO.Volunteer volunteer = new BO.Volunteer
+            {
+                Id = v.Id,
+                FullName = v.FullName,
+                PhoneNumber = v.MobilePhone,
+                Email = v.Email,
+                PasswordHash = v.Password,
+                FullAddress = v.FullName,
+                Latitude = v.Latitude,
+                Longitude = v.Longitude,
+                Role = (BO.Role)v.Role,
+                IsActive = v.IsActive,
+                MaxDistanceForCall = v.MaxCallDistance,
+                DistanceType = (BO.DistanceType)v.DistancePreference,
+                TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
+                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+                TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
+                CurrentCall = new BO.CallInProgress
+                {
+                    Id = assignmentOpen.Id,
+                    CallId = assignmentOpen.CallId,
+                    Call = (BO.CallType)callOpen.Type,
+                    Description = callOpen.Description,
+                    FullAddress = callOpen.Address,
+                    OpenTime = callOpen.OpenedAt,
+                    MaxCompletionTime = callOpen.MaxCompletionTime,
+                    StartTime = assignmentOpen.EntryTime,
+                    DistanceFromVolunteer = CalculateDistance((double)v.Latitude, (double)v.Longitude, callOpen.Latitude, callOpen.Longitude),
+                    Status = (BO.CallStatus)callOpen.Status
+                }
+            };
+                    return volunteer;
+        }
+        else
+        {
+            BO.Volunteer volunteer = new BO.Volunteer
+            {
+                Id = v.Id,
+                FullName = v.FullName,
+                PhoneNumber = v.MobilePhone,
+                Email = v.Email,
+                PasswordHash = v.Password,
+                FullAddress = v.FullName,
+                Latitude = v.Latitude,
+                Longitude = v.Longitude,
+                Role = (BO.Role)v.Role,
+                IsActive = v.IsActive,
+                MaxDistanceForCall = v.MaxCallDistance,
+                DistanceType = (BO.DistanceType)v.DistancePreference,
+                TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
+                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+                TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
+                CurrentCall = null
+            };
+            return volunteer;
+        };
     }
 
     /// <summary>
     /// בדיקת תקינות תעודת זהות
     /// </summary>
-
     public static bool IsValidID(int ID)
     {
-        string IDStr = ID.ToString("D9");                    //המרה למחרוזת
+        string idStr = ID.ToString("D9");
         int sum = 0;
-        for (int i = 0; i < IDStr.Length; i++)
+        int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 }; // משקלים לספרות
+
+        for (int i = 0; i < idStr.Length - 1; i++)
         {
-            int digit = int.Parse(IDStr[i].ToString());
-            if (i % 2 == 1) digit *= 2;
-            sum += (digit > 9) ? digit - 9 : digit;
+            int digit = int.Parse(idStr[i].ToString());
+            int product = digit * weights[i];
+            sum += product > 9 ? product - 9 : product;
         }
-        return sum % 10 == 0;
+
+        return (10 - (sum % 10)) % 10 == int.Parse(idStr[8].ToString());
     }
+
     /// <summary>
     /// בדיקת תקינות כתובת מייל
     /// </summary>
-
     public static bool IsValidEmail(string email)
     {
-        var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-        return emailRegex.IsMatch(email);
+        // רשימת סיומות אימייל נפוצות 
+        string[] validDomains = { "com", "net", "org", "edu", "gov", "mil", "co.il", "fr", "de", "uk" };
 
+        var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.(" + string.Join("|", validDomains) + ")$");
+        return emailRegex.IsMatch(email);
     }
+
     /// <summary>
     /// בדיקה שמספר הטלפון תקין
     /// </summary>
@@ -150,6 +222,23 @@ internal static class VolunteerManager
 
         Regex regex = new Regex(pattern);
         return regex.IsMatch(phoneNumber);
+    }
+
+    public static bool CorrectAddress(BO.Volunteer volunteer)
+    {
+        if (volunteer.Latitude == null || volunteer.Longitude == null)
+        {
+            throw new Exception("Latitude or Longitude is missing in the Volunteer object.");
+        }
+        return true;
+    }
+    public static bool IsValidName(string name)
+    {
+        // ביטוי רגולרי לבדיקה האם המחרוזת מכילה רק אותיות עבריות או אנגליות, ומאפשר רווחים מרובים
+        string pattern = @"^[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+(\s+[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+)*$";
+
+        Regex regex = new Regex(pattern);
+        return regex.IsMatch(name);
     }
 
     /// <summary>
@@ -167,14 +256,7 @@ internal static class VolunteerManager
         };
     }
 
-    public static bool CorrectAddress(BO.Volunteer volunteer)
-    {
-        if (volunteer.Latitude == null || volunteer.Longitude == null)
-        {
-            throw new Exception("Latitude or Longitude is missing in the Volunteer object.");
-        }
-        return true;
-    }
+
 
 
     public static string ConvertAsciiToString(int[] numbers)
@@ -258,8 +340,6 @@ internal static class VolunteerManager
     /// <param name="volunteer"></param>
     public static void ValidateVolunteerData(BO.Volunteer volunteer)
     {
-
-        //להסויף בדיקת כתובת
         if (!IsValidEmail(volunteer.Email))
         {
             throw new BO.InvalidEmailException("Invalid email address");
@@ -268,7 +348,6 @@ internal static class VolunteerManager
         {
             throw new BO.BlPoneNomber("Invalid phone number");
         }
-
         if (!IsValidID(volunteer.Id))
         {
             throw new BO.InvalidEmailException("Invalid ID number");
@@ -277,10 +356,11 @@ internal static class VolunteerManager
         {
             throw new BO.BlInvalidAddressException("Invalid Address");
         }
-
+        if (!IsValidName(volunteer.FullName))
+        {
+            throw new BO.InvalidNameException("Invalid Name");
+        }
     }
-
-
 }
 
 

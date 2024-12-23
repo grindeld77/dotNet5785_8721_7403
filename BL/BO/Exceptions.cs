@@ -96,6 +96,11 @@ public class InvalidEmailException : BlException
 {
     public InvalidEmailException(string message) : base(message) { }
 }
+[Serializable]
+public class InvalidNameException : BlException
+{
+    public InvalidNameException(string message) : base(message) { }
+}
 
 ///BlException: שגיאה כללית
 //BloesNotExistException: ישות לא נמצאה

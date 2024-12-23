@@ -14,7 +14,7 @@ namespace BlTest
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-
+        
         enum Menu
         {
             Exit = 0,

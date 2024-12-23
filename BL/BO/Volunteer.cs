@@ -1,4 +1,6 @@
-﻿namespace BO
+﻿using DO;
+
+namespace BO
 {
 
     public class Volunteer
@@ -19,6 +21,22 @@
         public int TotalCancelledCalls { get; set; }//סה"כ שיחות שבוטלו
         public int TotalExpiredCalls { get; set; }//סה"כ שיחות שלא טופלו בזמן
         public BO.CallInProgress? CurrentCall { get; set; }//קריאה נוכחית
+
+        public override string ToString()
+        {
+            return 
+                   $"Volunteer: {FullName} (ID: {Id})\n" +
+                   $"Phone: {PhoneNumber}\n" +
+                   $"Email: {Email}\n" +
+                   $"Address: {FullAddress}\n" +
+                   $"Role: {(Role == Role.Admin ? "Admin" : "Volunteer")}\n" +
+                   $"Active: {(IsActive ? "Yes" : "No")}\n" +
+                   $"Max distance for call: {MaxDistanceForCall} {DistanceType}\n" +
+                   $"Total Completed Calls: {TotalCompletedCalls}\n" +
+                   $"Total Cancelled Calls: {TotalCancelledCalls}\n" +
+                   $"Total Expired Calls: {TotalExpiredCalls}\n" +
+                   $"Current call: {(CurrentCall != null ? CurrentCall.ToString() : "None")}";
+        }
     }
 
     public class CallInProgress
@@ -33,5 +51,22 @@
         public DateTime StartTime { get; set; }// זמן התחלת הטיפול
         public double DistanceFromVolunteer { get; set; } // מרחק מהמתנדב
         public CallStatus Status { get; set; } // ENUM: InProgress, AtRisk
+
+
+        public override string ToString()
+        {
+            return $"Call in Progress: {Id}\n" +
+                   $"Call: {CallId}\n" +
+                   $"Type: {Call}\n" +
+                   $"Description: {Description}\n" +
+                   $"Address: {FullAddress}\n" +
+                   $"Open Time: {OpenTime}\n" +
+                   $"Max Completion Time: {(MaxCompletionTime.HasValue ? MaxCompletionTime.Value : "N/A")}\n" +
+                   $"Start Time: {StartTime}\n" +
+                   $"Distance from Volunteer: {DistanceFromVolunteer} km\n" +
+                   $"Status: {Status}";
+        }
     }
+
+
 }
