@@ -20,10 +20,7 @@ namespace BlTest
             Exit = 0,
             Volunteer,
             Call,
-            Admin,
-            Initialize,
-            DisplayAll,
-            Reset
+            Admin
         };
         enum volunteerMenu
         {
@@ -83,15 +80,12 @@ namespace BlTest
         {
             Console.WriteLine(
     @"    Select an option to proceed
-0. Exit main menu.
-1. Display submenu for Volunteer entity. 
-2. Display submenu for Call entity.
-3. Display submenu for Admin entity. 
-4. Initialize data. 
-5. Display all data in the database.
-6. Reset database and configuration data.");
+0) Exit main menu.
+1) Display submenu for Volunteer entity. 
+2) Display submenu for Call entity.
+3) Display submenu for Admin entity. ");
             return ConvertStringToNumber();
-        }
+       }
         /*ToDo:*/
         public static void VolunteerMenu()
         {
@@ -396,8 +390,8 @@ namespace BlTest
                         break;
                     case callMenu.DeleteAll:
                         {
-                            // Retrieve all calls from the data layer
-                            IEnumerable<CallInList> calls = s_bl.Call.GetCalls(BO.CallStatus.Open, null, null);
+                                // Retrieve all calls from the data layer
+                                IEnumerable<CallInList> calls = s_bl.Call.GetCalls(CallInListFields.AssignmentId, null, null);
 
                             // If no calls to delete, throw an exception
                             if (!calls.Any())
@@ -408,13 +402,13 @@ namespace BlTest
                             // Delete each call
                             foreach (var item in calls)
                             {
-                                s_bl.Call.DeleteCall((int)item.Id);
+                                s_bl.Call.DeleteCall((int)item.AssignmentId);
                             }
                         }
                         break;
                     case callMenu.DisplayOpenCalls:
                         {
-                            foreach (var item in s_bl.Call.GetCalls(BO.CallStatus.Open, null, null)) // Display Open Calls logic here
+                            foreach (var item in s_bl.Call.GetCalls(null, null, null)) // Display Open Calls logic here
                             {
                                 Console.WriteLine(item);
                             }
@@ -422,7 +416,7 @@ namespace BlTest
                         break;
                     case callMenu.DisplayClosedCalls:
                         {
-                            foreach (var item in s_bl.Call.GetCalls(BO.CallStatus.Closed, null, null)) // Display Closed Calls logic here
+                            foreach (var item in s_bl.Call.GetCalls(null, null, null)) // Display Closed Calls logic here
                             {
                                 Console.WriteLine(item);
                             }
@@ -610,43 +604,6 @@ namespace BlTest
                             break;
                         case Menu.Admin:
                             AdminMenu();
-                            break;
-                        case Menu.Initialize:
-                            Initialization.Do(); //stage 4
-                            break;
-                        case Menu.DisplayAll:
-                            Console.WriteLine("All data in the database:\n");
-                            Console.WriteLine("Volunteer List:\n");
-                            var volunteers = s_bl.Volunteer.GetVolunteers(null, null);
-
-                            if (volunteers != null && volunteers.Any())
-                            {
-                                foreach (var volunteer in volunteers)
-                                {
-                                    Console.WriteLine(volunteer?.ToString() ?? "Volunteer data is null");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("No volunteers found.");
-                            }
-                            Console.WriteLine("call List:\n");
-                            var calls = s_bl.Call.GetCalls(null,null, null);
-
-                            if (calls != null && calls.Any())
-                            {
-                                foreach (var call in calls)
-                                {
-                                    Console.WriteLine(call?.ToString() ?? "Call data is null");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("No volunteers found.");
-                            }
-                            break;
-                        case Menu.Reset:
-                            s_bl.Admin.ResetDB();
                             break;
                         default:
                             Console.WriteLine("Invalid selection, please try again.");

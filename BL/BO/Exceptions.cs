@@ -102,6 +102,24 @@ public class InvalidNameException : BlException
     public InvalidNameException(string message) : base(message) { }
 }
 
+[Serializable]
+public class InvalidPhoneNumberException : BlException
+{
+    public InvalidPhoneNumberException(string message) : base(message) { }
+}
+
+[Serializable]
+public class InvalidPasswordException : BlException
+{
+    public InvalidPasswordException(string message) : base(message) { }
+}
+
+[Serializable]
+public class BLAlreadyAssignedException : BlException
+{
+    public BLAlreadyAssignedException(string message) : base(message) { }
+}
+
 ///BlException: שגיאה כללית
 //BloesNotExistException: ישות לא נמצאה
 //BlAlreadyExistsException: ישות כבר קיימת

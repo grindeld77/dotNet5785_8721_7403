@@ -69,3 +69,38 @@ public enum VolunteerFieldVolunteerInList
     CurrentCallId,
     CurrentCallType,
 }
+
+public enum CallInListFields
+{
+    AssignmentId,
+    CallId,
+    CallType,
+    OpenTime,
+    RemainingTime,
+    LastVolunteer,
+    TotalHandlingTime,
+    Status,
+    TotalAssignments,
+}
+
+public enum ClosedCallInListFields
+{
+    Id,
+    Type,
+    CallType,
+    OpenTime,
+    AssignedTime,
+    ClosedTime,
+    FullAddress,
+    Status,
+}
+public enum OpenCallInListFields
+{
+    Id,
+    Type,
+    Description,
+    FullAddress,
+    OpenTime,
+    MaxEndTime,
+    DistanceFromVolunteer,
+}

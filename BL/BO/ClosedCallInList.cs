@@ -9,6 +9,7 @@ public class ClosedCallInList
     public DateTime AssignedTime { get; set; }//זמן התחלת הטיפול בקריאה
     public DateTime? ClosedTime { get; set; } // זמן סיום הטיפול בקריאה
     public CompletionStatus? Status { get; set; } // ENUM עבור סוגי סיום
+
     public override string ToString()
     {
         return $"ID: {Id}, " +
