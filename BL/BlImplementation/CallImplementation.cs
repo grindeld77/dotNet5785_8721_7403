@@ -11,20 +11,20 @@ internal class CallImplementation : ICall
 
     void ICall.AddCall(BO.Call boCall)
     {
-        try 
-        { 
-        // Validate the call object
-        if (boCall == null)
-            throw new BO.BloesNotExistException(nameof(boCall));
+        try
+        {
+            // Validate the call object
+            if (boCall == null)
+                throw new BO.BloesNotExistException(nameof(boCall));
 
-        if (string.IsNullOrWhiteSpace(boCall.FullAddress))
-            throw new BO.BlInvalidAddressException("Address is required.");
+            if (string.IsNullOrWhiteSpace(boCall.FullAddress))
+                throw new BO.BlInvalidAddressException("Address is required.");
 
-        if (boCall.OpenTime >= boCall.MaxEndTime)
-            throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
+            if (boCall.OpenTime >= boCall.MaxEndTime)
+                throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
-        if (!Tools.IsValidAddress(boCall.FullAddress, out double latitude, out double longitude))
-            throw new BO.BlInvalidAddressException("Address is not valid.");
+            if (!Tools.IsValidAddress(boCall.FullAddress, out double latitude, out double longitude))
+                throw new BO.BlInvalidAddressException("Address is not valid.");
 
             (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
             var call = new DO.Call
@@ -82,7 +82,7 @@ internal class CallImplementation : ICall
     }
 
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
-    { 
+    {
         // Validate input parameters
         if (requesterId < 200000000 || requesterId > 400000000)
             throw new BO.BlInvalidAssignmentIdException("Invalid requester ID.", nameof(requesterId));
@@ -267,23 +267,8 @@ internal class CallImplementation : ICall
     {
         try
         {
-            IEnumerable<BO.CallInList> callsList = new List<BO.CallInList>();
-            IEnumerable<BO.Call> calls = _dal.Call.ReadAll().Select(call => CallManager.ConvertDoCallToBoCall(call));
-            foreach (var call in callsList) 
-            {
-                callsList.Append(new BO.CallInList
-                {
-                    AssignmentId = call.AssignmentId,
-                    CallId = call.CallId,
-                    CallType = call.CallType,
-                    OpenTime = call.OpenTime,
-                    RemainingTime = call.RemainingTime,
-                    LastVolunteer = call.LastVolunteer,
-                    TotalHandlingTime = call.TotalHandlingTime,
-                    Status = call.Status,
-                    TotalAssignments = call.TotalAssignments
-                });
-            }
+            var calls = CallManager.GetAllCalls();
+            IEnumerable<BO.CallInList> callsList = calls;
 
             if (filterField != null && filterValue != null) // Filter the calls based on the specified field
             {
@@ -383,18 +368,7 @@ internal class CallImplementation : ICall
     {
         try
         {
-            var calls = _dal.Assignment.ReadAll()
-                .Where(assignment => assignment.VolunteerId == volunteerId && assignment.CompletionStatus == DO.CompletionStatus.Handled)
-                .Select(assignment => new BO.ClosedCallInList
-                {
-                    Id = assignment.CallId,
-                    Type = (BO.CallType)_dal.Call.Read(assignment.CallId).Type,
-                    FullAddress = _dal.Call.Read(assignment.CallId).Address,
-                    OpenTime = assignment.EntryTime,
-                    AssignedTime = (DateTime)assignment.CompletionTime,
-                    ClosedTime = assignment.CompletionTime,
-                    Status = (BO.CompletionStatus)assignment.CompletionStatus
-                });
+            var calls = CallManager.GetAllClosedCalls(volunteerId);
             IEnumerable<BO.ClosedCallInList> closedCallsInList = calls;
 
             if (filterField != null)
@@ -442,19 +416,7 @@ internal class CallImplementation : ICall
     {
         try
         {
-            var calls = _dal.Call.ReadAll()
-                .Where(call => call.Status == DO.CallStatus.Open)
-                .Select(call => new BO.OpenCallInList
-                {
-                    Id = call.Id,
-                    Type = (BO.CallType)call.Type,
-                    FullAddress = call.Address,
-                    OpenTime = call.OpenedAt,
-                    MaxEndTime = call.MaxCompletionTime,
-                    DistanceFromVolunteer = (double)Tools.GeocodingHelper.CalculateDistance((double)call.Latitude, (double)call.Longitude, (double)_dal.Volunteer.Read(volunteerId).Latitude, (double)_dal.Volunteer.Read(volunteerId).Longitude),
-                    Description = call.Description,
-                });
-            IEnumerable<BO.OpenCallInList> openCallsInList = calls;
+            IEnumerable<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
 
             if (filterType != null)
             {

@@ -317,7 +317,7 @@ namespace BlTest
                         break;
                     case callMenu.DisplayAll:
                         {
-                            foreach (var item in s_bl.Call.GetCalls(null, null, null)) // Display All Calls logic here
+                            foreach (var item in s_bl.Call.GetCalls(null, null, CallInListFields.OpenTime)) // Display All Calls logic here
                             {
                                 Console.WriteLine(item);
                             }
