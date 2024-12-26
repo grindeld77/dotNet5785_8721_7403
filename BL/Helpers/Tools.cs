@@ -148,7 +148,10 @@ internal static class Tools
         public static (double Latitude, double Longitude) GetCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
-                throw new ArgumentException("Address cannot be null or empty.");
+            {
+                return (0, 0);
+
+            }
 
             using (HttpClient client = new HttpClient())
             {
@@ -309,5 +312,37 @@ internal static class Tools
         return (null, null);
     }
 
-
+    public static BO.CallType ConvertCallType(DO.CallType doCallType)
+    {
+        switch (doCallType)
+        {
+            case DO.CallType.NotAllocated:
+                return BO.CallType.NotAllocated;
+            case DO.CallType.MedicalEmergency:
+                return BO.CallType.MedicalEmergency;
+            case DO.CallType.PatientTransport:
+                return BO.CallType.PatientTransport;
+            case DO.CallType.TrafficAccident:
+                return BO.CallType.TrafficAccident;
+            case DO.CallType.FirstAid:
+                return BO.CallType.FirstAid;
+            case DO.CallType.Rescue:
+                return BO.CallType.Rescue;
+            case DO.CallType.FireEmergency:
+                return BO.CallType.FireEmergency;
+            case DO.CallType.CardiacEmergency:
+                return BO.CallType.CardiacEmergency;
+            case DO.CallType.Poisoning:
+                return BO.CallType.Poisoning;
+            case DO.CallType.AllergicReaction:
+                return BO.CallType.AllergicReaction;
+            case DO.CallType.MassCausalities:
+                return BO.CallType.MassCausalities;
+            case DO.CallType.TerrorAttack:
+                return BO.CallType.TerrorAttack;
+            case DO.CallType.None:
+            default:
+                return BO.CallType.None;
+        }
+    }
 }

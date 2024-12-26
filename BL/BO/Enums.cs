@@ -62,7 +62,6 @@ public enum VolunteerFieldVolunteerInList
 {
     Id,
     FullName,
-    IsActive,
     TotalCompletedCalls,
     TotalCancelledCalls,
     TotalExpiredCalls,

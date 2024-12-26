@@ -5,7 +5,7 @@ namespace BlApi;
 public interface IVolunteer
 {
     // login to system method that return the volunteer's role 
-    string Login(string username, string password);
+    string Login(int id, string password);
 
     // get collection of active volunteers in the system, if isActive is null return all volunteers,
     // if callType is null return sorted by id
@@ -21,5 +21,5 @@ public interface IVolunteer
     void DeleteVolunteer(int id);
 
     // add new volunteer to the system, if already exist throw exception
-    void AddVolunteer(Volunteer volunteer);
+    void AddVolunteer(BO.Volunteer volunteer);
 }

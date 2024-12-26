@@ -4,26 +4,36 @@ using Helpers;
 using System.Security.AccessControl;
 
 
- internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    string IVolunteer.Login(string username, string password)
-    {
 
-        DO.Volunteer volunteer = _dal.Volunteer.ReadAll()
-            .FirstOrDefault(v => v.FullName == username && v.Password == password)
-            ?? throw new BO.BlInvalidIdentificationException("The username or ID entered is invalid.");
+    string IVolunteer.Login(int id, string password)
+    {
+        DO.Volunteer? volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
+
+        if (volunteer == null)
+        {
+            throw new BO.BlInvalidIdentificationException("The email address is not found.");
+        }
+
+        if (volunteer.Password != password)
+        {
+            throw new BO.BlInvalidIdentificationException("The password is incorrect.");
+        }
+
         return volunteer.Role.ToString();
     }
+
 
 
     IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter)
     {
         IEnumerable<DO.Volunteer> doVolunteers;
-        IEnumerable<BO.VolunteerInList> volunteerInLists = null;// = Enumerable.Empty<BO.VolunteerInList>();
- 
+        IEnumerable<BO.VolunteerInList> volunteerInLists = null;
+
         if (isActive.HasValue)
         {
             doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
@@ -65,19 +75,15 @@ using System.Security.AccessControl;
                     break;
             }
         }
-
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
+
 
     BO.Volunteer IVolunteer.GetVolunteerDetails(int id)
     {
         try
         {
             var doVolunteer = _dal.Volunteer.Read(id);
-            //if (doVolunteer == null)
-            //{
-            //    throw new BO.BloesNotExistException($"Volunteer with ID {id} does not exist.");
-            //}
 
             BO.Volunteer v = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer);
             return v;
@@ -95,7 +101,7 @@ using System.Security.AccessControl;
         {
             var doVolunteere = _dal.Volunteer.Read(requesterId);//בדיקה אם המתנדב קיים
             // בדיקת זהות המבקש
-            if(requesterId!=volunteer.Id && doVolunteere.Role != DO.Role.Admin)
+            if (requesterId != volunteer.Id && doVolunteere.Role != DO.Role.Admin)
                 throw new BO.BlInvalidRequestException("You are not authorized to update this volunteer.");
             VolunteerManager.ValidateVolunteerData(volunteer);//בדיקת תקינות נתונים
             DO.Role Pos = doVolunteere.Role;
@@ -106,17 +112,19 @@ using System.Security.AccessControl;
             DO.Volunteer doVolunteerNew = new DO.Volunteer
             {
                 Id = volunteer.Id,
-                FullName = volunteer.FullName,
-                MobilePhone = volunteer.PhoneNumber,
-                Email = volunteer.Email,
+                FullName = volunteer.FullName ?? doVolunteere.FullName,
+                MobilePhone = volunteer.PhoneNumber ?? doVolunteere.MobilePhone,
+                Email = volunteer.Email ?? doVolunteere.Email,
                 Role = (DO.Role)volunteer.Role,
-                IsActive = volunteer.IsActive,
-                Password = volunteer.PasswordHash,
-                CurrentAddress = volunteer.FullAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
-                MaxCallDistance = volunteer.MaxDistanceForCall,
-                DistancePreference = (DO.DistanceType)volunteer.DistanceType,
+                IsActive = doVolunteere.IsActive,
+                Password = doVolunteere.Password,
+                CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
+                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? doVolunteere.Latitude
+                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
+                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude== 0 ? doVolunteere.Longitude
+                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                MaxCallDistance = doVolunteere.MaxCallDistance,
+                DistancePreference = doVolunteere.DistancePreference,
             };
             _dal.Volunteer.Update(doVolunteerNew);
         }
@@ -148,8 +156,10 @@ using System.Security.AccessControl;
                 IsActive = volunteer.IsActive,
                 Password = volunteer.PasswordHash,
                 CurrentAddress = volunteer.FullAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? null
+                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
+                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0 ? null
+                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
                 MaxCallDistance = volunteer.MaxDistanceForCall,
                 DistancePreference = (DO.DistanceType)volunteer.DistanceType,
             };
@@ -165,6 +175,8 @@ using System.Security.AccessControl;
             throw new BO.BlException("An error occurred while updating the volunteer.");
         }
 
+        Console.WriteLine("Volunteer added successfully.");
+
     }
     void IVolunteer.DeleteVolunteer(int id)
     {
@@ -175,7 +187,7 @@ using System.Security.AccessControl;
         }
         try
         {
-            _dal.Volunteer.Delete(id);
+            _dal.Volunteer.Delete(id);//
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -186,13 +198,4 @@ using System.Security.AccessControl;
             throw new BO.BlGeneralException("An error occurred while deleting the volunteer.", ex);
         }
     }
-
-
-
-
-
-
-   
-
-   
 }

@@ -25,7 +25,8 @@ public enum CallType
     Poisoning,           // Poisoning
     AllergicReaction,    // Allergic reaction
     MassCausalities,     // Mass casualties
-    TerrorAttack         // Terror attack           
+    TerrorAttack,        // Terror attack
+    None                 // No call type
 }
 public enum CompletionStatus
 {

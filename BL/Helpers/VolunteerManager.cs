@@ -51,12 +51,12 @@ internal static class VolunteerManager
         BO.VolunteerInList volunteerInList = new BO.VolunteerInList
         {
             Id = v.Id,
-            FullName = v.FullName ?? "Unknown", // טיפול במקרה של null בשם המלא
+            FullName = v.FullName, // טיפול במקרה של null בשם המלא
             IsActive = v.IsActive,
             TotalCompletedCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
             TotalCancelledCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
             TotalExpiredCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
-            CurrentCallId = assignments.FirstOrDefault(a => a.CompletionTime == null)?.CallId ?? -1, // ערך ברירת מחדל ל-CallId
+            CurrentCallId = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress) ?.Id ?? null, 
             CurrentCallType = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Type != null
                 ? (BO.CallType)(BO.CallStatus)calls.First(c => c.Status == DO.CallStatus.InProgress).Type
                 : BO.CallType.None, // ערך ברירת מחדל ל-CallType
@@ -64,45 +64,7 @@ internal static class VolunteerManager
 
         return volunteerInList;
     }
-    //public static BO.Volunteer converterFromDoToBoVolunteer(DO.Volunteer v)
-    //{
-    //    IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
-    //    DO.Assignment assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionTime == null);
-    //    DO.Call callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
-    //    //IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignment.Any(a => a.CallId == c.Id));
-    //    BO.Volunteer volunteer = new BO.Volunteer
-    //    {
-    //        Id = v.Id,
-    //        FullName = v.FullName ?? "Unknown",
-    //        PhoneNumber = v.MobilePhone,
-    //        Email = v.Email,
-    //        PasswordHash = v.Password,
-    //        FullAddress = v.FullName,
-    //        Latitude = v.Latitude,
-    //        Longitude = v.Longitude,
-    //        Role = (BO.Role)v.Role,
-    //        IsActive = v.IsActive,
-    //        MaxDistanceForCall = v.MaxCallDistance,
-    //        DistanceType = (BO.DistanceType)v.DistancePreference,
-    //        TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
-    //        TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
-    //        TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
-    //        CurrentCall = new BO.CallInProgress
-    //        {
-    //            Id = assignmentOpen.Id,
-    //            CallId = assignmentOpen.CallId,
-    //            Call = (BO.CallType)callOpen.Type,
-    //            Description = callOpen.Description,
-    //            FullAddress = callOpen.Address,
-    //            OpenTime = callOpen.OpenedAt,
-    //            MaxCompletionTime = callOpen.MaxCompletionTime,
-    //            StartTime = assignmentOpen.EntryTime,
-    //            DistanceFromVolunteer = CalculateDistance((double)v.Latitude, (double)v.Longitude, callOpen.Latitude, callOpen.Longitude),
-    //            Status = (BO.CallStatus)callOpen.Status
-    //        }
-    //    };
-    //    return volunteer;
-    //}
+
     public static BO.Volunteer converterFromDoToBoVolunteer(DO.Volunteer v)
     {
         if (v == null)
@@ -205,6 +167,8 @@ internal static class VolunteerManager
     /// </summary>
     public static bool IsValidEmail(string email)
     {
+        if (email == null)
+            return true;
         // רשימת סיומות אימייל נפוצות 
         string[] validDomains = { "com", "net", "org", "edu", "gov", "mil", "co.il", "fr", "de", "uk" };
 
@@ -218,6 +182,8 @@ internal static class VolunteerManager
 
     public static bool IsValidPhoneNumber(string phoneNumber)
     {
+        if (phoneNumber == null)
+            return true;
         string pattern = @"^(\+972|0)5[0-9]{8}$|^(0[2-9][0-9]{7})$";
 
         Regex regex = new Regex(pattern);
@@ -234,6 +200,8 @@ internal static class VolunteerManager
     }
     public static bool IsValidName(string name)
     {
+        if (name == null)
+            return true;
         // ביטוי רגולרי לבדיקה האם המחרוזת מכילה רק אותיות עבריות או אנגליות, ומאפשר רווחים מרובים
         string pattern = @"^[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+(\s+[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+)*$";
 
@@ -352,10 +320,10 @@ internal static class VolunteerManager
         {
             throw new BO.InvalidEmailException("Invalid ID number");
         }
-        if (!CorrectAddress(volunteer))
-        {
-            throw new BO.BlInvalidAddressException("Invalid Address");
-        }
+        //if (!CorrectAddress(volunteer))
+        //{
+        //    throw new BO.BlInvalidAddressException("Invalid Address");
+        //}
         if (!IsValidName(volunteer.FullName))
         {
             throw new BO.InvalidNameException("Invalid Name");
@@ -364,3 +332,107 @@ internal static class VolunteerManager
 }
 
 
+/*
+ using BO;
+using DalApi;
+using DO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Helpers
+{
+    internal static class VolunteerManager
+    {
+        private static IDal s_dal = Factory.Get;
+
+        #region checking functions
+
+        // Check if the ID is valid according to the checksum algorithm
+        public static bool IsValidID(int ID)
+        {
+            string IDStr = ID.ToString("D9");
+            int sum = 0;
+            for (int i = 0; i < IDStr.Length; i++)
+            {
+                int digit = int.Parse(IDStr[i].ToString());
+                if (i % 2 == 1) digit *= 2;
+                sum += (digit > 9) ? digit - 9 : digit;
+            }
+            return sum % 10 == 0;
+        }
+
+        // Check if the email is valid according to a simple regex
+        public static bool IsValidEmail(string email)
+        {
+            var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+<span class="math-inline">"\);
+return emailRegex\.IsMatch\(email\);
+\}
+/// <summary\>
+/// /// Check if the phone number is valid according to a simple regex
+/// </summary\>
+/// <param name\="phoneNumber"\></param\>
+/// <returns\></returns\>
+public static bool IsValidPhoneNumber\(string phoneNumber\)
+\{
+string pattern \= @"^\(\\\+972\|0\)5\[0\-9\]\{8\}</span>|^(0[2-9][0-9]{7})$";
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(phoneNumber);
+        }
+
+        #endregion
+
+        #region Getters
+
+        // Get the number of treated open calls for a volunteer
+        public static int getNumOCTreated(int volID)
+        {
+            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
+            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.Finished);
+        }
+
+        // Get the number of canceled open calls for a volunteer
+        public static int getNumOCCanceled(int volID)
+        {
+            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
+            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.SelfCancellation);
+        }
+
+        // Get the number of expired open calls for a volunteer
+        public static int getNumOCExpired(int volID)
+        {
+            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
+            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.Expired);
+        }
+
+        /// <summary>
+        /// /// Get the call in progress for a volunteer
+        /// </summary>
+        /// <param name="vol"></param>
+        /// <returns></returns>
+        public static BO.CallInProgress? buildCallInProgress(int vol)
+        {
+            int callID = GetNOCInProgress(vol) ?? -1;
+            if (callID == -1) return null;
+            var assignment = s_dal.Assignment.ReadAll().FirstOrDefault(a => a.Volunteerid == vol && a.Callid == callID);
+            if (assignment == null) return null;
+            var volunteer = s_dal.Volunteer.Read(vol);
+            var call = s_dal.Call.Read(callID);
+            if (volunteer == null || call == null) return null;
+            return new BO.CallInProgress
+            {
+                Id = assignment.Id,
+                CallId = call.Id,
+                CallType = (BO.CallType)call.CallType,
+                ReadingDescription = call.ReadingDescription,
+                Address = call.Address,
+                OpeningTime = call.OpeningTime,
+                MaxTime = call.MaxTime,
+                Beginning = assignment.Beginning,
+                Status = (CallStatus)CallManager.GetCallStatus(call, s_dal.Assignment.ReadAll(a => a.Volunteerid == vol)),
+                Distance = Tools.DistanceCalculator
+ */

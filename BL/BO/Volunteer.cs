@@ -5,7 +5,7 @@ namespace BO
 
     public class Volunteer
     {
-        public int Id { get; init; }//קוד מתנדב
+        public int Id { get; set; }//קוד מתנדב
         public string FullName { get; set; }//שם מלא
         public string PhoneNumber { get; set; }//טלפון
         public string Email { get; set; }//כתובת מייל   
