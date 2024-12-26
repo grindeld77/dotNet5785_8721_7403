@@ -88,32 +88,26 @@ public static class Initialization
 };
         for (int i = 0; i < 15; i++)
         {
-            int id;
+            int id = s_rand.Next(20000000, 40000000);
             double distance = s_rand.Next(1, 20);
             do
             {
-                id = s_rand.Next(200000000, 400000000);
+                id--;
+                int[] weights = {2, 1, 2, 1, 2, 1, 2, 1};
+                int sum = 0;
+                int temp = id;
+                for (int j = 0; j < 8; j++)
+                {
+                    int digit = temp % 10;
+                    int product = digit * weights[j];
+                    sum += product > 9 ? product - 9 : product;
+                    temp /= 10;
+                }
+                int remainder = sum % 10;
+                int checksum = (10 - remainder) % 10;
+                id =id*10+ checksum;
             }
             while (s_dal!.Volunteer.Read(id) != null);
-
-            //int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 };
-
-            //// חישוב סכום משוקלל
-            //int sum = 0;
-            //int temp = id;
-            //for (int j = 0; i < 8; j++)
-            //{
-            //    int digit = temp % 10;
-            //    int product = digit * weights[i];
-            //    sum += product > 9 ? product - 9 : product;
-            //    temp /= 10;
-            //}
-
-            //// השלמה לכפולה הקרובה של 10
-            //int remainder = sum % 10;
-            //int checksum = (10 - remainder) % 10;
-            //id = checksum;
-
 
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@gmail.com";
