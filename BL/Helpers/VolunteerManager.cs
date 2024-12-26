@@ -127,7 +127,7 @@ internal static class VolunteerManager
                 PhoneNumber = v.MobilePhone,
                 Email = v.Email,
                 PasswordHash = v.Password,
-                FullAddress = v.FullName,
+                FullAddress = v.CurrentAddress,
                 Latitude = v.Latitude,
                 Longitude = v.Longitude,
                 Role = (BO.Role)v.Role,

@@ -96,6 +96,25 @@ public static class Initialization
             }
             while (s_dal!.Volunteer.Read(id) != null);
 
+            //int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 };
+
+            //// חישוב סכום משוקלל
+            //int sum = 0;
+            //int temp = id;
+            //for (int j = 0; i < 8; j++)
+            //{
+            //    int digit = temp % 10;
+            //    int product = digit * weights[i];
+            //    sum += product > 9 ? product - 9 : product;
+            //    temp /= 10;
+            //}
+
+            //// השלמה לכפולה הקרובה של 10
+            //int remainder = sum % 10;
+            //int checksum = (10 - remainder) % 10;
+            //id = checksum;
+
+
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@gmail.com";
             string password = s_rand.Next(1000000, 999999999).ToString();

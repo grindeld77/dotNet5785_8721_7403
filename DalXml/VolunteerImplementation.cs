@@ -108,8 +108,7 @@ internal class VolunteerImplementation : IVolunteer
         (volunteerRootElem.Elements().FirstOrDefault(vol => (int?)vol.Element("Id") == item.Id) ??
             throw new DO.DalDoesNotExistException($"Volunteer with ID={item.Id} does Not exist")).Remove();
 
-        volunteerRootElem.Add(new XElement("Volunteer", createVolunteerElement(item)));
-
+        volunteerRootElem.Add(createVolunteerElement(item));
         XMLTools.SaveListToXMLElement(volunteerRootElem, Config.s_volunteers_xml);
     }
 }
