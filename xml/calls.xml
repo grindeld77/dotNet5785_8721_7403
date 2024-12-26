@@ -441,17 +441,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>40</Id>
-    <Type>Poisoning</Type>
-    <Description>Severe swelling and difficulty breathing.</Description>
-    <Address>Hapoel St 13, Afula</Address>
-    <Latitude>32.6123</Latitude>
-    <Longitude>35.2902</Longitude>
-    <OpenedAt>2015-12-23T22:54:58</OpenedAt>
-    <MaxCompletionTime>2015-12-24T00:00:58</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>41</Id>
     <Type>AllergicReaction</Type>
     <Description>Casualties reported after a public incident.</Description>

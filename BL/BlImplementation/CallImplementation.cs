@@ -220,25 +220,18 @@ internal class CallImplementation : ICall
     {
         try
         {
-            // Fetch all calls from the data layer
-            IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+            var calls = _dal.Call.ReadAll(); // Fetch all calls from the data layer
+            var groupedCalls = calls.GroupBy(c => (int)c.Status) // Use LINQ to group by status and count occurrences
+                                    .Select(g => new { Status = g.Key, Count = g.Count() })
+                                    .ToList();
 
-            // Use LINQ to group by status and count occurrences
-            var statusCounts = calls
-                .GroupBy(call => (int)call.Status)
-                .Select(group => new { Status = group.Key, Count = group.Count() })
-                .ToDictionary(item => item.Status, item => item.Count);
+            int maxStatus = Enum.GetValues(typeof(DO.CallStatus)).Cast<int>().Max(); // Determine the maximum status index for array sizing
+            int[] result = new int[maxStatus + 1]; // Initialize the result array with zero counts
 
-            // Determine the maximum status index for array sizing
-            int maxStatusIndex = Enum.GetValues(typeof(DO.CallStatus)).Cast<int>().Max();
 
-            // Initialize the result array with zero counts
-            int[] result = new int[maxStatusIndex + 1];
-
-            // Fill the array based on the status counts
-            foreach (var item in statusCounts)
+            foreach (var group in groupedCalls) // Fill the array based on the status counts
             {
-                result[item.Key] = item.Key; // Assign the count to the corresponding status index 
+                result[group.Status] = group.Count;
             }
             return result;
         }

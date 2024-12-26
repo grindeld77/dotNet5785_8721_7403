@@ -340,7 +340,6 @@ internal static class Tools
                 return BO.CallType.MassCausalities;
             case DO.CallType.TerrorAttack:
                 return BO.CallType.TerrorAttack;
-            case DO.CallType.None:
             default:
                 return BO.CallType.None;
         }
