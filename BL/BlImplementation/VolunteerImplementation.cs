@@ -75,6 +75,7 @@ internal class VolunteerImplementation : IVolunteer
                     break;
             }
         }
+        //VolunteerManager.Observers.AddListObserver(() => {return volunteerInLists });
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
 
@@ -86,6 +87,7 @@ internal class VolunteerImplementation : IVolunteer
             var doVolunteer = _dal.Volunteer.Read(id);
 
             BO.Volunteer v = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer);
+            //VolunteerManager.Observers.AddObserver(id, () => { return v; });
             return v;
 
         }
@@ -121,12 +123,14 @@ internal class VolunteerImplementation : IVolunteer
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
                 Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? doVolunteere.Latitude
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude== 0 ? doVolunteere.Longitude
+                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0 ? doVolunteere.Longitude
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
                 MaxCallDistance = doVolunteere.MaxCallDistance,
                 DistancePreference = doVolunteere.DistancePreference,
             };
             _dal.Volunteer.Update(doVolunteerNew);
+            VolunteerManager.Observers.NotifyItemUpdated(doVolunteere.Id);  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5
         }
 
         catch (DO.DalDoesNotExistException)
@@ -165,6 +169,7 @@ internal class VolunteerImplementation : IVolunteer
             };
 
             _dal.Volunteer.Create(doVolunteer);   //נסיון בקשת הוספה
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5                                                    
         }
         catch (DO.DalAlreadyExistsException)
         {
@@ -187,7 +192,8 @@ internal class VolunteerImplementation : IVolunteer
         }
         try
         {
-            _dal.Volunteer.Delete(id);//
+            _dal.Volunteer.Delete(id);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -198,4 +204,15 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlGeneralException("An error occurred while deleting the volunteer.", ex);
         }
     }
+
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
 }

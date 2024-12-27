@@ -17,6 +17,9 @@ namespace Helpers;
 internal static class VolunteerManager
 {
     private static DalApi.IDal _dal = DalApi.Factory.Get;
+
+    internal static ObserverManager Observers = new(); //stage 5 
+
     public static double CalculateDistance(double lat1, double lon1, double lat2, double lon2, double radius = 6371)//פונקציה שמחשבת את המרחק בין שתי נקודות
     {
         // המרה לרדיאנים
@@ -61,6 +64,8 @@ internal static class VolunteerManager
                 ? (BO.CallType)(BO.CallStatus)calls.First(c => c.Status == DO.CallStatus.InProgress).Type
                 : BO.CallType.None, // ערך ברירת מחדל ל-CallType
         };
+
+        Observers.NotifyItemUpdated(v.Id); // stage 5
 
         return volunteerInList;
     }
@@ -116,7 +121,8 @@ internal static class VolunteerManager
                     Status = (BO.CallStatus)callOpen.Status
                 }
             };
-                    return volunteer;
+            Observers.NotifyItemUpdated(v.Id);
+            return volunteer;
         }
         else
         {
@@ -139,6 +145,7 @@ internal static class VolunteerManager
                 TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
                 CurrentCall = null
             };
+            Observers.NotifyItemUpdated(v.Id);
             return volunteer;
         };
     }

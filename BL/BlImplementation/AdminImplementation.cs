@@ -15,26 +15,26 @@ internal class AdminImplementation : IAdmin
         switch (unit) // using switch to know how much to advance the clock 
         {
             case BO.TimeUnit.Minute:
-                newTime = ClockManager.Now.AddMinutes(1);
+                newTime = AdminManager.Now.AddMinutes(1);
                 break;
             case BO.TimeUnit.Hour:
-                newTime = ClockManager.Now.AddHours(1);
+                newTime = AdminManager.Now.AddHours(1);
                 break;
             case BO.TimeUnit.Day:
-                newTime = ClockManager.Now.AddDays(1);
+                newTime = AdminManager.Now.AddDays(1);
                 break;
             case BO.TimeUnit.Month:
-                newTime = ClockManager.Now.AddMonths(1);
+                newTime = AdminManager.Now.AddMonths(1);
                 break;
             case BO.TimeUnit.Year:
-                newTime = ClockManager.Now.AddYears(1);
+                newTime = AdminManager.Now.AddYears(1);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(unit), unit, "Invalid time unit");
         }
 
         // change the time to the one forwarded
-        ClockManager.UpdateClock(newTime);
+        AdminManager.UpdateClock(newTime);
     }
 
     DateTime IAdmin.GetClock()
@@ -44,23 +44,32 @@ internal class AdminImplementation : IAdmin
 
     TimeSpan IAdmin.GetMaxRange()
     {
-        return _dal.Config.RiskRange; //get risk range from the data layer
+        return AdminManager.MaxRange; //get risk range from the data layer
     }
 
     void IAdmin.InitializeDB()
     {
         DalTest.Initialization.Do();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.MaxRange = AdminManager.MaxRange;
     }
 
     void IAdmin.ResetDB()
     {
         _dal.ResetDB();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.MaxRange = AdminManager.MaxRange;
     }
 
     void IAdmin.SetMaxRange(TimeSpan maxRange)
     {
-        _dal.Config.RiskRange = maxRange;   
+        AdminManager.MaxRange = maxRange;
     }
+
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) => AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) => AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) => AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) => AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
 }

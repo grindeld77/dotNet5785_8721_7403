@@ -7,6 +7,8 @@ internal static class CallManager
 {
     private static IDal s_dal = Factory.Get; //stage 4
 
+    internal static ObserverManager Observers = new(); //stage 5 
+
     internal static BO.Call ConvertDoCallToBoCall(DO.Call? call)
     {
         if (call == null)
@@ -53,6 +55,9 @@ internal static class CallManager
             };
         }).ToList();
 
+        // Notify the observers about the updated call list.
+        Observers.NotifyListUpdated(); // Notify that the list of calls was updated.
+
         return callInList;
     }
 
@@ -71,6 +76,9 @@ internal static class CallManager
                                                   ClosedTime = assignment.CompletionTime,
                                                   Status = (BO.CompletionStatus?)assignment.CompletionStatus
                                               }).ToList();
+        // Notify the observers about the updated list of closed calls.
+        Observers.NotifyListUpdated(); // Notify that the list of closed calls was updated.
+
         return list;
     }
 
@@ -92,7 +100,6 @@ internal static class CallManager
                 MaxEndTime = call.MaxCompletionTime,
                 DistanceFromVolunteer = Tools.DistanceCalculator.GetDistance(volunteer.CurrentAddress, call.Address, volunteer.DistancePreference.ToString())
             }).ToList();
-
 
         return list;
     }

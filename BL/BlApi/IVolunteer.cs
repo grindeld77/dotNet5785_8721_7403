@@ -2,7 +2,7 @@
 using System.Reflection.Metadata;
 
 namespace BlApi;
-public interface IVolunteer
+public interface IVolunteer : IObservable //stage 5
 {
     // login to system method that return the volunteer's role 
     string Login(int id, string password);

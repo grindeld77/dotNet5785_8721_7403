@@ -2,7 +2,7 @@
 
 namespace BlApi;
 
-public interface ICall
+public interface ICall : IObservable //stage 5
 {
     // return the count of calls by their status as an array where each index corresponds to the status ID.
     int[] GetCallCountsByStatus();

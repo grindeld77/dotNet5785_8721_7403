@@ -40,6 +40,7 @@ internal class CallImplementation : ICall
             };
 
             _dal.Call.Create(call);
+            CallManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (Exception ex)
         {
@@ -76,6 +77,8 @@ internal class CallImplementation : ICall
             };
 
             _dal.Assignment.Create(newAssignment); // Assign the call to the volunteer
+            AssignmentManager.Observers.NotifyListUpdated(); //stage 5
+
             return;
         }
         throw new BLAlreadyAssignedException("Call is already assigned");
@@ -109,7 +112,7 @@ internal class CallImplementation : ICall
         if (assignment.CompletionTime != null)
             throw new BO.BlInvalidOperationException("The assignment has already been completed or canceled.");
 
-        if (ClockManager.Now > assignment.CompletionTime)
+        if (AdminManager.Now > assignment.CompletionTime)
             throw new BO.BlInvalidOperationException("The assignment has expired.");
 
         Assignment updateAssignment = new Assignment // Update the assignment in the data layer
@@ -125,6 +128,9 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(updateAssignment);
+            AssignmentManager.Observers.NotifyItemUpdated(updateAssignment.Id);  //stage 5
+            AssignmentManager.Observers.NotifyListUpdated(); //stage 5
+
         }
         catch (Exception ex)
         {
@@ -161,7 +167,7 @@ internal class CallImplementation : ICall
             if (assignment.CompletionTime != null)
                 throw new BO.BlInvalidOperationException("The assignment has already been completed or canceled.");
 
-            if (ClockManager.Now > assignment.CompletionTime)
+            if (AdminManager.Now > assignment.CompletionTime)
                 throw new BO.BlInvalidOperationException("The assignment has expired.");
 
             var updateAssignment = new Assignment // Update the assignment in the data layer
@@ -170,11 +176,13 @@ internal class CallImplementation : ICall
                 CallId = assignment.CallId,
                 VolunteerId = assignment.VolunteerId,
                 EntryTime = assignment.EntryTime,
-                CompletionTime = ClockManager.Now,
+                CompletionTime = AdminManager.Now,
                 CompletionStatus = DO.CompletionStatus.Handled
             };
 
             _dal.Assignment.Update(updateAssignment);  // Mark the assignment as completed
+            AssignmentManager.Observers.NotifyItemUpdated(updateAssignment.Id);  //stage 5
+            AssignmentManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (Exception ex)
         {
@@ -207,6 +215,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Delete(callId);
+            CallManager.Observers.NotifyListUpdated(); //stage 5
         }
 
         catch (Exception ex)
@@ -482,6 +491,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Update(doCall);
+            CallManager.Observers.NotifyItemUpdated(doCall.Id); //stage 5
         }
         catch (Exception ex)
         {
@@ -489,4 +499,14 @@ internal class CallImplementation : ICall
             throw new BO.BlGeneralException("Failed to update the call.", ex);
         }
     }
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
 }
