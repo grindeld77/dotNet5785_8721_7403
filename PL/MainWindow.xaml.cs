@@ -27,7 +27,8 @@ namespace PL
             CurrentTime = s_bl.Admin.GetClock();
             TimeSpan timeSpan = s_bl.Admin.GetMaxRange();
             MaxYearRange = (int)(timeSpan.TotalDays / 365); // המרה לשנים
-
+            Loaded += Window_Loaded;
+            Closed += Window_Closed;
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
 

@@ -11,11 +11,12 @@ internal class AdminImplementation : IAdmin
 
     public void ForwardClock(BO.TimeUnit unit)
     {
-        DateTime newTime = unit switch
+        DateTime newTime = AdminManager.Now;
+        newTime = unit switch
         {
-            BO.TimeUnit.Minute => AdminManager.Now.AddMinutes(1),
-            BO.TimeUnit.Hour => AdminManager.Now.AddHours(1),
-            BO.TimeUnit.Day => AdminManager.Now.AddDays(1),
+            BO.TimeUnit.Minute => AdminManager.Now.AddMinutes(1.0),
+            BO.TimeUnit.Hour => AdminManager.Now.AddHours(1.0),
+            BO.TimeUnit.Day => AdminManager.Now.AddDays(1.0),
             BO.TimeUnit.Month => AdminManager.Now.AddMonths(1),
             BO.TimeUnit.Year => AdminManager.Now.AddYears(1),
             _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, "Invalid time unit"),
@@ -26,7 +27,7 @@ internal class AdminImplementation : IAdmin
 
     DateTime IAdmin.GetClock()
     {
-        return DateTime.Now;
+        return AdminManager.Now;
     }
 
     TimeSpan IAdmin.GetMaxRange()
@@ -36,15 +37,16 @@ internal class AdminImplementation : IAdmin
 
     void IAdmin.InitializeDB()
     {
+        _dal.ResetDB();
         DalTest.Initialization.Do();
-        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.UpdateClock(DateTime.Now);
         AdminManager.MaxRange = AdminManager.MaxRange;
     }
 
     void IAdmin.ResetDB()
     {
         _dal.ResetDB();
-        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.UpdateClock(DateTime.Now);
         AdminManager.MaxRange = AdminManager.MaxRange;
     }
 
