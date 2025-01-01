@@ -23,17 +23,14 @@ internal static class AdminManager //stage 4
     /// </summary>
     internal static TimeSpan MaxRange
     {
-        get
-        {
-            return s_dal.Config.RiskRange;
-        }
-
+        get => s_dal.Config.RiskRange;
         set
         {
             s_dal.Config.RiskRange = value;
             ConfigUpdatedObservers?.Invoke(); // stage 5
         }
     }
+
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
@@ -46,7 +43,7 @@ internal static class AdminManager //stage 4
     internal static void UpdateClock(DateTime newClock) //stage 4-7
     {
         // new Thread(() => { // stage 7 - not sure - still under investigation - see stage 7 instructions after it will be released        
-        updateClock(newClock); //stage 4-6
+        updateClock(newClock);//stage 4-6
         // }).Start(); // stage 7 as above
     }
 
@@ -61,6 +58,10 @@ internal static class AdminManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
+
+        VolunteerManager.PeriodicVolunteersUpdates(oldClock, newClock); //stage 4
+        //etc ...
+
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
     }
@@ -105,6 +106,10 @@ internal static class AdminManager //stage 4
             #region Stage 7
             //TO_DO:
             //Add calls here to any logic simulation that was required in stage 7
+            //for example: course registration simulation
+            // VolunteerManager.SimulateCallRegistrationAndGrade(); //stage 7
+
+            //etc...
             #endregion Stage 7
 
             try

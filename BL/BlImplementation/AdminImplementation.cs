@@ -1,5 +1,6 @@
 ﻿namespace BlImplementation;
 using BlApi;
+using BO;
 using DalApi;
 using Helpers;
 using System.Linq.Expressions;
@@ -10,30 +11,16 @@ internal class AdminImplementation : IAdmin
 
     public void ForwardClock(BO.TimeUnit unit)
     {
-        DateTime newTime;
-
-        switch (unit) // using switch to know how much to advance the clock 
+        DateTime newTime = unit switch
         {
-            case BO.TimeUnit.Minute:
-                newTime = AdminManager.Now.AddMinutes(1);
-                break;
-            case BO.TimeUnit.Hour:
-                newTime = AdminManager.Now.AddHours(1);
-                break;
-            case BO.TimeUnit.Day:
-                newTime = AdminManager.Now.AddDays(1);
-                break;
-            case BO.TimeUnit.Month:
-                newTime = AdminManager.Now.AddMonths(1);
-                break;
-            case BO.TimeUnit.Year:
-                newTime = AdminManager.Now.AddYears(1);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(unit), unit, "Invalid time unit");
-        }
-
-        // change the time to the one forwarded
+            BO.TimeUnit.Minute => AdminManager.Now.AddMinutes(1),
+            BO.TimeUnit.Hour => AdminManager.Now.AddHours(1),
+            BO.TimeUnit.Day => AdminManager.Now.AddDays(1),
+            BO.TimeUnit.Month => AdminManager.Now.AddMonths(1),
+            BO.TimeUnit.Year => AdminManager.Now.AddYears(1),
+            _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, "Invalid time unit"),
+        };
+        //Update the clock
         AdminManager.UpdateClock(newTime);
     }
 

@@ -161,7 +161,7 @@ namespace BlTest
                         }
                         break;
                     case volunteerMenu.DisplayAllByFilter:
-                        {
+                            {
                                 Console.WriteLine("Enter 1 to see all active volunteers or 0 to see inactive volunteers. Or nothing to see the entire list: ");
                                 int input = ConvertStringToNumber();
                                 Console.WriteLine(
@@ -177,13 +177,42 @@ namespace BlTest
                                 int sort = 0;
                                 string tamp = Console.ReadLine();
                                 int.TryParse(tamp, out sort);
-                                IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort);
-                                foreach (var item in volunteers) // Display All Volunteers logic here
+                                Console.WriteLine("Do you want to get the list filtered by the Call Type? Yes / No");
+                                string answer = Console.ReadLine() ?? "";
+                                if (answer == "Yes" || answer == "yes")
                                 {
-                                    Console.WriteLine(item);
+                                    Console.Write($@" 
+Choose a call type to sort by:
+0. NotAllocated
+1. MedicalEmergency
+2. PatientTransport
+3. TrafficAccident
+4. FirstAid 
+5. Rescue
+6. FireEmergency
+7. CardiacEmergency
+8. Poisoning
+9. AllergicReaction
+10. MassCausal
+11. TerrorAttack
+12. None
+");
+                                    if (!Enum.TryParse(Console.ReadLine(), out BO.CallType type))
+                                        throw new BlInvalidOperationException("Invalid input for call type. Please enter a valid call type.");
+                                    else
+                                        s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, type);
                                 }
+                                else
+                                {
+                                    IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, null);
+                                    foreach (var item in volunteers) // Display All Volunteers logic here
+                                    {
+                                        Console.WriteLine(item);
+                                    }
+
+                                }
+                                break;
                             }
-                        break;
                     case volunteerMenu.Update:
                         {
                                 string idAsks;
@@ -288,7 +317,7 @@ namespace BlTest
                     case volunteerMenu.DeleteAll:
                         {
                             // Retrieve all volunteers from the data layer
-                            IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(null, null);
+                            IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(null, null, null);
 
                             // If no volunteers to delete, throw an exception
                             if (!volunteers.Any())

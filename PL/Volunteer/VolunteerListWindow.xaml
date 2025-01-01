@@ -20,8 +20,8 @@
             </Grid.ColumnDefinitions>
         </Grid>
         <Label Grid.Column="0" Content="Label" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
-        <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
-        <ListView Grid.Row="1">
+        <ComboBox ItemsSource="{Binding Source={StaticResource VolunteerCollectionKey}}"  Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" SelectedValue="{Binding type, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteerList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

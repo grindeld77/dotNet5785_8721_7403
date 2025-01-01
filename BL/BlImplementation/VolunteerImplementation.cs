@@ -29,7 +29,7 @@ internal class VolunteerImplementation : IVolunteer
 
 
 
-    IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter)
+    IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter, BO.CallType? type)
     {
         IEnumerable<DO.Volunteer> doVolunteers;
         IEnumerable<BO.VolunteerInList> volunteerInLists = null;
@@ -68,12 +68,21 @@ internal class VolunteerImplementation : IVolunteer
                     volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallId);
                     break;
                 case BO.VolunteerFieldVolunteerInList.CurrentCallType:
-                    volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
+                    if (type == null)
+                    {
+                        volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
+                    }
+                    else
+                    {
+                        volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == type).OrderBy(v => v.CurrentCallType);
+                    }
                     break;
                 default:
                     volunteerInLists = volunteerInLists.OrderBy(v => v.Id);
                     break;
+
             }
+
         }
         //VolunteerManager.Observers.AddListObserver(() => {return volunteerInLists });
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();

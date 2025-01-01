@@ -82,4 +82,5 @@ class ObserverManager //stage 5
             _specificObservers[id]?.Invoke();
     }
 
+
 }

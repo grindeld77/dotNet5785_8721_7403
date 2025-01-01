@@ -16,6 +16,7 @@ internal static class Config
         nextAssignmentId = startAssignmentId;
         Clock = DateTime.Now;  // Reset the system clock to the current time
         RiskRange = TimeSpan.FromHours(1);  // Reset Risk Range to its default value
+
     }
 
 }

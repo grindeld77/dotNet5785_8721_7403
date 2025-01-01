@@ -5,8 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800"
+   	    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="Window_Loaded" Closed="Window_Closed">
 
+    <Grid Margin="10">
+        <!-- Define the structure of rows and columns -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- System Clock Area -->
+            <RowDefinition Height="Auto"/>
+            <!-- Configuration Variables Area -->
+            <RowDefinition Height="*"/>
+            <!-- Remaining Area -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <!-- Main Column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- System Clock Area -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" VerticalAlignment="Top">
+            <!-- System Clock -->
+            <Label Content="System Clock:" FontWeight="Bold" VerticalAlignment="Center" />
+            <Label x:Name="lblClock" Content="{Binding CurrentTime}" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+            <!-- Clock Advancement Buttons -->
+            <Button Content="Add One Minute" Margin="5" Width="120" Click="AddOneMinute_Click" />
+            <Button Content="Add One Hour" Margin="5" Width="120" Click="AddOneHour_Click"/>
+            <Button Content="Add One Day" Margin="5" Width="120" Click="AddOneDay_Click"/>
+            <Button Content="Add One Month" Margin="5" Width="120" Click="AddOneMonth_Click"/>
+            <Button Content="Add One Year" Margin="5" Width="120" Click="AddOneYear_Click"/>
+        </StackPanel>
+
+        <!-- Configuration Variables Area -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5" VerticalAlignment="Top">
+            <Label Content="Configuration Variables:" FontWeight="Bold"/>
+
+            <!-- Risk Range Configuration -->
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Risk Range (hours):" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtRiskRange" Width="100" Margin="5" Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Update" Margin="5" Width="100" Click="UpdateRiskRange_Click"/>
+            </StackPanel>
+
+            <!-- Buttons for Database Management -->
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Button Content="Show List View" Margin="5" Width="150" Click="btnVolunteer_Click" />
+                <Button Content="Initialize Database" Margin="5" Width="150" Click="btnInitializeDB_Click"  />
+                <Button Content="Reset Database" Margin="5" Width="150" Click="btnResetDB_Click" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

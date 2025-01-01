@@ -9,7 +9,7 @@ public interface IVolunteer : IObservable //stage 5
 
     // get collection of active volunteers in the system, if isActive is null return all volunteers,
     // if callType is null return sorted by id
-    IEnumerable<VolunteerInList> GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter);
+    IEnumerable<VolunteerInList> GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter, BO.CallType? type);
 
     // get volunteer details by id, return the BO object, else if not found throw exception
     Volunteer GetVolunteerDetails(int id);
