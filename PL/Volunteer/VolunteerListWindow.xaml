@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerListWindow" Height="640" Width="800">
+        Title="VolunteerListWindow" Height="640" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -20,17 +22,17 @@
             </Grid.ColumnDefinitions>
         </Grid>
         <Label Grid.Column="0" Content="Label" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
-        <ComboBox ItemsSource="{Binding Source={StaticResource VolunteerCollectionKey}}"  Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" SelectedValue="{Binding type, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteerList}">
+        <ComboBox ItemsSource="{Binding Source={StaticResource VolunteerCollectionKey}}"  Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" SelectedValue="{Binding _selectedCallType, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteersList}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="150"/>
                     <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150"/>
-                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="80"/>
-                    <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="120"/>
-                    <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="120"/>
-                    <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="120"/>
-                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}" Width="100"/>
+                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="150"/>
+                    <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="150"/>
+                    <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="150"/>
+                    <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="150"/>
+                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}" Width="150"/>
                     <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="150"/>
                 </GridView>
             </ListView.View>

@@ -69,23 +69,58 @@ internal class VolunteerImplementation : IVolunteer
                     volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallId);
                     break;
                 case BO.VolunteerFieldVolunteerInList.CurrentCallType:
-                    if (type == null)
-                    {
-                        volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
-                    }
-                    else
-                    {
-                        volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == type).OrderBy(v => v.CurrentCallType);
-                    }
+                    volunteerInLists = volunteerInLists.OrderBy(v => v.CurrentCallType);
                     break;
                 default:
                     volunteerInLists = volunteerInLists.OrderBy(v => v.Id);
                     break;
-
             }
-
         }
-        //VolunteerManager.Observers.AddListObserver(() => {return volunteerInLists });
+        if (volunteerInLists != null && type.HasValue) 
+        {
+            switch (type.Value)
+            {
+                case BO.CallType.NotAllocated:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.NotAllocated);
+                    break;
+                case BO.CallType.MedicalEmergency:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.MedicalEmergency);
+                    break;
+                case BO.CallType.PatientTransport:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.PatientTransport);
+                    break;
+                case BO.CallType.TrafficAccident:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.TrafficAccident);
+                    break;
+                case BO.CallType.FirstAid:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.FirstAid);
+                    break;
+                case BO.CallType.Rescue:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.Rescue);
+                    break;
+                case BO.CallType.FireEmergency:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.FireEmergency);
+                    break;
+                case BO.CallType.CardiacEmergency:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.CardiacEmergency);
+                    break;
+                case BO.CallType.Poisoning:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.Poisoning);
+                    break;
+                case BO.CallType.AllergicReaction:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.AllergicReaction);
+                    break;
+                case BO.CallType.MassCausalities:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.MassCausalities);
+                    break;
+                case BO.CallType.TerrorAttack:
+                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.TerrorAttack);
+                    break;
+                case BO.CallType.None:
+                    break;
+            }
+        }
+        //VolunteerManager.Observers.NotifyListUpdated(); //stage 5
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
 
@@ -97,7 +132,7 @@ internal class VolunteerImplementation : IVolunteer
             var doVolunteer = _dal.Volunteer.Read(id);
 
             BO.Volunteer v = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer);
-            //VolunteerManager.Observers.AddObserver(id, () => { return v; });
+            //VolunteerManager.Observers.NotifyItemUpdated(id); //stage 5
             return v;
 
         }

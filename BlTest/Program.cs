@@ -199,17 +199,19 @@ Choose a call type to sort by:
 ");
                                     if (!Enum.TryParse(Console.ReadLine(), out BO.CallType type))
                                         throw new BlInvalidOperationException("Invalid input for call type. Please enter a valid call type.");
-                                    else
-                                        s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, type);
-                                }
-                                else
-                                {
-                                    IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, null);
+                                    IEnumerable<VolunteerInList> volunteers = s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, type);
                                     foreach (var item in volunteers) // Display All Volunteers logic here
                                     {
                                         Console.WriteLine(item);
                                     }
-
+                                }
+                                else
+                                {
+                                    IEnumerable<VolunteerInList> v = s_bl.Volunteer.GetVolunteers(input == 1 ? true : input == 0 ? false : null, (VolunteerFieldVolunteerInList)sort, null);
+                                    foreach (var item in v) // Display All Volunteers logic here
+                                    {
+                                        Console.WriteLine(item);
+                                    }
                                 }
                                 break;
                             }

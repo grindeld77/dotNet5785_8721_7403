@@ -38,13 +38,8 @@ namespace PL
             get { return (DateTime)GetValue(CurrentTimeProperty); }
             set { SetValue(CurrentTimeProperty, value); }
         }
-
         public static readonly DependencyProperty CurrentTimeProperty =
-            DependencyProperty.Register(
-                "CurrentTime",
-                typeof(DateTime),
-                typeof(MainWindow),
-                new PropertyMetadata(DateTime.Now)); // ערך ברירת מחדל
+            DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
         // Event Handlers for Clock Advancement
         private void AddOneMinute_Click(object sender, RoutedEventArgs e)

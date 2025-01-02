@@ -54,15 +54,13 @@ internal static class VolunteerManager
         BO.VolunteerInList volunteerInList = new BO.VolunteerInList
         {
             Id = v.Id,
-            FullName = v.FullName, // טיפול במקרה של null בשם המלא
+            FullName = v.FullName, 
             IsActive = v.IsActive,
             TotalCompletedCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
             TotalCancelledCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
             TotalExpiredCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
             CurrentCallId = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress) ?.Id ?? null, 
-            CurrentCallType = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Type != null
-                ? (BO.CallType)(BO.CallStatus)calls.First(c => c.Status == DO.CallStatus.InProgress).Type
-                : BO.CallType.None, // ערך ברירת מחדל ל-CallType
+            CurrentCallType = (BO.CallType)(calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Type ?? DO.CallType.None)
         };
 
         Observers.NotifyItemUpdated(v.Id); // stage 5
@@ -337,58 +335,7 @@ internal static class VolunteerManager
         }
     }
     
-    public static IEnumerable <BO.VolunteerInList> filterByType(BO.CallType? VolunteerParameter)
-    {
-        IEnumerable<DO.Volunteer> doVolunteers;
-        IEnumerable<BO.VolunteerInList> volunteerInLists = null;
 
-        if (volunteerInLists != null && VolunteerParameter.HasValue)
-        {
-            switch (VolunteerParameter.Value)
-            {
-                case BO.CallType.NotAllocated:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallId == null);
-                    break;
-                case BO.CallType.MedicalEmergency:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.MedicalEmergency);
-                    break;
-                case BO.CallType.PatientTransport:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.PatientTransport);
-                    break;
-                case BO.CallType.TrafficAccident:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.TrafficAccident);
-                    break;
-                case BO.CallType.FirstAid:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.FirstAid);
-                    break;
-                case BO.CallType.Rescue:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.Rescue);
-                    break;
-                case BO.CallType.FireEmergency:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.FireEmergency);
-                    break;
-                case BO.CallType.CardiacEmergency:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.CardiacEmergency);
-                    break;
-                case BO.CallType.Poisoning:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.Poisoning);
-                    break;
-                case BO.CallType.AllergicReaction:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.AllergicReaction);
-                    break;
-                case BO.CallType.MassCausalities:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.MassCausalities);
-                    break;
-                case BO.CallType.TerrorAttack:
-                    volunteerInLists = volunteerInLists.Where(v => v.CurrentCallType == BO.CallType.TerrorAttack);
-                    break;
-                case BO.CallType.None:
-                    break;
-            }
-        }
-
-        return volunteerInLists;
-    }
 
     internal static void PeriodicVolunteersUpdates(object oldClock, DateTime newClock)
     {
