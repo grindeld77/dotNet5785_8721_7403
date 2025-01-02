@@ -1,5 +1,6 @@
 ﻿namespace BlImplementation;
 using BlApi;
+using BO;
 using Helpers;
 using System.Security.AccessControl;
 

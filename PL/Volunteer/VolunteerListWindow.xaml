@@ -24,11 +24,18 @@
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteerList}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150"/>
+                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="80"/>
+                    <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="120"/>
+                    <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="120"/>
+                    <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="120"/>
+                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}" Width="100"/>
+                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="150"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
     </Grid>
 </Window>
