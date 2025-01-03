@@ -30,7 +30,7 @@
             <!-- Password -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Password:" Width="100" VerticalAlignment="Center" />
-                <TextBox Text="{Binding CurrentVolunteer.Password}" Width="200" />
+                <TextBox Text="{Binding CurrentVolunteer.PasswordHash}" Width="200" />
             </StackPanel>
 
             <!-- Full Name -->
@@ -54,7 +54,7 @@
             <!-- Address -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Address:" Width="100" VerticalAlignment="Center" />
-                <TextBox Text="{Binding CurrentVolunteer.Address}" Width="200" />
+                <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Width="200" />
             </StackPanel>
 
             <!--  Role -->

@@ -165,7 +165,7 @@ internal class VolunteerImplementation : IVolunteer
                 Role = (DO.Role)volunteer.Role,
                 IsActive = doVolunteere.IsActive,
                 Password = doVolunteere.Password,
-                CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
+                CurrentAddress = volunteer.FullAddress,
                 Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? doVolunteere.Latitude
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
                 Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0 ? doVolunteere.Longitude

@@ -132,9 +132,6 @@ namespace PL.Volunteer
                 MessageBox.Show($"Error refreshing volunteer list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
-
     }
 }
 
