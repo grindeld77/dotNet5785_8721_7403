@@ -195,14 +195,7 @@ internal static class VolunteerManager
         return regex.IsMatch(phoneNumber);
     }
 
-    public static bool CorrectAddress(BO.Volunteer volunteer)
-    {
-        if (volunteer.Latitude == null || volunteer.Longitude == null)
-        {
-            throw new Exception("Latitude or Longitude is missing in the Volunteer object.");
-        }
-        return true;
-    }
+
     public static bool IsValidName(string name)
     {
         if (name == null)
@@ -325,10 +318,6 @@ internal static class VolunteerManager
         {
             throw new BO.InvalidEmailException("Invalid ID number");
         }
-        //if (!CorrectAddress(volunteer))
-        //{
-        //    throw new BO.BlInvalidAddressException("Invalid Address");
-        //}
         if (!IsValidName(volunteer.FullName))
         {
             throw new BO.InvalidNameException("Invalid Name");
