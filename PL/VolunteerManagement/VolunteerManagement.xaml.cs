@@ -95,7 +95,7 @@ namespace PL.Volunteer
            
                     // פתיחת חלון עם הנתונים של המתנדב
                     var volunteerWindow = new VolunteerWindow(selectedVolunteer.Id);
-                    volunteerWindow.ShowDialog();
+                    volunteerWindow.Show();
 
                     // רענון הרשימה לאחר סגירת החלון
                     queryVolunteerList();
@@ -113,7 +113,7 @@ namespace PL.Volunteer
             // Open the VolunteerWindow in add mode (ID = 0)
             var volunteerWindow = new VolunteerWindow(0);
       
-            volunteerWindow.ShowDialog();
+            volunteerWindow.Show();
 
             // Refresh the list after closing the window
             RefreshVolunteerList();
