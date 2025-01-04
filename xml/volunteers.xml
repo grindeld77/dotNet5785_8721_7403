@@ -210,4 +210,18 @@
     <MaxCallDistance>6</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
+	<Volunteer>
+		<Id>328308721</Id>
+		<Name>Shimon Kahshour</Name>
+		<MobilePhone>0585557364</MobilePhone>
+		<Email>shimony2017@gmail.com</Email>
+		<Role>Admin</Role>
+		<IsActive>true</IsActive>
+		<Password>shimon78900</Password>
+		<CurrentAddress>Meir gershon 38, Jerusalem</CurrentAddress>
+		<Latitude>31.8765</Latitude>
+		<Longitude>35.2123</Longitude>
+		<MaxCallDistance>10</MaxCallDistance>
+		<DistancePreference>Aerial</DistancePreference>
+	</Volunteer>
 </Volunteers>
