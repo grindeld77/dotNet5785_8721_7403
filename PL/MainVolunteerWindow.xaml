@@ -1,0 +1,126 @@
+﻿<Window x:Class="PL.MainVolunteerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Volunteer Management" Height="1000" Width="1000">
+    <Grid>
+        <StackPanel Margin="20">
+            <!-- Header -->
+            <TextBlock Text="Volunteer Management" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" TextAlignment="Center" />
+
+            <!-- Volunteer Details -->
+            <TextBlock Text="Volunteer Details:" FontSize="18" FontWeight="Bold" Margin="0,10" />
+            <StackPanel Margin="0,10">
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="ID:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.Id}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Full Name:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.FullName}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Phone:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.PhoneNumber}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Email:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.Email}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Password Hash:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.PasswordHash}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Full Address:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Latitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.Latitude}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Longitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.Longitude}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Role:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.Role}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Active:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.IsActive}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Max Distance for Call:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.MaxDistanceForCall}" Width="300" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Distance Type:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.DistanceType}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Total Completed Calls:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.TotalCompletedCalls}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Total Cancelled Calls:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.TotalCancelledCalls}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Total Expired Calls:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.TotalExpiredCalls}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Call In Progress Details -->
+            <TextBlock Text="Current Call Details:" FontSize="18" FontWeight="Bold" Margin="0,10" />
+            <StackPanel Margin="0,10">
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Call ID:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.CallId}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Call Type:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Call}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Description:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Description}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Address:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.FullAddress}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Open Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.OpenTime}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Max Completion Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.MaxCompletionTime}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Start Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.StartTime}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Distance From Volunteer:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.DistanceFromVolunteer}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Status:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Status}" Width="300" IsReadOnly="True" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Actions on the right, vertical layout, enlarged buttons -->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Height="407">
+            <Button Content="Finish Call" Width="200" Height="60" Margin="10" Click="FinishCall_Click" />
+            <Button Content="Cancel Call" Width="200" Height="60" Margin="10" Click="CancelCall_Click" />
+            <Button Content="View Call History" Width="200" Height="60" Margin="10" Click="ViewCallHistory_Click" />
+            <Button Content="Select Call" Width="200" Height="60" Margin="10" Click="SelectCall_Click" />
+            <Button Content="Update Volunteer" Width="200" Height="60" Margin="10" Click="UpdateVolunteer_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

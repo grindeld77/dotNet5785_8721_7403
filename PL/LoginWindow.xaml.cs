@@ -48,8 +48,8 @@ namespace PL
                 }
                 else if (role == "Volunteer")
                 {
-                    // Navigate to VolunteerWindow (if needed)
-                    // new VolunteerManagementWindow().Show();
+                    // Navigate to VolunteerWindow
+                    new MainVolunteerWindow(id).Show();
                 }
                 else
                 {
