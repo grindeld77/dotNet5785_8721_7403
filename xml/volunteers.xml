@@ -15,20 +15,6 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>203896956</Id>
-    <Name>Michal Levy</Name>
-    <MobilePhone>0587925341</MobilePhone>
-    <Email>michal.levy@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>371406185</Password>
-    <CurrentAddress>Jaffa St 1, Jerusalem</CurrentAddress>
-    <Latitude>31.7823</Latitude>
-    <Longitude>35.2191</Longitude>
-    <MaxCallDistance>12</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>377622352</Id>
     <Name>Yossi Mizrahi</Name>
     <MobilePhone>0567092712</MobilePhone>
@@ -141,20 +127,6 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>232624627</Id>
-    <Name>Dina Rozenberg</Name>
-    <MobilePhone>0556715254</MobilePhone>
-    <Email>dina.rozenberg@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>561106132</Password>
-    <CurrentAddress>Herzl St 40, Kfar Saba</CurrentAddress>
-    <Latitude>32.1753</Latitude>
-    <Longitude>34.9067</Longitude>
-    <MaxCallDistance>14</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>217912336</Id>
     <Name>Liat Sharon</Name>
     <MobilePhone>0540912983</MobilePhone>
@@ -183,20 +155,6 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>392366431</Id>
-    <Name>Yael Zimmerman</Name>
-    <MobilePhone>0550291297</MobilePhone>
-    <Email>yael.zimmerman@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>810871015</Password>
-    <CurrentAddress>Hayam St 2, Eilat</CurrentAddress>
-    <Latitude>29.5535</Latitude>
-    <Longitude>34.9519</Longitude>
-    <MaxCallDistance>12</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>249400219</Id>
     <Name>Omar Rafael</Name>
     <MobilePhone>0546551435</MobilePhone>
@@ -210,18 +168,60 @@
     <MaxCallDistance>6</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
-	<Volunteer>
-		<Id>328308721</Id>
-		<Name>Shimon Kahshour</Name>
-		<MobilePhone>0585557364</MobilePhone>
-		<Email>shimony2017@gmail.com</Email>
-		<Role>Admin</Role>
-		<IsActive>true</IsActive>
-		<Password>shimon78900</Password>
-		<CurrentAddress>Meir gershon 38, Jerusalem</CurrentAddress>
-		<Latitude>31.8765</Latitude>
-		<Longitude>35.2123</Longitude>
-		<MaxCallDistance>10</MaxCallDistance>
-		<DistancePreference>Aerial</DistancePreference>
-	</Volunteer>
+  <Volunteer>
+    <Id>328308721</Id>
+    <Name>Shimon Kahshour</Name>
+    <MobilePhone>0585557364</MobilePhone>
+    <Email>shimony2017@gmail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>shimon78900</Password>
+    <CurrentAddress>Meir gershon 38, Jerusalem</CurrentAddress>
+    <Latitude>31.8765</Latitude>
+    <Longitude>35.2123</Longitude>
+    <MaxCallDistance>10</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>392366431</Id>
+    <Name>Yael Zimmerman</Name>
+    <MobilePhone>0550291291</MobilePhone>
+    <Email>yael.zimmerman@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <IsActive>true</IsActive>
+    <Password>810871015</Password>
+    <CurrentAddress>Hayam St 2, Eilat</CurrentAddress>
+    <Latitude>29.5478558</Latitude>
+    <Longitude>34.970292</Longitude>
+    <MaxCallDistance>12</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>232624627</Id>
+    <Name>Dina Rozenberg</Name>
+    <MobilePhone>0556715254</MobilePhone>
+    <Email>dina.rozenberg@gmail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>shimon78900</Password>
+    <CurrentAddress>Herzl St 40, Kfar Saba</CurrentAddress>
+    <Latitude>32.1746003</Latitude>
+    <Longitude>34.911144</Longitude>
+    <MaxCallDistance>10</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>203896956</Id>
+    <Name>Michal Levy</Name>
+    <MobilePhone>0587925342</MobilePhone>
+    <Email>michal.levy@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <IsActive>true</IsActive>
+    <Password>371406185</Password>
+    <CurrentAddress>Jaffa St 1, Jerusalem</CurrentAddress>
+    <Latitude>31.7846145</Latitude>
+    <Longitude>35.21512</Longitude>
+    <MaxCallDistance>12</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
 </Volunteers>

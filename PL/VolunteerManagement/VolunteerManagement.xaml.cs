@@ -13,7 +13,7 @@ namespace PL.Volunteer
 {
     public partial class VolunteerListWindow : Window
     {
-
+        int tampUserId;
         public string ButtonText { get; set; }
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -42,27 +42,14 @@ namespace PL.Volunteer
             var window = d as VolunteerListWindow;
             window?.queryVolunteerList();
         }
-        /*
-         public VolunteerWindow(int id = 0)
-{
-    InitializeComponent();
 
-    // אם ID שווה ל-0, מדובר במצב הוספה. אחרת, מצב עדכון.
-    CurrentVolunteer = id == 0 ? new BO.Volunteer() : s_bl.Volunteer.GetVolunteerById(id);
-    ButtonText = id == 0 ? "Add" : "Update";
-    Roles = Enum.GetValues(typeof(BO.Role));
-
-    // חיבור ה-DataContext עבור Binding
-    DataContext = this;
-}
-
-         */
-        public VolunteerListWindow()
+        public VolunteerListWindow(int userId)
         {
             InitializeComponent();
             this.DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
+            tampUserId = userId;
         }
 
         private void queryVolunteerList()
@@ -94,8 +81,8 @@ namespace PL.Volunteer
                     var selectedVolunteer = s_bl.Volunteer.GetVolunteerDetails(selectedVolunteerInList.Id);
            
                     // פתיחת חלון עם הנתונים של המתנדב
-                    var volunteerWindow = new VolunteerWindow(selectedVolunteer.Id);
-                    volunteerWindow.Show();
+                    var volunteerWindow = new VolunteerWindow(tampUserId, selectedVolunteer.Id);
+                    volunteerWindow.Show(); 
 
                     // רענון הרשימה לאחר סגירת החלון
                     queryVolunteerList();
@@ -134,76 +121,3 @@ namespace PL.Volunteer
         }
     }
 }
-
-//using System;
-//using System.Collections.Generic;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Input;
-
-//namespace PL.Volunteer
-//{
-//    public partial class VolunteerListWindow : Window
-//    {
-//        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-//        public IEnumerable<BO.VolunteerInList> VolunteerList { get; set; }
-
-//        public VolunteerListWindow()
-//        {
-//            InitializeComponent();
-//            DataContext = this;
-//            Loaded += Window_Loaded;
-//            Closed += Window_Closed;
-//        }
-
-//        private void Window_Loaded(object sender, RoutedEventArgs e)
-//        {
-//            RefreshVolunteerList();
-//        }
-
-//        private void Window_Closed(object sender, EventArgs e)
-//        {
-//            // Optional: Handle cleanup if needed
-//        }
-
-//        private void RefreshVolunteerList()
-//        {
-//            try
-//            {
-//                VolunteerList = s_bl.Volunteer.GetVolunteers(null, BO.VolunteerFieldVolunteerInList.CurrentCallType, null);
-//                DataContext = this;
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show($"Error refreshing volunteer list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//            }
-//        }
-
-//        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-//        {
-//            if (sender is ListView listView && listView.SelectedItem is BO.VolunteerInList selectedVolunteerInList)
-//            {
-//                try
-//                {
-//                    var volunteerWindow = new VolunteerWindow(selectedVolunteerInList.Id);
-//                    volunteerWindow.ShowDialog();
-
-//                    RefreshVolunteerList();
-//                }
-//                catch (Exception ex)
-//                {
-//                    MessageBox.Show($"Error opening volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//                }
-//            }
-//        }
-
-//        private void AddButton_Click(object sender, RoutedEventArgs e)
-//        {
-//            var volunteerWindow = new VolunteerWindow(0);
-//            volunteerWindow.ShowDialog();
-
-//            RefreshVolunteerList();
-//        }
-//    }
-//}

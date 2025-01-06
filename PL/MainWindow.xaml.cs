@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace PL
 {
@@ -20,8 +21,8 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-        public MainWindow()
+        int tampUserId;
+        public MainWindow(int userId)
         {
             InitializeComponent();
             CurrentTime = s_bl.Admin.GetClock();
@@ -31,7 +32,7 @@ namespace PL
             Closed += Window_Closed;
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
-
+            tampUserId= userId;
         }
         public DateTime CurrentTime
         {
@@ -126,7 +127,7 @@ namespace PL
         }
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerListWindow().Show();
+            new VolunteerListWindow(tampUserId).Show();
         }
         private void btnInitializeDB_Click(object sender, RoutedEventArgs e)
         {
@@ -172,3 +173,19 @@ namespace PL
         }
     }
 }
+
+//  < Volunteer >
+//    < Id > 203896956 </ Id >
+//    < Name > Michal Levy </ Name >
+//    < MobilePhone > 0587925342 </ MobilePhone >
+//    < Email > michal.levy@gmail.com </ Email >
+//    < Role > Volunteer </ Role >
+//    < IsActive > true </ IsActive >
+//    < Password > 371406185 </ Password >
+//    < CurrentAddress > Jaffa St 1, Jerusalem</CurrentAddress>
+//    <Latitude>31.7846145</Latitude>
+//    <Longitude>35.21512</Longitude>
+//    <MaxCallDistance>12</MaxCallDistance>
+//    <DistancePreference>Aerial</DistancePreference>
+//  </Volunteer>
+//</Volunteers>

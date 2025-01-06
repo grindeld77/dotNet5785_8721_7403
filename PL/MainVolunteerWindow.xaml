@@ -36,11 +36,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Latitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.Latitude}" Width="300" />
+                    <TextBox Text="{Binding CurrentVolunteer.Latitude}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Longitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.Longitude}" Width="300" />
+                    <TextBox Text="{Binding CurrentVolunteer.Longitude}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Role:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>

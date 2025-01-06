@@ -17,7 +17,7 @@ internal class VolunteerImplementation : IVolunteer
 
         if (volunteer == null)
         {
-            throw new BO.BlInvalidIdentificationException("The email address is not found.");
+            throw new BO.BlInvalidIdentificationException("This ID is not found.");
         }
 
         if (volunteer.Password != password)

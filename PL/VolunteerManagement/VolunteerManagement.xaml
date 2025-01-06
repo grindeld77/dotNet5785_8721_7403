@@ -46,32 +46,3 @@
 </Window>
 
 
-
-<!--<Window x:Class="PL.Volunteer.VolunteerListWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="VolunteerListWindow" Height="640" Width="800"
-        Loaded="Window_Loaded" Closed="Window_Closed">
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        --><!-- ListView for Volunteers --><!--
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteerList}" MouseDoubleClick="ListView_MouseDoubleClick">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150"/>
-                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        --><!-- Add Button --><!--
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="AddButton_Click"/>
-    </Grid>
-</Window>-->

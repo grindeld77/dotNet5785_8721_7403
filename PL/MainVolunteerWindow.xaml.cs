@@ -1,4 +1,5 @@
-﻿using PL.Volunteer;
+﻿using PL.Call;
+using PL.Volunteer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,21 +36,21 @@ namespace PL
         public MainVolunteerWindow(int id)
         {
             InitializeComponent();
-            if (id == 0)
-            {
-                // מצב הוספה
-                CurrentVolunteer = new BO.Volunteer();
-
-            }
-            else
-            {
-                // מצב עדכון
-                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-
-            }
             volunteerId = id;
-            DataContext = this; // קישור ל-DataContext של החלון
+
+            try
+            {
+                // טוען את פרטי המתנדב לשדה CurrentVolunteer
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                DataContext = this; // קישור ל-DataContext של החלון
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close(); // סוגר את החלון במקרה של שגיאה
+            }
         }
+
 
         // Finish Call Button Click Handler
         private void FinishCall_Click(object sender, RoutedEventArgs e)
@@ -66,8 +67,27 @@ namespace PL
         // View Call History Button Click Handler
         private void ViewCallHistory_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                // טוען את הקריאות הסגורות של המתנדב
+                var closedCalls = s_bl.Call.GetClosedCallsByVolunteer(volunteerId, null, null);
 
+                if (closedCalls == null || !closedCalls.Any())
+                {
+                    MessageBox.Show("No calls found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // פתיחת חלון חדש עם הקריאות
+                var callListWindow = new CallListWindow(volunteerId);
+                callListWindow.ShowDialog(); // 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
 
         // Select Call Button Click Handler
         private void SelectCall_Click(object sender, RoutedEventArgs e)
@@ -78,8 +98,15 @@ namespace PL
         // Update Volunteer Button Click Handler
         private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer); // שימוש במזהה ששמרנו
+                MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
     }
 }

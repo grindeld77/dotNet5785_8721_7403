@@ -28,7 +28,7 @@ namespace PL.Volunteer
         public bool IsAddMode { get; set; }
 
 
-        public VolunteerWindow(int id = 0)
+        public VolunteerWindow(int requesting,int id = 0)
         {
             InitializeComponent();
 
@@ -46,7 +46,7 @@ namespace PL.Volunteer
                 ButtonText = "Update";
                 IsAddMode = false;
             }
-            _volunteerId = id;
+            _volunteerId = requesting;
             Roles = Enum.GetValues(typeof(BO.Role));
             DataContext = this; // קישור ל-DataContext של החלון
         }
@@ -146,66 +146,3 @@ namespace PL.Volunteer
     }
 }
 
-//using System;
-//using System.Windows;
-//using System.Windows.Controls;
-
-//namespace PL.Volunteer
-//{
-//    public partial class VolunteerWindow : Window
-//    {
-//        private int _volunteerId;
-//        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-//        public BO.Volunteer CurrentVolunteer { get; set; }
-//        public string ButtonText { get; set; }
-//        public Array Roles { get; set; }
-
-//        public VolunteerWindow(int id = 0)
-//        {
-//            InitializeComponent();
-
-//            if (id == 0)
-//            {
-//                CurrentVolunteer = new BO.Volunteer();
-//                ButtonText = "Add";
-//            }
-//            else
-//            {
-//                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-//                ButtonText = "Update";
-//            }
-
-//            _volunteerId = id;
-//            Roles = Enum.GetValues(typeof(BO.Role));
-//            DataContext = this;
-//        }
-
-//        private void SaveButton_Click(object sender, RoutedEventArgs e)
-//        {
-//            try
-//            {
-//                if (ButtonText == "Add")
-//                {
-//                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
-//                }
-//                else
-//                {
-//                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
-//                }
-
-//                MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-//                Close();
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//            }
-//        }
-
-//        private void Cancel_Click(object sender, RoutedEventArgs e)
-//        {
-//            Close();
-//        }
-//    }
-//}
