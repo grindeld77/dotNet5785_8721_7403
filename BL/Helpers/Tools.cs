@@ -19,10 +19,6 @@ internal static class Tools
         throw new NotImplementedException();
     }
 
-    internal static object CalculateDistance(double latitude, double longitude, int volunteerId)
-    {
-        throw new NotImplementedException();
-    }
     public static string ToStringProperty<T>(this T t)
     {
         if (t == null)

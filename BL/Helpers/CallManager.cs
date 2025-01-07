@@ -82,26 +82,52 @@ internal static class CallManager
         return list;
     }
 
-    internal static IEnumerable<OpenCallInList> GetOpenCallInList(int volunteerId)
+    internal static List<OpenCallInList> GetOpenCallInList(int volunteerId)
     {
-        var volunteer = s_dal.Volunteer.Read(volunteerId);
+        List<DO.Call> list = s_dal.Call.ReadAll().ToList();
+        DO.Volunteer volunteer = s_dal.Volunteer.Read(volunteerId) ?? throw new BloesNotExistException("Volunteer does not exist.");
+        return (from assignment in list
+                let call = s_dal.Call.Read(c => c.Id == assignment.Id) ?? throw new BloesNotExistException("Call does not exist.")
+                let status = CallManager.GetStatus(call.Id)
+                where status == BO.CallStatus.Open || status == BO.CallStatus.OpenAtRisk
+                select new BO.OpenCallInList()
+                {
+                    Id = call.Id,
+                    Type = (BO.CallType)call.Type,
+                    FullAddress = call.Address,
+                    OpenTime = call.OpenedAt,
+                    MaxEndTime = call.MaxCompletionTime,
+                    Description = call.Description,
+                    DistanceFromVolunteer = VolunteerManager.CalculateDistance(call.Latitude, call.Longitude, (double)volunteer.Latitude, (double)volunteer.Longitude),
+                }).ToList();
+    }
 
-        List<BO.OpenCallInList> list = s_dal.Call
-            .ReadAll((DO.Call call) => call.Status.ToString() == "Open")
-            .Where((DO.Call call) =>
-                (volunteer.CurrentAddress == null) || Tools.DistanceCalculator.GetDistance(volunteer.CurrentAddress!, call.Address, volunteer.DistancePreference.ToString()) <= volunteer.MaxCallDistance)
-            .Select((DO.Call call) => new BO.OpenCallInList()
-            {
-                Id = call.Id,
-                Type = (BO.CallType)call.Type,
-                Description = call.Description,
-                FullAddress = call.Address,
-                OpenTime = call.OpenedAt,
-                MaxEndTime = call.MaxCompletionTime,
-                DistanceFromVolunteer = Tools.DistanceCalculator.GetDistance(volunteer.CurrentAddress, call.Address, volunteer.DistancePreference.ToString())
-            }).ToList();
-
-        return list;
+    private static BO.CallStatus GetStatus(int id)
+    {
+        var call = s_dal.Call.Read(id) ?? throw new BloesNotExistException("Call does not exist.");
+        var assignments = s_dal.Assignment.ReadAll(a => a.CallId == id).ToList();
+        if (assignments.Count == 0)
+        {
+            return BO.CallStatus.Open;
+        }
+        var lastAssignment = assignments.OrderByDescending(a => a.EntryTime).First();
+        if (lastAssignment.CompletionStatus == DO.CompletionStatus.Handled)
+        {
+            return BO.CallStatus.Closed;
+        }
+        if (lastAssignment.CompletionStatus == DO.CompletionStatus.AdminCancel)
+        {
+            return BO.CallStatus.Closed;
+        }
+        if (lastAssignment.CompletionStatus == DO.CompletionStatus.SelfCancel)
+        {
+            return BO.CallStatus.Closed;
+        }
+        if (lastAssignment.CompletionStatus == DO.CompletionStatus.Expired)
+        {
+            return BO.CallStatus.Expired;
+        }
+        return DateTime.Now > lastAssignment.EntryTime.AddMinutes(30) ? BO.CallStatus.OpenAtRisk : BO.CallStatus.Open;
     }
 }
 

@@ -15,7 +15,7 @@ public interface IVolunteer : IObservable //stage 5
     Volunteer GetVolunteerDetails(int id);
 
     // update volunteer details, if not found throw exception
-    void UpdateVolunteer(int requesterId, BO.Volunteer updatedVolunteer);
+    void UpdateVolunteer(int requesterId, BO.Volunteer volunteer);
 
     // delete volunteer from the system, if not found throw exception 
     void DeleteVolunteer(int id);

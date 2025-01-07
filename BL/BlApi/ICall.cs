@@ -26,7 +26,7 @@ public interface ICall : IObservable //stage 5
     IEnumerable<ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? filterField, BO.ClosedCallInListFields? sortField);
 
     // return a list of open calls available for a volunteer, including their distance from the volunteer.
-    IEnumerable<OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField);
+    public IEnumerable<OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField);
 
     // Marks the completion of handling a specific call assignment by a volunteer.
     void CompleteCallAssignment(int volunteerId, int assignmentId);

@@ -5,5 +5,7 @@
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
         <local:VolunteerCollection x:Key="VolunteerCollectionKey" />
+        <local:OpenCallCollection x:Key="OpenCallCollectionKey" />
+        <local:OpenCallCollectionType x:Key="OpenCallCollectionTypeKey" />
     </Application.Resources>
 </Application>

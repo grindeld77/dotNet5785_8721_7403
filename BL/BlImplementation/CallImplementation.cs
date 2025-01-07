@@ -416,46 +416,24 @@ internal class CallImplementation : ICall
 
     IEnumerable<BO.OpenCallInList> ICall.GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField)
     {
-        try
-        {
-            IEnumerable<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
-
+            // Fetch open calls for the volunteer
+            List<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
             if (filterType != null)
             {
-                openCallsInList = openCallsInList.Where(call => call.Type == filterType);
-            }
-
-            switch (sortField)
+                openCallsInList = openCallsInList.Where(call => call.Type == filterType).ToList();
+            }   
+            openCallsInList = sortField switch
             {
-                case BO.OpenCallInListFields.Id:
-                    openCallsInList = openCallsInList.OrderBy(call => call.Id);
-                    break;
-                case OpenCallInListFields.Type:
-                    openCallsInList = openCallsInList.OrderBy(call => call.Type);
-                    break;
-                case OpenCallInListFields.FullAddress:
-                    openCallsInList = openCallsInList.OrderBy(call => call.FullAddress);
-                    break;
-                case OpenCallInListFields.OpenTime:
-                    openCallsInList = openCallsInList.OrderBy(call => call.OpenTime);
-                    break;
-                case OpenCallInListFields.MaxEndTime:
-                    openCallsInList = openCallsInList.OrderBy(call => call.MaxEndTime);
-                    break;
-                case OpenCallInListFields.DistanceFromVolunteer:
-                    openCallsInList = openCallsInList.OrderBy(call => call.DistanceFromVolunteer);
-                    break;
-                case OpenCallInListFields.Description:
-                    openCallsInList = openCallsInList.OrderBy(call => call.Description);
-                    break;
-            }
-            return openCallsInList;
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.BlGeneralException("Failed to retrieve open calls for the volunteer.", ex);
-        }
+                BO.OpenCallInListFields.Id => openCallsInList.OrderBy(call => call.Id).ToList(),
+                BO.OpenCallInListFields.Type => openCallsInList.OrderBy(call => call.Type).ToList(),
+                BO.OpenCallInListFields.FullAddress => openCallsInList.OrderBy(call => call.FullAddress).ToList(),
+                BO.OpenCallInListFields.OpenTime => openCallsInList.OrderBy(call => call.OpenTime).ToList(),
+                BO.OpenCallInListFields.MaxEndTime => openCallsInList.OrderBy(call => call.MaxEndTime).ToList(),
+                BO.OpenCallInListFields.DistanceFromVolunteer => openCallsInList.OrderBy(call => call.DistanceFromVolunteer).ToList(),
+                _ => openCallsInList
+            };
+
+        return openCallsInList;
     }
 
     void ICall.UpdateCall(BO.Call call)

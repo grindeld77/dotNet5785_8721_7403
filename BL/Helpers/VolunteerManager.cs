@@ -341,6 +341,22 @@ internal static class VolunteerManager
         }
     }
 
+    //internal static DO.Call converterFromInPrograssToCall(CallInProgress currentCall)
+    //{
+    //    if (currentCall == null)
+    //    {
+    //        return null;
+    //    }
+    //    return new DO.Call
+    //    {
+    //        Id = currentCall.CallId,
+    //        Description = currentCall.Description,
+    //        Address = currentCall.FullAddress,
+    //        OpenedAt = currentCall.OpenTime,
+    //        MaxCompletionTime = currentCall.MaxCompletionTime,
+    //        Status = (DO.CallStatus)currentCall.Status
+    //    };
+    //}
 }
 
 

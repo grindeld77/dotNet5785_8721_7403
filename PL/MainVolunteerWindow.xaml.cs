@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 namespace PL
 {
     /// <summary>
@@ -24,6 +23,7 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private int volunteerId;
+
         public BO.Volunteer CurrentVolunteer
         {
             get { return (BO.Volunteer)GetValue(CurrentVolunteerProperty); }
@@ -33,6 +33,15 @@ namespace PL
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(MainVolunteerWindow));
 
+        public BO.CallInProgress CurrentCall
+        {
+            get => (BO.CallInProgress)GetValue(CurrentCallProperty);
+            set => SetValue(CurrentCallProperty, value);
+        }
+
+        public static readonly DependencyProperty CurrentCallProperty =
+            DependencyProperty.Register(nameof(CurrentCall), typeof(BO.CallInProgress), typeof(MainVolunteerWindow));
+
         public MainVolunteerWindow(int id)
         {
             InitializeComponent();
@@ -40,31 +49,166 @@ namespace PL
 
             try
             {
-                // טוען את פרטי המתנדב לשדה CurrentVolunteer
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-                DataContext = this; // קישור ל-DataContext של החלון
+
+                // הסתרת פרטי הקריאה אם היא אינה תקפה
+                if (CurrentVolunteer.CurrentCall != null && CurrentVolunteer.CurrentCall.Status == BO.CallStatus.Expired)
+                    CurrentVolunteer.CurrentCall = null;
+
+                DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close(); // סוגר את החלון במקרה של שגיאה
+                Close();
             }
         }
 
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    // Add observers
+        //    //s_bl.Volunteer.AddObserver(CallObserver);
+        //    s_bl.Volunteer.AddObserver(VolunteerObserver);
+        //}
 
-        // Finish Call Button Click Handler
+        //private void Window_Closed(object sender, EventArgs e)
+        //{
+        //    // Remove observers
+        //    //s_bl.Volunteer?.RemoveObserver(CallObserver);
+        //    s_bl.Volunteer?.RemoveObserver(VolunteerObserver);
+        //    Close();
+        //}
+
+        //private void VolunteerObserver()
+        //{
+        //    try
+        //    {
+        //        CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(volunteerId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Failed to update volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        //private void CallObserver() //todo
+        //{
+        //    try
+        //    {
+        //        // Assuming GetCallDetails returns a collection of calls
+        //        var callsInProgress = s_bl.Call.GetCallDetails(volunteerId);
+
+        //        // Check if callsInProgress is a valid, non-empty collection
+        //        if (callsInProgress != null && callsInProgress.Any())
+        //        {
+        //            var activeCall = callsInProgress.FirstOrDefault(call => call.Status == BO.CallStatus.Open || call.Status == BO.CallStatus.OpenAtRisk);
+        //            CurrentCall = activeCall;
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("No calls in progress.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Failed to update call details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
         private void FinishCall_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentVolunteer.CurrentCall == null)
+            {
+                MessageBox.Show("No call to finish.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
+            try
+            {
+                // סיום הקריאה ועדכון הסטטוס שלה
+                CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Closed;
+                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+
+                // ניקוי הקריאה מהמתנדב
+                CurrentVolunteer.CurrentCall = null;
+
+                MessageBox.Show("Call finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to finish call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        // Cancel Call Button Click Handler
         private void CancelCall_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentVolunteer.CurrentCall == null)
+            {
+                MessageBox.Show("No call to cancel.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
+            try
+            {
+                // החזרת הקריאה לסטטוס "פתוחה" ועדכון הנתונים
+                CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Open;
+                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+
+                // ניקוי הקריאה מהמתנדב
+                CurrentVolunteer.CurrentCall = null;
+
+                MessageBox.Show("Call canceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to cancel call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        // View Call History Button Click Handler
+        private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ChangeActivityStatus_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentVolunteer.CurrentCall != null)
+            {
+                MessageBox.Show("Cannot change activity status while a call is in progress.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                CurrentVolunteer.IsActive = !CurrentVolunteer.IsActive;
+                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                MessageBox.Show("Activity status updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating activity status: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SelectCall_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentVolunteer.CurrentCall != null)
+            {
+                MessageBox.Show("You already have a call in progress.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+        SelectCallWindow selectCallWindow = new SelectCallWindow(volunteerId);
+        selectCallWindow.Show();
+        }
+
         private void ViewCallHistory_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -80,28 +224,7 @@ namespace PL
 
                 // פתיחת חלון חדש עם הקריאות
                 var callListWindow = new CallListWindow(volunteerId);
-                callListWindow.ShowDialog(); // 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-
-        // Select Call Button Click Handler
-        private void SelectCall_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        // Update Volunteer Button Click Handler
-        private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer); // שימוש במזהה ששמרנו
-                MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                callListWindow.Show();
             }
             catch (Exception ex)
             {

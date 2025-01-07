@@ -35,14 +35,6 @@
                     <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Width="300" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="Latitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.Latitude}" Width="300" IsReadOnly="True" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="Longitude:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.Longitude}" Width="300" IsReadOnly="True" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Role:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
                     <TextBox Text="{Binding CurrentVolunteer.Role}" Width="300" IsReadOnly="True" />
                 </StackPanel>
@@ -77,39 +69,39 @@
             <StackPanel Margin="0,10">
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Call ID:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.CallId}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.CallId, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Call Type:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Call}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Call, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Description:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Description}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Description, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Address:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.FullAddress}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.FullAddress, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Open Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.OpenTime}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.OpenTime, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Max Completion Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.MaxCompletionTime}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.MaxCompletionTime, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Start Time:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.StartTime}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.StartTime, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Distance From Volunteer:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.DistanceFromVolunteer}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.DistanceFromVolunteer, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Status:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Status}" Width="300" IsReadOnly="True" />
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Status, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

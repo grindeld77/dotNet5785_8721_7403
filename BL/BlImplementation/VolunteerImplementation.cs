@@ -141,8 +141,7 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlGeneralException("An error occurred while retrieving volunteer details.", ex);
         }
     }
-
-    void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
+   void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
     {
         try
         {
@@ -187,6 +186,8 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlGeneralException("An error occurred while updating the volunteer.", ex);
         }
     }
+
+
 
     public void AddVolunteer(BO.Volunteer volunteer)
     {

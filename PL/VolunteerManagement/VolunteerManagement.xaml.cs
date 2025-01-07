@@ -43,13 +43,12 @@ namespace PL.Volunteer
             window?.queryVolunteerList();
         }
 
-        public VolunteerListWindow(int userId)
+        public VolunteerListWindow()
         {
             InitializeComponent();
             this.DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
-            tampUserId = userId;
         }
 
         private void queryVolunteerList()
