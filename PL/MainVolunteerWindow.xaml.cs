@@ -22,9 +22,8 @@ namespace PL
     public partial class MainVolunteerWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        private int volunteerId;
 
-        public BO.Volunteer CurrentVolunteer
+        public BO.Volunteer? CurrentVolunteer
         {
             get { return (BO.Volunteer)GetValue(CurrentVolunteerProperty); }
             set { SetValue(CurrentVolunteerProperty, value); }
@@ -33,9 +32,9 @@ namespace PL
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(MainVolunteerWindow));
 
-        public BO.CallInProgress CurrentCall
+        public BO.CallInProgress? CurrentCall
         {
-            get => (BO.CallInProgress)GetValue(CurrentCallProperty);
+            get => (BO.CallInProgress?)GetValue(CurrentCallProperty);
             set => SetValue(CurrentCallProperty, value);
         }
 
@@ -44,17 +43,11 @@ namespace PL
 
         public MainVolunteerWindow(int id)
         {
-            InitializeComponent();
-            volunteerId = id;
-
             try
             {
-                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-
-                // הסתרת פרטי הקריאה אם היא אינה תקפה
-                if (CurrentVolunteer.CurrentCall != null && CurrentVolunteer.CurrentCall.Status == BO.CallStatus.Expired)
-                    CurrentVolunteer.CurrentCall = null;
-
+                InitializeComponent();
+                CurrentVolunteer = id != 0 ? s_bl.Volunteer.GetVolunteerDetails(id) : new BO.Volunteer();
+                CurrentCall = s_bl.Volunteer.GetVolunteerDetails(id).CurrentCall;
                 DataContext = this;
             }
             catch (Exception ex)
@@ -127,7 +120,7 @@ namespace PL
             {
                 // סיום הקריאה ועדכון הסטטוס שלה
                 CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Closed;
-                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
 
                 // ניקוי הקריאה מהמתנדב
                 CurrentVolunteer.CurrentCall = null;
@@ -152,7 +145,7 @@ namespace PL
             {
                 // החזרת הקריאה לסטטוס "פתוחה" ועדכון הנתונים
                 CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Open;
-                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
 
                 // ניקוי הקריאה מהמתנדב
                 CurrentVolunteer.CurrentCall = null;
@@ -169,7 +162,7 @@ namespace PL
         {
             try
             {
-                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
                 MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -189,7 +182,7 @@ namespace PL
             try
             {
                 CurrentVolunteer.IsActive = !CurrentVolunteer.IsActive;
-                s_bl.Volunteer.UpdateVolunteer(volunteerId, CurrentVolunteer);
+                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
                 MessageBox.Show("Activity status updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -205,7 +198,7 @@ namespace PL
                 MessageBox.Show("You already have a call in progress.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
-        SelectCallWindow selectCallWindow = new SelectCallWindow(volunteerId);
+        SelectCallWindow selectCallWindow = new SelectCallWindow(CurrentVolunteer.Id);
         selectCallWindow.Show();
         }
 
@@ -214,7 +207,7 @@ namespace PL
             try
             {
                 // טוען את הקריאות הסגורות של המתנדב
-                var closedCalls = s_bl.Call.GetClosedCallsByVolunteer(volunteerId, null, null);
+                var closedCalls = s_bl.Call.GetClosedCallsByVolunteer(CurrentVolunteer.Id, null, null);
 
                 if (closedCalls == null || !closedCalls.Any())
                 {
@@ -223,7 +216,7 @@ namespace PL
                 }
 
                 // פתיחת חלון חדש עם הקריאות
-                var callListWindow = new CallListWindow(volunteerId);
+                var callListWindow = new CallListWindow(CurrentVolunteer.Id);
                 callListWindow.Show();
             }
             catch (Exception ex)
