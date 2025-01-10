@@ -29,7 +29,8 @@ public enum CallStatus//call status
     Closed,             //call is closed
     Expired,            //call expired
     OpenAtRisk,         //call is open and at risk
-    InProgressAtRisk    //call is in progress and at risk
+    InProgressAtRisk,    //call is in progress and at risk
+    ALL
 }
 public enum CompletionStatus//call completion status
 {

@@ -82,13 +82,11 @@ internal static class CallManager
         return list;
     }
 
-    internal static List<OpenCallInList> GetOpenCallInList(int volunteerId)
+    internal static IEnumerable<OpenCallInList> GetOpenCallInList(int volunteerId)
     {
-        List<DO.Call> list = s_dal.Call.ReadAll().ToList();
-        DO.Volunteer volunteer = s_dal.Volunteer.Read(volunteerId) ?? throw new BloesNotExistException("Volunteer does not exist.");
-        return (from assignment in list
-                let call = s_dal.Call.Read(c => c.Id == assignment.Id) ?? throw new BloesNotExistException("Call does not exist.")
-                let status = CallManager.GetStatus(call.Id)
+        IEnumerable<DO.Call> list = s_dal.Call.ReadAll();
+        return (from call in list
+                let status = GetStatus(call.Id)
                 where status == BO.CallStatus.Open || status == BO.CallStatus.OpenAtRisk
                 select new BO.OpenCallInList()
                 {
@@ -98,8 +96,7 @@ internal static class CallManager
                     OpenTime = call.OpenedAt,
                     MaxEndTime = call.MaxCompletionTime,
                     Description = call.Description,
-                    DistanceFromVolunteer = VolunteerManager.CalculateDistance(call.Latitude, call.Longitude, (double)volunteer.Latitude, (double)volunteer.Longitude),
-                }).ToList();
+                });
     }
 
     private static BO.CallStatus GetStatus(int id)

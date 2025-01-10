@@ -439,7 +439,7 @@ Enter the type of call:
                         break;
                     case callMenu.DisplayAll:
                             {
-                                BO.CallInListFields? filterField = null;
+                                BO.CallStatus? filterField = null;
                                 object? filterValue = null;
                                 BO.CallInListFields? sortingField = null;
                                 Console.WriteLine("Do you want to filter the calls? yes / no:");
@@ -449,17 +449,14 @@ Enter the type of call:
                                     Console.Write(
                         $@"
 Please select one of the following fields to filter by:
-0. Assignment ID
-1. Call ID
-2. CallType
-3. Open time
-4. remaining time
-5. Last Volunteer
-6. TotalHandlingTime
-7. Status
-8. Total Assignments
+0. Open
+1. InProgress
+2. Closed
+3. Expired
+4. OpenAtRisk
+5. InProgressAtRisk
 ");
-                                    if (!Enum.TryParse(Console.ReadLine(), out CallInListFields filter))
+                                    if (!Enum.TryParse(Console.ReadLine(), out BO.CallStatus filter))
                                         throw new BlInvalidOperationException("Invalid input for filter field. Please enter a valid field.");
                                     else
                                         filterField = filter;
@@ -572,7 +569,7 @@ Please select one of the following fields to sort by:
                     case callMenu.DeleteAll:
                         {
                             // Retrieve all calls from the data layer
-                            IEnumerable<CallInList> calls = s_bl.Call.GetCalls(CallInListFields.AssignmentId, null, null);
+                            IEnumerable<CallInList> calls = s_bl.Call.GetCalls(null, null, BO.CallInListFields.CallId);
 
                             // If no calls to delete, throw an exception
                             if (!calls.Any())

@@ -265,7 +265,7 @@ internal class CallImplementation : ICall
         }
     }
 
-    IEnumerable<BO.CallInList> ICall.GetCalls(BO.CallInListFields? filterField, object? filterValue, BO.CallInListFields? sortField)
+    IEnumerable<BO.CallInList> ICall.GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField)
     {
         try
         {
@@ -276,84 +276,58 @@ internal class CallImplementation : ICall
             {
                 switch (filterField) // Filter the calls based on the specified field
                 {
-                    case BO.CallInListFields.AssignmentId:
-                        if (int.TryParse(filterValue.ToString(), out var id))
-                            callsList = callsList.Where(call => call.AssignmentId == id);
+                    case BO.CallStatus.Open:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.Open);
                         break;
-                    case BO.CallInListFields.CallId:
-                        if (int.TryParse(filterValue.ToString(), out var callId))
-                            callsList = callsList.Where(call => call.CallId == callId);
+                    case BO.CallStatus.OpenAtRisk:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.OpenAtRisk);
                         break;
-                    case BO.CallInListFields.CallType:
-                        if (Enum.TryParse(typeof(BO.CallType), filterValue.ToString(), out var callType))
-                            callsList = callsList.Where(call => call.CallType == callType);
+                    case BO.CallStatus.Closed:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.Closed);
                         break;
-                    case BO.CallInListFields.OpenTime:
-                        if (DateTime.TryParse(filterValue.ToString(), out var openingTime))
-                            callsList = callsList.Where(call => call.OpenTime == openingTime);
+                    case BO.CallStatus.InProgress:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.InProgress);
                         break;
-                    case BO.CallInListFields.RemainingTime:
-                        if (TimeSpan.TryParse(filterValue.ToString(), out var remainingTime))
-                            callsList = callsList.Where(call => call.RemainingTime == remainingTime);
+                    case BO.CallStatus.Expired:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.Expired);
                         break;
-                    case BO.CallInListFields.LastVolunteer:
-                        if (filterValue is string volunteer)
-                            callsList = callsList.Where(call => call.LastVolunteer == volunteer);
+                    case BO.CallStatus.InProgressAtRisk:
+                        callsList = callsList.Where(call => call.Status == BO.CallStatus.InProgressAtRisk);
                         break;
-                    case BO.CallInListFields.TotalHandlingTime:
-                        if (TimeSpan.TryParse(filterValue.ToString(), out var workingTime))
-                            callsList = callsList.Where(call => call.TotalHandlingTime == workingTime);
-                        break;
-                    case BO.CallInListFields.Status:
-                        if (Enum.TryParse(typeof(BO.CallStatus), filterValue.ToString(), out var callStatus))
-                            callsList = callsList.Where(call => call.Status == (BO.CallStatus)callStatus);
-                        break;
-                    case BO.CallInListFields.TotalAssignments:
-                        if (int.TryParse(filterValue.ToString(), out var totalAssignments))
-                            callsList = callsList.Where(call => call.TotalAssignments == totalAssignments);
+                    case BO.CallStatus.ALL:
                         break;
                 }
-
             }
             if (sortField != null)
             {
                 switch (sortField) // Sort the calls based on the specified field
                 {
                     case BO.CallInListFields.AssignmentId:
-                        if (int.TryParse(filterValue?.ToString(), out var id))
-                            callsList = callsList.OrderBy(call => call.AssignmentId == id);
+                            callsList = callsList.OrderBy(call => call.AssignmentId);
                         break;
                     case BO.CallInListFields.CallId:
-                        if (int.TryParse(filterValue?.ToString(), out var callId))
-                            callsList = callsList.OrderBy(call => call.CallId == callId);
+                            callsList = callsList.OrderBy(call => call.CallId);
                         break;
                     case BO.CallInListFields.CallType:
-                        if (Enum.TryParse(typeof(BO.CallType), filterValue?.ToString(), out var callType))
-                            callsList = callsList.OrderBy(call => call.CallType == callType);
+                            callsList = callsList.OrderBy(call => call.CallType);
                         break;
                     case BO.CallInListFields.OpenTime:
-                        if (DateTime.TryParse(filterValue?.ToString(), out var openingTime))
-                            callsList = callsList.OrderBy(call => call.OpenTime == openingTime);
+                            callsList = callsList.OrderBy(call => call.OpenTime);
                         break;
                     case BO.CallInListFields.RemainingTime:
-                        if (TimeSpan.TryParse(filterValue?.ToString(), out var remainingTime))
-                            callsList = callsList.OrderBy(call => call.RemainingTime == remainingTime);
+                            callsList = callsList.OrderBy(call => call.RemainingTime);
                         break;
                     case BO.CallInListFields.LastVolunteer:
-                        if (filterValue is string volunteerName)
-                            callsList = callsList.OrderBy(call => call.LastVolunteer == volunteerName);
+                            callsList = callsList.OrderBy(call => call.LastVolunteer);
                         break;
                     case BO.CallInListFields.TotalHandlingTime:
-                        if (TimeSpan.TryParse(filterValue?.ToString(), out var workingTime))
-                            callsList = callsList.OrderBy(call => call.TotalHandlingTime == workingTime);
+                            callsList = callsList.OrderBy(call => call.TotalHandlingTime);
                         break;
                     case BO.CallInListFields.Status:
-                        if (Enum.TryParse(typeof(BO.CallStatus), filterValue?.ToString(), out var callStatus))
-                            callsList = callsList.OrderBy(call => call.Status == (BO.CallStatus)callStatus);
+                            callsList = callsList.OrderBy(call => call.Status);
                         break;
                     case BO.CallInListFields.TotalAssignments:
-                        if (int.TryParse(filterValue?.ToString(), out var totalAssignments))
-                            callsList = callsList.OrderBy(call => call.TotalAssignments == totalAssignments);
+                            callsList = callsList.OrderBy(call => call.TotalAssignments);
                         break;
                 }
             }
@@ -417,7 +391,7 @@ internal class CallImplementation : ICall
     IEnumerable<BO.OpenCallInList> ICall.GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField)
     {
             // Fetch open calls for the volunteer
-            List<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
+            IEnumerable<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
             if (filterType != null)
             {
                 openCallsInList = openCallsInList.Where(call => call.Type == filterType).ToList();

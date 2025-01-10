@@ -93,7 +93,7 @@ public static class Initialization
             do
             {
                 id--;
-                int[] weights = {2, 1, 2, 1, 2, 1, 2, 1};
+                int[] weights = { 2, 1, 2, 1, 2, 1, 2, 1 };
                 int sum = 0;
                 int temp = id;
                 for (int j = 0; j < 8; j++)
@@ -105,7 +105,7 @@ public static class Initialization
                 }
                 int remainder = sum % 10;
                 int checksum = (10 - remainder) % 10;
-                id =id*10+ checksum;
+                id = id * 10 + checksum;
             }
             while (s_dal!.Volunteer.Read(id) != null);
 
@@ -401,6 +401,8 @@ public static class Initialization
 
             if (maxTime < currentTime)
                 callStatus = CallStatus.Expired;
+            else if (openTime < currentTime)
+                callStatus = CallStatus.InProgress;
 
             Call callToAdd = new Call(
                 Id: 0,
@@ -464,21 +466,13 @@ public static class Initialization
 
         DateTime currentTime = DateTime.Now; // Get the current system time
 
-        foreach (var call in callsList.ToList()) // Convert to list to avoid modifying iteration variable
+        foreach (var call in callsList) // Iterate over all calls
         {
             int id = call.Id;
 
-            // If the call is not already assigned, it should remain open
-            CallStatus callStatus = call.Status == CallStatus.Open ? CallStatus.Open : call.Status;
-
             // Select a random volunteer from the list
             int index = s_rand.Next(0, volunteersList.Count());
-            Volunteer? selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
-
-            if (selectedVolunteer == null)
-            {
-                continue; // Skip if no volunteer is found
-            }
+            Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
 
             // Set StartTime to be between the call's opening time and the current time
             DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, Math.Max(1, (int)(currentTime - call.OpenedAt).TotalMinutes)) % 36);
@@ -491,7 +485,6 @@ public static class Initialization
                 case 0: // Call in treatment
                     status = CompletionStatus.Handled;
                     EndTime = null; // Still ongoing
-                    callStatus = CallStatus.InProgress; // Mark call as InProgress when assigned
                     break;
 
                 case 1: // Self-cancellation
@@ -499,7 +492,6 @@ public static class Initialization
                     EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
                         ? call.MaxCompletionTime
                         : StartTime.AddMinutes(s_rand.Next(1, 60)); // Within the current time
-                    callStatus = CallStatus.Expired; // Mark as expired after cancellation
                     break;
 
                 case 2: // Completed by manager
@@ -507,7 +499,6 @@ public static class Initialization
                     EndTime = StartTime.AddMinutes(s_rand.Next(1, 180)); // Within 3 hours of StartTime
                     if (call.MaxCompletionTime.HasValue && call.MaxCompletionTime < EndTime)
                         EndTime = call.MaxCompletionTime.Value; // Adjust within max completion time
-                    callStatus = CallStatus.Expired; // Mark as expired after completion
                     break;
 
                 case 3:
@@ -533,13 +524,6 @@ public static class Initialization
             // Create the assignment
             Assignment assignmentToAdd = new Assignment(id, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
             s_dal!.Assignment.Create(assignmentToAdd);
-
-            // Update the call status to InProgress if it was assigned and is now in progress
-            if (callStatus == CallStatus.InProgress)
-            {
-                var updatedCall = call with { Status = CallStatus.InProgress };
-                s_dal!.Call.Update(updatedCall); // Ensure the call status is updated in the database
-            }
         }
     }
 
@@ -551,6 +535,6 @@ public static class Initialization
         Console.WriteLine("Reset Configuration values and List values...");
         createVolunteers();
         createCalls();
-       createAssignments();
+        createAssignments();
     }
 }

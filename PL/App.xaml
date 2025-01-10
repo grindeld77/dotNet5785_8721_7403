@@ -7,5 +7,7 @@
         <local:VolunteerCollection x:Key="VolunteerCollectionKey" />
         <local:OpenCallCollection x:Key="OpenCallCollectionKey" />
         <local:OpenCallCollectionType x:Key="OpenCallCollectionTypeKey" />
+        <local:CallCollectionFilter x:Key= "CallCollectionFilterKey" />
+        <local:CallCollectionSort x:Key= "CallCollectionSortKey" />
     </Application.Resources>
 </Application>

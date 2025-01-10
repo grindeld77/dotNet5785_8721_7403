@@ -118,13 +118,7 @@ namespace PL
 
             try
             {
-                // סיום הקריאה ועדכון הסטטוס שלה
-                CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Closed;
-                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
-
-                // ניקוי הקריאה מהמתנדב
-                CurrentVolunteer.CurrentCall = null;
-
+                s_bl.Call.CompleteCallAssignment(CurrentVolunteer.Id, CurrentCall.Id);
                 MessageBox.Show("Call finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -143,13 +137,7 @@ namespace PL
 
             try
             {
-                // החזרת הקריאה לסטטוס "פתוחה" ועדכון הנתונים
-                CurrentVolunteer.CurrentCall.Status = BO.CallStatus.Open;
-                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
-
-                // ניקוי הקריאה מהמתנדב
-                CurrentVolunteer.CurrentCall = null;
-
+                s_bl.Call.CancelCallAssignment(CurrentVolunteer.Id , CurrentCall.Id);
                 MessageBox.Show("Call canceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
