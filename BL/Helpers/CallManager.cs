@@ -29,38 +29,6 @@ internal static class CallManager
             Status = (BO.CallStatus)call.Status
         };
     }
-    public static List<BO.CallInList> GetAllCalls()
-    {
-        var calls = s_dal.Call.ReadAll();
-        var assignments = s_dal.Assignment.ReadAll();
-
-        var callInList = calls.Select(call =>
-        {
-            var callAssignments = assignments.Where(a => a.CallId == call.Id).ToList();
-            var lastAssignment = callAssignments == null ? null : callAssignments.OrderByDescending(a => a.EntryTime).FirstOrDefault();
-
-            return new BO.CallInList
-            {
-                AssignmentId = s_dal.Assignment.ReadAll() == null
-                ? null
-                : s_dal.Assignment.ReadAll().FirstOrDefault(a => a.CallId == call.Id)?.Id,
-                CallId = call.Id,
-                CallType = call.Type.ToString(),
-                OpenTime = call.OpenedAt,
-                RemainingTime = call.MaxCompletionTime.HasValue ? call.MaxCompletionTime.Value - DateTime.Now : (TimeSpan?)null,
-                LastVolunteer = lastAssignment != null ? s_dal.Volunteer.Read(lastAssignment.VolunteerId)?.FullName : null,
-                TotalHandlingTime = lastAssignment?.CompletionTime.HasValue == true ? lastAssignment.CompletionTime.Value - lastAssignment.EntryTime : (TimeSpan?)null,
-                Status = (BO.CallStatus)call.Status,
-                TotalAssignments = assignments == null ? 0 : callAssignments!.Count
-            };
-        }).ToList();
-
-        // Notify the observers about the updated call list.
-        Observers.NotifyListUpdated(); // Notify that the list of calls was updated.
-
-        return callInList;
-    }
-
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
         IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()
@@ -125,6 +93,26 @@ internal static class CallManager
             return BO.CallStatus.Expired;
         }
         return DateTime.Now > lastAssignment.EntryTime.AddMinutes(30) ? BO.CallStatus.OpenAtRisk : BO.CallStatus.Open;
+    }
+
+    internal static CallInList converterFromDoToBoCallInList(DO.Call c)
+    {
+        IEnumerable<DO.Assignment> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == c.Id);
+        BO.CallInList callInList = new BO.CallInList
+        {
+            AssignmentId = assignments.Any() ? assignments.Last().Id : 0,
+            CallId = c.Id,
+            CallType = (BO.CallType)c.Type,
+            OpenTime = c.OpenedAt,
+            RemainingTime = c.MaxCompletionTime - DateTime.Now > TimeSpan.Zero ? c.MaxCompletionTime - DateTime.Now : null,
+            LastVolunteer = assignments.Any() ? assignments.Last().VolunteerId.ToString() : "None",
+            TotalHandlingTime = c.MaxCompletionTime - c.OpenedAt,
+            Status = (BO.CallStatus)c.Status,
+            TotalAssignments = assignments.Count()
+        };
+
+        Observers.NotifyItemUpdated(c.Id); // stage 5
+        return callInList;
     }
 }
 

@@ -4,7 +4,7 @@ public class CallInList
 {
     public int? AssignmentId { get; set; }//קוד קריאה
     public int CallId { get; init; }//קוד קריאה
-    public string CallType { get; set; }//סוג קריאה
+    public BO.CallType CallType { get; set; }//סוג קריאה
     public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
     public TimeSpan? RemainingTime { get; set; } // מחושב
     public string? LastVolunteer { get; set; }//שם המתנדב האחרון שטיפל בקריאה
@@ -14,7 +14,7 @@ public class CallInList
     public override string ToString()
     {
         return $"ID: {AssignmentId?.ToString() ?? "N/A"}, " +
-               $"Call Type: {CallType ?? "N/A"}, " +
+               $"Call Type: {CallType.ToString() ?? "N/A"}, " +
                $"Open Time: {OpenTime}, " +
                $"Remaining Time: {RemainingTime?.ToString(@"hh\:mm\:ss") ?? "N/A"}, " +
                $"Last Volunteer: {LastVolunteer ?? "N/A"}, " +

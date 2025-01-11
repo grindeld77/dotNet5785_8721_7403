@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        Title="Call Management" 
+        Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="Call Management" Height="640" Width="900">
+        Height="640" Width="1000">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -30,11 +32,10 @@
 
         <!-- Calls ListView -->
         <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10"
-                  MouseDoubleClick="ListView_MouseDoubleClick" 
-                  IsSynchronizedWithCurrentItem="True" SelectionChanged="ListView_SelectionChanged">
+                  MouseDoubleClick="ListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="100" />
+                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding CallId}" Width="100" />
                     <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="120" />
                     <GridViewColumn Header="Remaining Time" DisplayMemberBinding="{Binding RemainingTime}" Width="150" />
                     <GridViewColumn Header="Last Volunteer" DisplayMemberBinding="{Binding LastVolunteer}" Width="150" />
@@ -48,21 +49,25 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Actions" Width="200">
+
+                    <!-- Delete Action Column -->
+                    <GridViewColumn Header="Delete" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Content="Delete" 
-                                            Command="{Binding DataContext.DeleteCallCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                            CommandParameter="{Binding}" 
-                                            Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}" 
-                                            Margin="5" />
-                                    <Button Content="Unassign" 
-                                            Command="{Binding DataContext.UnassignCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                            CommandParameter="{Binding}" 
-                                            Visibility="{Binding CanUnassign, Converter={StaticResource BoolToVisibilityConverter}}" 
-                                            Margin="5" />
-                                </StackPanel>
+                                <Button Content="Delete" 
+                                        Click="DeleteButton_Click" 
+                                        Margin="5" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Unassign Action Column -->
+                    <GridViewColumn Header="Unassign" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Unassign" 
+                                        Click="UnassignButton_Click" 
+                                        Margin="5" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

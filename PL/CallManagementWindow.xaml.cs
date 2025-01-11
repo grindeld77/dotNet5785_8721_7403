@@ -17,6 +17,7 @@ namespace PL
         public string ButtonText { get; set; }
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        int id;
 
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallManagementWindow), new PropertyMetadata(null));
@@ -46,27 +47,15 @@ namespace PL
             set => SetValue(SelectedSortProperty, value);
         }
 
-        public CallManagementWindow()
+        public CallManagementWindow(int Id)
         {
+            id = Id;
             InitializeComponent();
+            this.DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
         }
 
-        private void AddCall(object parameter)
-        {
-
-        }
-
-        private void DeleteCall(object parameter)
-        {
-        }
-
-
-        private void UnassignCall(object parameter)
-        {
-           
-        }
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
@@ -74,13 +63,9 @@ namespace PL
                 try
                 {
                     // קבלת המתנדב המלא לפי ID
-                    var selectedVolunteer = s_bl.Call.GetCallDetails(selectedCallInList.CallId);
-
-                    // פתיחת חלון עם הנתונים של הקריאה
-                    //var volunteerWindow = new VolunteerWindow(tampUserId, selectedVolunteer.Id);
-                   // volunteerWindow.Show();
-
-                    // רענון הרשימה לאחר סגירת החלון
+                    var selectedCall = s_bl.Call.GetCallDetails(selectedCallInList.CallId);
+                    var volunteerWindow = new CallWindow(selectedCallInList.CallId);  
+                    volunteerWindow.Show();
                     queryCallList();
                 }
                 catch (Exception ex)
@@ -102,18 +87,67 @@ namespace PL
         }
         private void queryCallList()
         {
-            if (SelectedFilter == BO.CallStatus.ALL)
+            try
             {
-                CallList = s_bl.Call.GetCalls(BO.CallStatus.ALL, null, SelectedSort);
+                if (SelectedFilter == BO.CallStatus.ALL)
+                {
+                    CallList = s_bl.Call.GetCalls(BO.CallStatus.ALL, null, SelectedSort);
+                }
+                else
+                {
+                    CallList = s_bl.Call.GetCalls(SelectedFilter, null, SelectedSort);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                CallList = s_bl.Call.GetCalls(SelectedFilter, null, SelectedSort);
+                MessageBox.Show($"Error querying call list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            var callWindow = new AddCallWindow();
+            callWindow.Show();
+
+            // Refresh the list after closing the window
+            queryCallList();
+        }
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
+            {
+                if (MessageBox.Show("Are you sure you want to delete the selected call?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        s_bl.Call.DeleteCall(selectedCallInList.CallId);
+                        queryCallList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error deleting call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void UnassignButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
+            {
+                if (MessageBox.Show("Are you sure you want to unassign the selected call?", "Confirm Unassignment", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        s_bl.Call.CancelCallAssignment(id, selectedCallInList.CallId);
+                        queryCallList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error unassigning call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
 
         }
     }

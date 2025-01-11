@@ -269,8 +269,16 @@ internal class CallImplementation : ICall
     {
         try
         {
-            var calls = CallManager.GetAllCalls();
-            IEnumerable<BO.CallInList> callsList = calls;
+            IEnumerable<DO.Call> doCalls;
+            IEnumerable<BO.CallInList> callsList = null;
+
+            doCalls = _dal.Call.ReadAll();
+            
+
+            if (doCalls != null)
+            {
+                callsList = doCalls.Select(c => CallManager.converterFromDoToBoCallInList(c));
+            }
 
             if (filterField != null && filterValue != null) // Filter the calls based on the specified field
             {

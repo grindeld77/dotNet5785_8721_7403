@@ -174,7 +174,7 @@ namespace PL
 
         private void btnManageCalls_Click(object sender, RoutedEventArgs e)
         {
-            new CallManagementWindow().Show();
+            new CallManagementWindow(tampUserId).Show();
         }
     }
 }
