@@ -210,18 +210,18 @@
     <MaxCallDistance>12</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
-	<Volunteer>
-		<Id>328308721</Id>
-		<Name>Omar Rafael</Name>
-		<MobilePhone>0548350247</MobilePhone>
-		<Email>omar.rafael@gmail.com</Email>
-		<Role>Admin</Role>
-		<IsActive>true</IsActive>
-		<Password>303465133</Password>
-		<CurrentAddress>Horev St 17, Haifa</CurrentAddress>
-		<Latitude>32.7811</Latitude>
-		<Longitude>35.0105</Longitude>
-		<MaxCallDistance>12</MaxCallDistance>
-		<DistancePreference>Aerial</DistancePreference>
-	</Volunteer>
+  <Volunteer>
+    <Id>328308721</Id>
+    <Name>Omar Rafael</Name>
+    <MobilePhone>0548350241</MobilePhone>
+    <Email>omar.rafael@gmail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>303465133</Password>
+    <CurrentAddress>Horev St 17, Haifa</CurrentAddress>
+    <Latitude>32.7812232</Latitude>
+    <Longitude>34.9908479</Longitude>
+    <MaxCallDistance>15</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
 </Volunteers>

@@ -169,7 +169,7 @@ internal class VolunteerImplementation : IVolunteer
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
                 Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0 ? doVolunteere.Longitude
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
-                MaxCallDistance = doVolunteere.MaxCallDistance,
+                MaxCallDistance = volunteer.MaxDistanceForCall ?? doVolunteere.MaxCallDistance,
                 DistancePreference = doVolunteere.DistancePreference,
             };
             _dal.Volunteer.Update(doVolunteerNew);

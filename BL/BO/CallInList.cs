@@ -2,7 +2,7 @@
 
 public class CallInList
 {
-    public int? AssignmentId { get; set; }//קוד קריאה
+    public int? AssignmentId { get; set; }//קוד הקצאה
     public int CallId { get; init; }//קוד קריאה
     public BO.CallType CallType { get; set; }//סוג קריאה
     public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה

@@ -53,9 +53,20 @@ internal static class CallManager
     internal static IEnumerable<OpenCallInList> GetOpenCallInList(int volunteerId)
     {
         IEnumerable<DO.Call> list = s_dal.Call.ReadAll();
+        //return (from call in list
+        //        let status = GetStatus(call.Id)
+        //        where status == BO.CallStatus.Open || status == BO.CallStatus.OpenAtRisk
+        //        select new BO.OpenCallInList()
+        //        {
+        //            Id = call.Id,
+        //            Type = (BO.CallType)call.Type,
+        //            FullAddress = call.Address,
+        //            OpenTime = call.OpenedAt,
+        //            MaxEndTime = call.MaxCompletionTime,
+        //            Description = call.Description,
+        //        });
+
         return (from call in list
-                let status = GetStatus(call.Id)
-                where status == BO.CallStatus.Open || status == BO.CallStatus.OpenAtRisk
                 select new BO.OpenCallInList()
                 {
                     Id = call.Id,
