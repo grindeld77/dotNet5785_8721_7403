@@ -127,7 +127,7 @@ namespace PL
         }
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerListWindow().Show();
+            new VolunteerListWindow(tampUserId).Show();
         }
         private void btnInitializeDB_Click(object sender, RoutedEventArgs e)
         {

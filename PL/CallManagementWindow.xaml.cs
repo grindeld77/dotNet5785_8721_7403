@@ -106,7 +106,7 @@ namespace PL
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var callWindow = new AddCallWindow();
+            var callWindow = new CallWindow(-1);
             callWindow.Show();
 
             // Refresh the list after closing the window

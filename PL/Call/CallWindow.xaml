@@ -1,12 +1,77 @@
 ﻿<Window x:Class="PL.Call.CallWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
-        mc:Ignorable="d"
-        Title="Call Details" Height="600" Width="800">
+        Title="Call Details" Height="600" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
+        <StackPanel Margin="20" HorizontalAlignment="Center">
+            <!-- כותרת המסך -->
+            <TextBlock Text="Call Management" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" />
 
+            <!-- מזהה קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Call ID:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.Id}" IsReadOnly="True" Width="200" />
+            </StackPanel>
+
+            <!-- תיאור הקריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Description:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.Description}" Width="200" />
+            </StackPanel>
+
+            <!-- סוג קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Type:" Width="100" VerticalAlignment="Center" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource OpenCallCollectionTypeKey}}"
+                          SelectedItem="{Binding CurrentCall.Type}"
+                    Width="200" />
+            </StackPanel>
+
+            <!-- כתובת מלאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Full Address:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.FullAddress}" Width="200" />
+            </StackPanel>
+
+            <!-- זמן פתיחה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Open Time:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.OpenTime}" IsReadOnly="True" Width="200" />
+            </StackPanel>
+
+            <!-- זמן סיום מירבי -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Max End Time:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.MaxEndTime}" Width="200" />
+            </StackPanel>
+
+            <!-- סטטוס קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <TextBlock Text="Status:" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding CurrentCall.Status}" IsReadOnly="True" Width="200" />
+            </StackPanel>
+
+            <!-- רשימת הקצאות -->
+            <GroupBox Header="Assignments" Margin="0,20">
+                <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
+                        <DataGridTextColumn Header="Volunteer Name" Binding="{Binding VolunteerName}" />
+                        <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}" />
+                        <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <!-- כפתורים -->
+            <StackPanel Orientation="Horizontal" Margin="0,20" HorizontalAlignment="Center">
+                <Button Content="{Binding ButtonText}" Width="100" Margin="10" Click="SaveButton_Click" />
+                <Button Content="Cancel" Width="100" Margin="10" Click="Cancel_Click" />
+                <Button Content="Delete" Width="100" Margin="10" Click="DeleteButton_Click" Visibility="{Binding IsDeleteButtonVisible}" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
