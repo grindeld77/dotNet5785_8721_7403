@@ -40,7 +40,7 @@ namespace PL.Call
         }
 
         public static readonly DependencyProperty SelectedCallTypeProperty =
-            DependencyProperty.Register("SelectedCallType", typeof(BO.CallType), typeof(VolunteerListWindow));
+            DependencyProperty.Register("SelectedCallType", typeof(BO.CallType), typeof(CallWindow));
         public static readonly DependencyProperty SelectedCallTypeInCallWindowProperty =
             DependencyProperty.Register("SelectedCallTypeInCallWindow", typeof(BO.CallType), typeof(CallWindow));
 
@@ -92,7 +92,7 @@ namespace PL.Call
                     s_bl.Call.UpdateCall(CurrentCall);
                 }
 
-                MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Call saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
@@ -104,23 +104,23 @@ namespace PL.Call
         {
             if (callId == -1)
             {
-                MessageBox.Show("Cannot delete a volunteer that hasn't been added yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Cannot delete a Call that hasn't been added yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var result = MessageBox.Show("Are you sure you want to delete this volunteer?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("Are you sure you want to delete this Call?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
             
             if (result == MessageBoxResult.Yes)
             {
                 try
                 {
                     s_bl.Call.DeleteCall(callId);
-                    MessageBox.Show("Volunteer deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Call deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"An error occurred while deleting the call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else

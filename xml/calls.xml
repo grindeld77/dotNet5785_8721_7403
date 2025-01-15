@@ -23,17 +23,6 @@
     <Status>InProgress</Status>
   </Call>
   <Call>
-    <Id>2</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Car accident with multiple injuries.</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-15T14:19:05</OpenedAt>
-    <MaxCompletionTime>2025-01-15T15:32:05</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>3</Id>
     <Type>FirstAid</Type>
     <Description>First aid for an injured person.</Description>
@@ -714,5 +703,16 @@
     <OpenedAt>2025-01-15T14:45:05</OpenedAt>
     <MaxCompletionTime>2025-01-15T15:35:05</MaxCompletionTime>
     <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident with injuries.</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-01-15T14:19:05</OpenedAt>
+    <MaxCompletionTime>2025-01-15T15:32:05</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
 </ArrayOfCall>

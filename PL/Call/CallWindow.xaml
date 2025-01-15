@@ -54,7 +54,7 @@
             </StackPanel>
 
             <!-- רשימת הקצאות -->
-            <GroupBox Header="Assignments" Margin="0,20">
+            <GroupBox Header="Assignments" Margin="0,20" Height="123">
                 <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />

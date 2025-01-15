@@ -55,10 +55,10 @@ namespace PL
             Loaded += Window_Loaded;
             Closed += Window_Closed;
         }
-
+        ListView listView;
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
+            if (listView.SelectedItem is BO.CallInList selectedCallInList)
             {
                 try
                 {

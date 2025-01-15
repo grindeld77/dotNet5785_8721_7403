@@ -15,7 +15,7 @@ internal static class CallManager
         {
             throw new BO.BloesNotExistException("Call does not exist.");
         }
-
+        IEnumerable<BO.CallAssignInList> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id); //to fix!
         return new BO.Call
         {
             Id = call.Id,
@@ -26,7 +26,8 @@ internal static class CallManager
             Longitude = call.Longitude,
             OpenTime = call.OpenedAt,
             MaxEndTime = (DateTime)call.MaxCompletionTime,
-            Status = (BO.CallStatus)call.Status
+            Status = (BO.CallStatus)call.Status,
+            Assignments = assignments
         };
     }
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
