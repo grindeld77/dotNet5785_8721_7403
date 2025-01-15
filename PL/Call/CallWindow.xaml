@@ -55,7 +55,7 @@
 
             <!-- רשימת הקצאות -->
             <GroupBox Header="Assignments" Margin="0,20" Height="123">
-                <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False" Height="123">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
                         <DataGridTextColumn Header="Volunteer Name" Binding="{Binding VolunteerName}" />

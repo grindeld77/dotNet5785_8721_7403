@@ -1,6 +1,7 @@
 ﻿using BO;
 using DalApi;
 using DO;
+using System.Collections.Generic;
 
 namespace Helpers;
 internal static class CallManager
@@ -15,7 +16,8 @@ internal static class CallManager
         {
             throw new BO.BloesNotExistException("Call does not exist.");
         }
-        IEnumerable<BO.CallAssignInList> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id); //to fix!
+        IEnumerable<DO.Assignment> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id); //to fix!
+        IEnumerable<BO.CallAssignInList> assignmentsInList = CallManager.AssignmentToCallAssignInList(assignments);
         return new BO.Call
         {
             Id = call.Id,
@@ -27,9 +29,16 @@ internal static class CallManager
             OpenTime = call.OpenedAt,
             MaxEndTime = (DateTime)call.MaxCompletionTime,
             Status = (BO.CallStatus)call.Status,
-            Assignments = assignments
+            Assignments = assignmentsInList
         };
     }
+
+    private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<Assignment> assignments)
+    {
+        IEnumerable<CallAssignInList> list;
+
+    }
+
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
         IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()
