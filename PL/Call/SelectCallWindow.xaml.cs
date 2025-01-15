@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
+using PL;
 namespace PL.Call
 {
     /// <summary>
@@ -126,6 +126,12 @@ namespace PL.Call
                     s_bl.Call.AssignVolunteerToCall(UserId, selectedCall.Id);
                     MessageBox.Show($"Selected Call ID: {selectedCall.Id}", "Call Selected", MessageBoxButton.OK, MessageBoxImage.Information);
                     queryOpenCallList();
+
+                    if (Application.Current.Windows.OfType<MainVolunteerWindow>().FirstOrDefault() is MainVolunteerWindow volunteerWindow)
+                    {
+                        volunteerWindow.RefreshData(); // קריאה לפונקציה מרעננת
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -137,6 +143,8 @@ namespace PL.Call
                 MessageBox.Show("Failed to retrieve the selected call.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+
 
     }
 }

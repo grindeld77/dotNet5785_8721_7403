@@ -123,21 +123,15 @@ internal class CallImplementation : ICall
             return;
         }
         throw new BLAlreadyAssignedException("Call is already assigned");
-    }/*    public int Id { get; init; } //קוד קריאה
-    public CallType Type { get; set; }//סוג קריאה
-    public string? Description { get; set; }//תיאור הקריאה
-    public string? FullAddress { get; set; }//כתובת מלאה
-    public double? Latitude { get; set; }//קו רוחב
-    public double? Longitude { get; set; }//קו אורך
-    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
-    public DateTime MaxEndTime { get; set; }//זמן סיום מירבי
-    public CallStatus Status { get; set; }// ENUM עבור סטטוס הקריאה
-    public List<BO.CallAssignInList>? Assignments { get; set; } =null;//רשימת הקצאות*/
+    }
+
+
 
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         // Retrieve the assignment from the data layer
         DO.Assignment assignment = _dal.Assignment.Read(a => a.Id == assignmentId);
+
 
         // Retrieve the volunteer associated with the assignment
         var volunteer = _dal.Volunteer.Read(a => a.Id == assignment.VolunteerId);
@@ -178,6 +172,43 @@ internal class CallImplementation : ICall
             CompletionStatus = completionStatus
         };
 
+        ICall help = new CallImplementation();
+        var calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
+
+        if (calltamp.Status == DO.CallStatus.InProgress)
+        {
+            var newCall = new BO.Call
+            {
+                Id = assignment.CallId,
+                Type = (BO.CallType)calltamp.Type,
+                Description = calltamp?.Description ?? null,
+                FullAddress = calltamp?.Address ?? null,
+                Latitude = calltamp?.Latitude ?? 0.0,
+                Longitude = calltamp?.Longitude ?? 0.0,
+                OpenTime = calltamp.OpenedAt,
+                MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                Status = BO.CallStatus.Open,
+                Assignments = null
+            };
+            help.UpdateCall(newCall);
+        }
+        else if (calltamp.Status == DO.CallStatus.InProgressAtRisk)
+        {
+            var newCall = new BO.Call
+            {
+                Id = assignment.CallId,
+                Type = (BO.CallType)calltamp.Type,
+                Description = calltamp?.Description ?? null,
+                FullAddress = calltamp?.Address ?? null,
+                Latitude = calltamp?.Latitude ?? 0.0,
+                Longitude = calltamp?.Longitude ?? 0.0,
+                OpenTime = calltamp.OpenedAt,
+                MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                Status = BO.CallStatus.OpenAtRisk,
+                Assignments = null
+            };
+            help.UpdateCall(newCall);
+        }
         try
         {
             _dal.Assignment.Update(updateAssignment);

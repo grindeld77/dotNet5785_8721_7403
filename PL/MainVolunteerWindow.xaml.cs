@@ -47,66 +47,24 @@ namespace PL
             {
                 InitializeComponent();
                 CurrentVolunteer = id != 0 ? s_bl.Volunteer.GetVolunteerDetails(id) : new BO.Volunteer();
-                CurrentCall = s_bl.Volunteer.GetVolunteerDetails(id).CurrentCall;
+
+                // שימוש ב-SetValue במקום גישה ישירה
+                SetValue(CurrentCallProperty, s_bl.Volunteer.GetVolunteerDetails(id)?.CurrentCall);
+
                 DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
+
+                // טיפול במצב חריג
+                CurrentVolunteer = new BO.Volunteer();
+                SetValue(CurrentCallProperty, null);
+                DataContext = this;
             }
         }
 
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    // Add observers
-        //    //s_bl.Volunteer.AddObserver(CallObserver);
-        //    s_bl.Volunteer.AddObserver(VolunteerObserver);
-        //}
 
-        //private void Window_Closed(object sender, EventArgs e)
-        //{
-        //    // Remove observers
-        //    //s_bl.Volunteer?.RemoveObserver(CallObserver);
-        //    s_bl.Volunteer?.RemoveObserver(VolunteerObserver);
-        //    Close();
-        //}
-
-        //private void VolunteerObserver()
-        //{
-        //    try
-        //    {
-        //        CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(volunteerId);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Failed to update volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-
-        //private void CallObserver() //todo
-        //{
-        //    try
-        //    {
-        //        // Assuming GetCallDetails returns a collection of calls
-        //        var callsInProgress = s_bl.Call.GetCallDetails(volunteerId);
-
-        //        // Check if callsInProgress is a valid, non-empty collection
-        //        if (callsInProgress != null && callsInProgress.Any())
-        //        {
-        //            var activeCall = callsInProgress.FirstOrDefault(call => call.Status == BO.CallStatus.Open || call.Status == BO.CallStatus.OpenAtRisk);
-        //            CurrentCall = activeCall;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("No calls in progress.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Failed to update call details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
 
         private void FinishCall_Click(object sender, RoutedEventArgs e)
         {
@@ -217,5 +175,29 @@ namespace PL
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public void RefreshData()
+        {
+            try
+            {
+                if (CurrentVolunteer == null || CurrentVolunteer.Id == 0)
+                {
+                    MessageBox.Show("Volunteer ID is missing. Unable to refresh data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // רענון פרטי המתנדב
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+
+                // רענון פרטי הקריאה
+                CurrentCall = CurrentVolunteer.CurrentCall;
+
+                MessageBox.Show("Data refreshed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to refresh data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }
