@@ -120,12 +120,17 @@ namespace PL
             {
                 s_bl.Call.CompleteCallAssignment(CurrentVolunteer.Id, CurrentCall.Id);
                 MessageBox.Show("Call finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // רענון פרטי המתנדב
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+                CurrentCall = CurrentVolunteer.CurrentCall;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to finish call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void CancelCall_Click(object sender, RoutedEventArgs e)
         {
@@ -137,14 +142,19 @@ namespace PL
 
             try
             {
-                s_bl.Call.CancelCallAssignment(CurrentVolunteer.Id , CurrentCall.Id);
+                s_bl.Call.CancelCallAssignment(CurrentVolunteer.Id, CurrentCall.Id);
                 MessageBox.Show("Call canceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // רענון פרטי המתנדב
+                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+                CurrentCall = CurrentVolunteer.CurrentCall;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to cancel call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
         {
@@ -181,11 +191,6 @@ namespace PL
 
         private void SelectCall_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentVolunteer.CurrentCall != null)
-            {
-                MessageBox.Show("You already have a call in progress.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
         SelectCallWindow selectCallWindow = new SelectCallWindow(CurrentVolunteer.Id);
         selectCallWindow.Show();
         }

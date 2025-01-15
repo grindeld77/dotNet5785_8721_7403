@@ -474,22 +474,54 @@ $@"        Select an option to proceed
                         //Initialization.Do(s_dal); //stage 2
                         Initialization.Do(); //stage 4
                         break;
-                    case Menu.DisplayAll:
+                    case Menu.DisplayAll://אני רוצה להדפיס כל הקצאה עם הפרטים שלה ומייד אחריה את המתנדב שרשום בהקצאה הזו ואת הקריאה שרשומה בהקצאה
                         Console.WriteLine("All data in the database:\n volunteer\n");
-                        foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
-                        {
-                            Console.WriteLine(volunteer);
-                        }
-                        Console.WriteLine("call\n");
-                        foreach (Call call in s_dal.Call.ReadAll())
-                        {
-                            Console.WriteLine(call);
-                        }
-                        Console.WriteLine("assignment\n");
                         foreach (Assignment assignment in s_dal.Assignment.ReadAll())
                         {
                             Console.WriteLine(assignment);
+                            Volunteer v = s_dal.Volunteer.Read(assignment.VolunteerId);
+                            Console.Write($"Volunteer {'\n'} MaxCallDistance={v.MaxCallDistance}        ");
+                            Console.Write($"Address={v.CurrentAddress}\n");
+                            Call c = s_dal.Call.Read(assignment.CallId);
+                            Console.Write($"Call \n Address={c.Address}     Status={c.Status}       ");
+                            Console.Write($"OpenedAt={c.OpenedAt}       ");
+                            Console.WriteLine($"MaxCompletionTime={c.MaxCompletionTime}");
+                            Console.WriteLine("--------------------------------------------------------------------");
                         }
+                        //הדפסה של קריאות שאין להם הקצאה
+                        Console.WriteLine("Calls without assignment:\n");
+                        foreach (Call call in s_dal.Call.ReadAll())
+                        {
+                            if (s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id).Count() == 0)
+                            {
+                                Console.WriteLine(call);
+                            }
+                        }
+                        //הדפסה של מתנדבים שאין להם הקצאה
+                        Console.WriteLine("Volunteers without assignment:\n");
+                        foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
+                        {
+                            if (s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteer.Id).Count() == 0)
+                            {
+                                Console.WriteLine(volunteer);
+                            }
+                        }
+
+
+                        //foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
+                        //{
+                        //    Console.WriteLine(volunteer);
+                        //}
+                        //Console.WriteLine("call\n");
+                        //foreach (Call call in s_dal.Call.ReadAll())
+                        //{
+                        //    Console.WriteLine(call);
+                        //}
+                        //Console.WriteLine("assignment\n");
+                        //foreach (Assignment assignment in s_dal.Assignment.ReadAll())
+                        //{
+                        //    Console.WriteLine(assignment);
+                        //}
                         break;
                     case Menu.Configuration:
                         ConfigMenu();

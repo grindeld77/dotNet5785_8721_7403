@@ -1,227 +1,213 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Volunteers>
   <Volunteer>
-    <Id>227468352</Id>
+    <Id>271674210</Id>
     <Name>Daniel Cohen</Name>
-    <MobilePhone>0515199982</MobilePhone>
+    <MobilePhone>0555770648</MobilePhone>
     <Email>daniel.cohen@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>39497672</Password>
+    <Password>128333999</Password>
     <CurrentAddress>Dizengoff St 50, Tel Aviv</CurrentAddress>
     <Latitude>32.0764</Latitude>
     <Longitude>34.7745</Longitude>
-    <MaxCallDistance>8</MaxCallDistance>
+    <MaxCallDistance>38</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>253048862</Id>
+    <Id>381980523</Id>
     <Name>Michal Levy</Name>
-    <MobilePhone>0552720034</MobilePhone>
+    <MobilePhone>0587176022</MobilePhone>
     <Email>michal.levy@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>268478481</Password>
+    <Password>10864554</Password>
     <CurrentAddress>Jaffa St 1, Jerusalem</CurrentAddress>
     <Latitude>31.7823</Latitude>
     <Longitude>35.2191</Longitude>
-    <MaxCallDistance>2</MaxCallDistance>
+    <MaxCallDistance>49</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>312492820</Id>
+    <Id>386868954</Id>
     <Name>Yossi Mizrahi</Name>
-    <MobilePhone>0586141014</MobilePhone>
+    <MobilePhone>0584411377</MobilePhone>
     <Email>yossi.mizrahi@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>862329802</Password>
+    <Password>171670931</Password>
     <CurrentAddress>Rothschild Blvd 16, Tel Aviv</CurrentAddress>
     <Latitude>32.0657</Latitude>
     <Longitude>34.7741</Longitude>
-    <MaxCallDistance>2</MaxCallDistance>
+    <MaxCallDistance>39</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>293591046</Id>
+    <Id>396933160</Id>
     <Name>Sarit Israeli</Name>
-    <MobilePhone>0563434477</MobilePhone>
+    <MobilePhone>0583790765</MobilePhone>
     <Email>sarit.israeli@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>555373270</Password>
+    <Password>723811718</Password>
     <CurrentAddress>Haatzmaut St 85, Haifa</CurrentAddress>
     <Latitude>32.8191</Latitude>
     <Longitude>34.9972</Longitude>
-    <MaxCallDistance>16</MaxCallDistance>
+    <MaxCallDistance>39</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>247421514</Id>
+    <Id>386903546</Id>
     <Name>Tomer Friedman</Name>
-    <MobilePhone>0521407148</MobilePhone>
+    <MobilePhone>0573457378</MobilePhone>
     <Email>tomer.friedman@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>570484799</Password>
+    <Password>27849223</Password>
     <CurrentAddress>Herzl St 4, Beersheba</CurrentAddress>
     <Latitude>31.2526</Latitude>
     <Longitude>34.7925</Longitude>
-    <MaxCallDistance>17</MaxCallDistance>
+    <MaxCallDistance>41</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>377077623</Id>
+    <Id>354025462</Id>
     <Name>Naama Avidan</Name>
-    <MobilePhone>0529942559</MobilePhone>
+    <MobilePhone>0551520731</MobilePhone>
     <Email>naama.avidan@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>975674727</Password>
+    <Password>428953571</Password>
     <CurrentAddress>Hanasi St 120, Ashdod</CurrentAddress>
     <Latitude>31.7926</Latitude>
     <Longitude>34.6496</Longitude>
-    <MaxCallDistance>1</MaxCallDistance>
+    <MaxCallDistance>54</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>269073748</Id>
+    <Id>369014832</Id>
     <Name>Ron Goldman</Name>
-    <MobilePhone>0555136108</MobilePhone>
+    <MobilePhone>0548685297</MobilePhone>
     <Email>ron.goldman@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>355529509</Password>
+    <Password>133814050</Password>
     <CurrentAddress>Chen Blvd 3, Ra'anana</CurrentAddress>
     <Latitude>32.1847</Latitude>
     <Longitude>34.8709</Longitude>
-    <MaxCallDistance>14</MaxCallDistance>
+    <MaxCallDistance>34</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>360441281</Id>
+    <Id>370029134</Id>
     <Name>Elinor Bachar</Name>
-    <MobilePhone>0523308434</MobilePhone>
+    <MobilePhone>0515805876</MobilePhone>
     <Email>elinor.bachar@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>41704258</Password>
+    <Password>316162058</Password>
     <CurrentAddress>Hacarmel St 5, Afula</CurrentAddress>
     <Latitude>32.6072</Latitude>
     <Longitude>35.2903</Longitude>
-    <MaxCallDistance>10</MaxCallDistance>
+    <MaxCallDistance>49</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>373621705</Id>
+    <Id>346117856</Id>
     <Name>Moshe Barak</Name>
-    <MobilePhone>0538554467</MobilePhone>
+    <MobilePhone>0587261214</MobilePhone>
     <Email>moshe.barak@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>274341537</Password>
+    <Password>455047083</Password>
     <CurrentAddress>Degania Blvd 50, Holon</CurrentAddress>
     <Latitude>32.0094</Latitude>
     <Longitude>34.7766</Longitude>
-    <MaxCallDistance>3</MaxCallDistance>
+    <MaxCallDistance>36</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>327968038</Id>
+    <Id>309330140</Id>
     <Name>Tali Katz</Name>
-    <MobilePhone>0542813957</MobilePhone>
+    <MobilePhone>0525433070</MobilePhone>
     <Email>tali.katz@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>671883413</Password>
+    <Password>144486507</Password>
     <CurrentAddress>Ben Gurion St 35, Bat Yam</CurrentAddress>
     <Latitude>32.0233</Latitude>
     <Longitude>34.7503</Longitude>
-    <MaxCallDistance>3</MaxCallDistance>
+    <MaxCallDistance>52</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>261214167</Id>
+    <Id>321351223</Id>
     <Name>Dina Rozenberg</Name>
-    <MobilePhone>0535203063</MobilePhone>
+    <MobilePhone>0562976441</MobilePhone>
     <Email>dina.rozenberg@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>931792690</Password>
+    <Password>608372641</Password>
     <CurrentAddress>Herzl St 40, Kfar Saba</CurrentAddress>
     <Latitude>32.1753</Latitude>
     <Longitude>34.9067</Longitude>
-    <MaxCallDistance>14</MaxCallDistance>
+    <MaxCallDistance>34</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>204716591</Id>
+    <Id>319185864</Id>
     <Name>Liat Sharon</Name>
-    <MobilePhone>0512188906</MobilePhone>
+    <MobilePhone>0577874101</MobilePhone>
     <Email>liat.sharon@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>172619893</Password>
+    <Password>583179392</Password>
     <CurrentAddress>Gordon St 8, Netanya</CurrentAddress>
     <Latitude>32.3328</Latitude>
     <Longitude>34.8556</Longitude>
-    <MaxCallDistance>6</MaxCallDistance>
+    <MaxCallDistance>41</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>326816709</Id>
+    <Id>344316658</Id>
     <Name>Avi Hasson</Name>
-    <MobilePhone>0569557393</MobilePhone>
+    <MobilePhone>0510712120</MobilePhone>
     <Email>avi.hasson@gmail.com</Email>
     <Role>Volunteer</Role>
     <IsActive>true</IsActive>
-    <Password>302683053</Password>
+    <Password>504252086</Password>
     <CurrentAddress>Yehudit Blvd 10, Tel Aviv</CurrentAddress>
     <Latitude>32.0625</Latitude>
     <Longitude>34.7942</Longitude>
-    <MaxCallDistance>11</MaxCallDistance>
+    <MaxCallDistance>47</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>385686134</Id>
+    <Id>385016134</Id>
     <Name>Yael Zimmerman</Name>
-    <MobilePhone>0598820818</MobilePhone>
+    <MobilePhone>0510085589</MobilePhone>
     <Email>yael.zimmerman@gmail.com</Email>
-    <Role>Volunteer</Role>
+    <Role>Admin</Role>
     <IsActive>true</IsActive>
-    <Password>736422106</Password>
+    <Password>698582404</Password>
     <CurrentAddress>Hayam St 2, Eilat</CurrentAddress>
     <Latitude>29.5535</Latitude>
     <Longitude>34.9519</Longitude>
-    <MaxCallDistance>18</MaxCallDistance>
+    <MaxCallDistance>54</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>281422451</Id>
+    <Id>251247540</Id>
     <Name>Omar Rafael</Name>
-    <MobilePhone>0548350247</MobilePhone>
-    <Email>omar.rafael@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>303465133</Password>
-    <CurrentAddress>Horev St 17, Haifa</CurrentAddress>
-    <Latitude>32.7811</Latitude>
-    <Longitude>35.0105</Longitude>
-    <MaxCallDistance>12</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
-    <Id>328308721</Id>
-    <Name>Omar Rafael</Name>
-    <MobilePhone>0548350241</MobilePhone>
+    <MobilePhone>0581446732</MobilePhone>
     <Email>omar.rafael@gmail.com</Email>
     <Role>Admin</Role>
     <IsActive>true</IsActive>
-    <Password>303465133</Password>
+    <Password>740035651</Password>
     <CurrentAddress>Horev St 17, Haifa</CurrentAddress>
     <Latitude>32.7812232</Latitude>
     <Longitude>34.9908479</Longitude>
-    <MaxCallDistance>15</MaxCallDistance>
+    <MaxCallDistance>38</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
 </Volunteers>

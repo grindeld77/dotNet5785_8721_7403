@@ -7,6 +7,7 @@ using System;
 
 internal class CallImplementation : ICall
 {
+    private const DO.CallStatus inProgress = DO.CallStatus.InProgress;
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
     void ICall.AddCall(BO.Call boCall)
@@ -16,7 +17,7 @@ internal class CallImplementation : ICall
             // Validate the call object
             if (boCall == null)
                 throw new BO.BloesNotExistException(nameof(boCall));
-
+            
             if (string.IsNullOrWhiteSpace(boCall.FullAddress))
                 throw new BO.BlInvalidAddressException("Address is required.");
 
@@ -51,7 +52,12 @@ internal class CallImplementation : ICall
 
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
-
+        ICall help= new CallImplementation();
+        var calltamp = _dal.Call.Read(callId); // Check if the call exists
+        if (calltamp == null)
+            throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
+        if (calltamp.Status != DO.CallStatus.Open&& calltamp.Status!= DO.CallStatus.OpenAtRisk)
+            throw new BO.BlInvalidOperationException("Call is already assigned");
         // Validate inputs
         if (volunteerId < 200000000 || volunteerId > 400000000)
             throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
@@ -78,25 +84,63 @@ internal class CallImplementation : ICall
 
             _dal.Assignment.Create(newAssignment); // Assign the call to the volunteer
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
+            if (calltamp.Status == DO.CallStatus.Open)
+            {
+                var newCall = new BO.Call
+                {
+                    Id = callId,
+                    Type = (BO.CallType)calltamp.Type,
+                    Description = calltamp?.Description ?? null,
+                    FullAddress = calltamp?.Address ?? null,
+                    Latitude = calltamp?.Latitude ?? 0.0,
+                    Longitude = calltamp?.Longitude ?? 0.0,
+                    OpenTime = calltamp.OpenedAt,
+                    MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                    Status = BO.CallStatus.InProgressAtRisk,
+                    Assignments = null
+                };
+                help.UpdateCall(newCall);
+            }
+            else if(calltamp.Status == DO.CallStatus.OpenAtRisk)
+            {
+                var newCall = new BO.Call
+                {
+                    Id = callId,
+                    Type = (BO.CallType)calltamp.Type,
+                    Description = calltamp?.Description ?? null,
+                    FullAddress = calltamp?.Address ?? null,
+                    Latitude = calltamp?.Latitude ?? 0.0,
+                    Longitude = calltamp?.Longitude ?? 0.0,
+                    OpenTime = calltamp.OpenedAt,
+                    MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                    Status = BO.CallStatus.InProgressAtRisk,
+                    Assignments = null
+                };
+                help.UpdateCall(newCall);
+            }
 
+            CallManager.Observers.NotifyItemUpdated(callId); //stage 5
             return;
         }
         throw new BLAlreadyAssignedException("Call is already assigned");
-    }
+    }/*    public int Id { get; init; } //קוד קריאה
+    public CallType Type { get; set; }//סוג קריאה
+    public string? Description { get; set; }//תיאור הקריאה
+    public string? FullAddress { get; set; }//כתובת מלאה
+    public double? Latitude { get; set; }//קו רוחב
+    public double? Longitude { get; set; }//קו אורך
+    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
+    public DateTime MaxEndTime { get; set; }//זמן סיום מירבי
+    public CallStatus Status { get; set; }// ENUM עבור סטטוס הקריאה
+    public List<BO.CallAssignInList>? Assignments { get; set; } =null;//רשימת הקצאות*/
 
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
-        // Validate input parameters
-        if (requesterId < 200000000 || requesterId > 400000000)
-            throw new BO.BlInvalidAssignmentIdException("Invalid requester ID.", nameof(requesterId));
-        if (assignmentId < 0)
-            throw new BO.BlInvalidAssignmentIdException("Invalid assignment ID.", nameof(assignmentId));
-
         // Retrieve the assignment from the data layer
         DO.Assignment assignment = _dal.Assignment.Read(a => a.Id == assignmentId);
 
         // Retrieve the volunteer associated with the assignment
-        var volunteer = _dal.Volunteer.Read(a => a.Id == requesterId);
+        var volunteer = _dal.Volunteer.Read(a => a.Id == assignment.VolunteerId);
         if (volunteer == null)
             throw new BO.BloesNotExistException($"Volunteer with ID {assignment.VolunteerId} does not exist.");
 
@@ -109,12 +153,21 @@ internal class CallImplementation : ICall
             throw new BO.BlInvalidRequestException("Requester is not authorized to cancel this assignment.");
 
         // Check that the assignment is still open (not completed or expired)
-        if (assignment.CompletionTime != null)
+        if (assignment.CompletionTime != null|| assignment.CompletionStatus!=null)
             throw new BO.BlInvalidOperationException("The assignment has already been completed or canceled.");
 
         if (AdminManager.Now > assignment.CompletionTime)
             throw new BO.BlInvalidOperationException("The assignment has expired.");
 
+        DO.CompletionStatus completionStatus;
+        if (requester.Role == DO.Role.Admin)
+        {
+             completionStatus = DO.CompletionStatus.AdminCancel;
+        }
+        else
+        {
+             completionStatus = DO.CompletionStatus.SelfCancel;
+        }
         Assignment updateAssignment = new Assignment // Update the assignment in the data layer
         {
             Id = assignmentId,
@@ -122,7 +175,7 @@ internal class CallImplementation : ICall
             VolunteerId = assignment.VolunteerId,
             EntryTime = assignment.EntryTime,
             CompletionTime = DateTime.Now,
-            CompletionStatus = assignment.CompletionStatus
+            CompletionStatus = completionStatus
         };
 
         try
@@ -143,11 +196,6 @@ internal class CallImplementation : ICall
     {
         try
         {
-            // Validate input parameters
-            if (volunteerId < 200000000 || volunteerId > 400000000)
-                throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
-            if (assignmentId < 0)
-                throw new BO.BlInvalidAssignmentIdException("Invalid assignment ID.", nameof(assignmentId));
 
             // Retrieve the assignment from the data layer
             DO.Assignment assignment = _dal.Assignment.Read(a => a.Id == assignmentId && a.VolunteerId == volunteerId);
@@ -403,7 +451,9 @@ internal class CallImplementation : ICall
             if (filterType != null)
             {
                 openCallsInList = openCallsInList.Where(call => call.Type == filterType).ToList();
-            }   
+            }
+        if (sortField != null)
+        {
             openCallsInList = sortField switch
             {
                 BO.OpenCallInListFields.Id => openCallsInList.OrderBy(call => call.Id).ToList(),
@@ -414,7 +464,8 @@ internal class CallImplementation : ICall
                 BO.OpenCallInListFields.DistanceFromVolunteer => openCallsInList.OrderBy(call => call.DistanceFromVolunteer).ToList(),
                 _ => openCallsInList
             };
-
+        }
+        else openCallsInList = openCallsInList.OrderBy(call => call.Id).ToList();
         return openCallsInList;
     }
 
@@ -430,8 +481,8 @@ internal class CallImplementation : ICall
         if (call.OpenTime >= call.MaxEndTime)
             throw new ArgumentException("Open time must be earlier than the maximum finish time.");
 
-        if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
-            throw new ArgumentException("Address is not valid.");
+        //if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
+        //    throw new ArgumentException("Address is not valid.");
 
         // Convert BO.Call to DO.Call
         var doCall = new DO.Call
