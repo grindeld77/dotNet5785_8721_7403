@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="VolunteerListWindow" Height="640" Width="800"
-        Loaded="Window_Loaded" Closed="Window_Closed">
+        Loaded="Window_Loaded" Closed="Window_Closed"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid>
         <Grid.RowDefinitions>

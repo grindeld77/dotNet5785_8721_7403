@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Closed Call List" Height="500" Width="900">
     <Grid>
-        <!-- טבלת נתונים להצגת הקריאות הסגורות -->
+        <!-- closed call data -->
         <DataGrid ItemsSource="{Binding ClosedCalls}" AutoGenerateColumns="False" Margin="10">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
@@ -16,7 +16,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- כפתור לסגירת החלון -->
+        <!-- button for closing window -->
         <Button Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="100" Click="Close_Click" />
     </Grid>
 </Window>

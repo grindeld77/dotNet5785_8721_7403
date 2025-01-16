@@ -2,13 +2,13 @@
 
 public class ClosedCallInList
 {
-    public int Id { get; init; }//קוד קריאה
-    public CallType Type { get; set; }//סוג קריאה
-    public string FullAddress { get; set; }//כתובת מלאה
-    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
-    public DateTime AssignedTime { get; set; }//זמן התחלת הטיפול בקריאה
-    public DateTime? ClosedTime { get; set; } // זמן סיום הטיפול בקריאה
-    public CompletionStatus? Status { get; set; } // ENUM עבור סוגי סיום
+    public int Id { get; init; } // Call ID
+    public CallType Type { get; set; } // Call Type
+    public string FullAddress { get; set; } // Full Address
+    public DateTime OpenTime { get; set; } // Call Open Time
+    public DateTime AssignedTime { get; set; } // Call Assigned Time
+    public DateTime? ClosedTime { get; set; } // Call Closed Time
+    public CompletionStatus? Status { get; set; } // Completion Status
 
     public override string ToString()
     {
@@ -20,5 +20,4 @@ public class ClosedCallInList
                $"Closed Time: {ClosedTime?.ToString() ?? "N/A"}, " +
                $"Status: {Status}";
     }
-
 }

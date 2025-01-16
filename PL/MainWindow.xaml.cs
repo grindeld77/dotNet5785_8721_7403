@@ -178,19 +178,3 @@ namespace PL
         }
     }
 }
-
-//  < Volunteer >
-//    < Id > 203896956 </ Id >
-//    < Name > Michal Levy </ Name >
-//    < MobilePhone > 0587925342 </ MobilePhone >
-//    < Email > michal.levy@gmail.com </ Email >
-//    < Role > Volunteer </ Role >
-//    < IsActive > true </ IsActive >
-//    < Password > 371406185 </ Password >
-//    < CurrentAddress > Jaffa St 1, Jerusalem</CurrentAddress>
-//    <Latitude>31.7846145</Latitude>
-//    <Longitude>35.21512</Longitude>
-//    <MaxCallDistance>12</MaxCallDistance>
-//    <DistancePreference>Aerial</DistancePreference>
-//  </Volunteer>
-//</Volunteers>

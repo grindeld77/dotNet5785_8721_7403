@@ -6,54 +6,54 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
         <StackPanel Margin="20" HorizontalAlignment="Center">
-            <!-- כותרת המסך -->
+            <!-- header -->
             <TextBlock Text="Call Management" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" />
 
-            <!-- מזהה קריאה -->
+            <!-- id -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Call ID:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.Id}" IsReadOnly="True" Width="200" />
             </StackPanel>
 
-            <!-- תיאור הקריאה -->
+            <!-- call Description -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Description:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.Description}" Width="200" />
             </StackPanel>
 
-            <!-- סוג קריאה -->
+            <!-- call type -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Type:" Width="100" VerticalAlignment="Center" />
                 <ComboBox ItemsSource="{Binding Source={StaticResource OpenCallCollectionTypeKey}}"
                           SelectedItem="{Binding CurrentCall.Type}"
-                    Width="200" />
+                          Width="200" />
             </StackPanel>
 
-            <!-- כתובת מלאה -->
+            <!-- call address -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Full Address:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.FullAddress}" Width="200" />
             </StackPanel>
 
-            <!-- זמן פתיחה -->
+            <!-- open time -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Open Time:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.OpenTime}" IsReadOnly="True" Width="200" />
             </StackPanel>
 
-            <!-- זמן סיום מירבי -->
+            <!-- max end time -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Max End Time:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.MaxEndTime}" Width="200" />
             </StackPanel>
 
-            <!-- סטטוס קריאה -->
+            <!-- call status -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Status:" Width="100" VerticalAlignment="Center" />
                 <TextBox Text="{Binding CurrentCall.Status}" IsReadOnly="True" Width="200" />
             </StackPanel>
 
-            <!-- רשימת הקצאות -->
+            <!-- assignmentList -->
             <GroupBox Header="Assignments" Margin="0,20" Height="123">
                 <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False" Height="123">
                     <DataGrid.Columns>
@@ -66,7 +66,7 @@
                 </DataGrid>
             </GroupBox>
 
-            <!-- כפתורים -->
+            <!-- buttons area -->
             <StackPanel Orientation="Horizontal" Margin="0,20" HorizontalAlignment="Center">
                 <Button Content="{Binding ButtonText}" Width="100" Margin="10" Click="SaveButton_Click" />
                 <Button Content="Cancel" Width="100" Margin="10" Click="Cancel_Click" />

@@ -271,7 +271,6 @@ Choose a call type to sort by:
                                 string roleInput = Console.ReadLine();
                                 if (int.TryParse(roleInput, out int roleNumber))
                                 {
-                                    // אם ההמרה הצליחה, נבדוק אם המספר הוא 0 או 1
                                     if (roleNumber == 0 || roleNumber == 1)
                                     {
                                         updatedVolunteer.Role = (BO.Role)int.Parse(roleInput);

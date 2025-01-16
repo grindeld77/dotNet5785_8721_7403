@@ -22,26 +22,23 @@ internal static class VolunteerManager
 
     public static double CalculateDistance(double lat1, double lon1, double lat2, double lon2, double radius = 6371)//פונקציה שמחשבת את המרחק בין שתי נקודות
     {
-        // המרה לרדיאנים
         double dLat = ToRadians(lat2 - lat1);
         double dLon = ToRadians(lon2 - lon1);
 
         lat1 = ToRadians(lat1);
         lat2 = ToRadians(lat2);
 
-        // חישוב ההאברסין
         double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
                   Math.Cos(lat1) * Math.Cos(lat2) *
                   Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-        // חישוב המרחק
         double distance = radius * c;
 
         return distance;
     }
 
-    private static double ToRadians(double angle)//המרה לרדיאנים
+    private static double ToRadians(double angle)
     {
         return angle * (Math.PI / 180);
     }
@@ -54,12 +51,12 @@ internal static class VolunteerManager
         BO.VolunteerInList volunteerInList = new BO.VolunteerInList
         {
             Id = v.Id,
-            FullName = v.FullName, 
+            FullName = v.FullName,
             IsActive = v.IsActive,
             TotalCompletedCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
             TotalCancelledCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
             TotalExpiredCalls = assignments.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
-            CurrentCallId = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress) ?.Id ?? null, 
+            CurrentCallId = calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Id ?? null,
             CurrentCallType = (BO.CallType)(calls.FirstOrDefault(c => c.Status == DO.CallStatus.InProgress)?.Type ?? DO.CallType.None)
         };
 
@@ -87,7 +84,8 @@ internal static class VolunteerManager
         {
             callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
         }
-        if (callOpen != null) {
+        if (callOpen != null)
+        {
             BO.Volunteer volunteer = new BO.Volunteer
             {
                 Id = v.Id,
@@ -148,14 +146,12 @@ internal static class VolunteerManager
         };
     }
 
-    /// <summary>
-    /// בדיקת תקינות תעודת זהות
-    /// </summary>
+
     public static bool IsValidID(int ID)
     {
         string idStr = ID.ToString("D9");
         int sum = 0;
-        int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 }; // משקלים לספרות
+        int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 }; 
 
         for (int i = 0; i < idStr.Length - 1; i++)
         {
@@ -167,23 +163,16 @@ internal static class VolunteerManager
         return (10 - (sum % 10)) % 10 == int.Parse(idStr[8].ToString());
     }
 
-    /// <summary>
-    /// בדיקת תקינות כתובת מייל
-    /// </summary>
+
     public static bool IsValidEmail(string email)
     {
         if (email == null)
             return true;
-        // רשימת סיומות אימייל נפוצות 
         string[] validDomains = { "com", "net", "org", "edu", "gov", "mil", "co.il", "fr", "de", "uk" };
 
         var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.(" + string.Join("|", validDomains) + ")$");
         return emailRegex.IsMatch(email);
     }
-
-    /// <summary>
-    /// בדיקה שמספר הטלפון תקין
-    /// </summary>
 
     public static bool IsValidPhoneNumber(string phoneNumber)
     {
@@ -200,16 +189,13 @@ internal static class VolunteerManager
     {
         if (name == null)
             return true;
-        // ביטוי רגולרי לבדיקה האם המחרוזת מכילה רק אותיות עבריות או אנגליות, ומאפשר רווחים מרובים
         string pattern = @"^[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+(\s+[a-zA-Zאבגדהוזחטיכךלמנסעפצקרשתךםןףץצדק]+)*$";
 
         Regex regex = new Regex(pattern);
         return regex.IsMatch(name);
     }
 
-    /// <summary>
-    /// המרת מרחק למחרוזת Convert a distance type to a string
-    /// </summary>
+
     public static string convertToString(DO.DistanceType distanceType)
     {
         return distanceType switch
@@ -221,10 +207,6 @@ internal static class VolunteerManager
             _ => throw new NotImplementedException(),
         };
     }
-
-
-
-
     public static string ConvertAsciiToString(int[] numbers)
     {
         StringBuilder result = new StringBuilder();
@@ -277,33 +259,24 @@ internal static class VolunteerManager
 
         return hasSpecialChar && hasUpperCase && hasNumber;
     }
-    /// <summary>
-    /// מחזירה תפקיד משתמש עי ססמא
-    /// </summary>
-    /// <param name="Password"></param>
-    /// <returns></returns>
+
     public static string GetPositionBypas(string Password)
     {
         var volunteer = _dal.Volunteer.ReadAll()
-                                    .FirstOrDefault(v => v.Password == Password);//בדיקה בעזרת LINQ אם קיים מתנדב עם שם וסססמא 
-        return volunteer.Role.ToString();    //   החזרת תפקיד המשתמש
+                                    .FirstOrDefault(v => v.Password == Password);
+        return volunteer.Role.ToString(); 
     }
 
-    /// <summary>
-    /// מחזירה תפקיד משתמש עי תעודת זהות
-    /// </summary>
+
     public static string GetPositionById(int ID)
     {
         var volunteer = _dal.Volunteer.ReadAll()
-                .FirstOrDefault(v => v.Id == ID);//בדיקה בעזרת LINQ אם קיים מתנדב עם שם וסססמא 
-        return volunteer.Role.ToString();    //   החזרת תפקיד המשתמש
+                .FirstOrDefault(v => v.Id == ID);
+        return volunteer.Role.ToString();    
 
     }
 
-    /// <summary>
-    ///  וזריקת חריגות פנימיות בהתאם בןדקת תקינות איימיל טלפון ותז
-    /// </summary>
-    /// <param name="volunteer"></param>
+
     public static void ValidateVolunteerData(BO.Volunteer volunteer)
     {
         if (!IsValidEmail(volunteer.Email))
@@ -323,7 +296,7 @@ internal static class VolunteerManager
             throw new BO.InvalidNameException("Invalid Name");
         }
     }
-    
+
 
 
     internal static void PeriodicVolunteersUpdates(object oldClock, DateTime newClock)
@@ -340,127 +313,4 @@ internal static class VolunteerManager
             }
         }
     }
-
-    //internal static DO.Call converterFromInPrograssToCall(CallInProgress currentCall)
-    //{
-    //    if (currentCall == null)
-    //    {
-    //        return null;
-    //    }
-    //    return new DO.Call
-    //    {
-    //        Id = currentCall.CallId,
-    //        Description = currentCall.Description,
-    //        Address = currentCall.FullAddress,
-    //        OpenedAt = currentCall.OpenTime,
-    //        MaxCompletionTime = currentCall.MaxCompletionTime,
-    //        Status = (DO.CallStatus)currentCall.Status
-    //    };
-    //}
 }
-
-
-/*
- using BO;
-using DalApi;
-using DO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace Helpers
-{
-    internal static class VolunteerManager
-    {
-        private static IDal s_dal = Factory.Get;
-
-        #region checking functions
-
-        // Check if the ID is valid according to the checksum algorithm
-        public static bool IsValidID(int ID)
-        {
-            string IDStr = ID.ToString("D9");
-            int sum = 0;
-            for (int i = 0; i < IDStr.Length; i++)
-            {
-                int digit = int.Parse(IDStr[i].ToString());
-                if (i % 2 == 1) digit *= 2;
-                sum += (digit > 9) ? digit - 9 : digit;
-            }
-            return sum % 10 == 0;
-        }
-
-        // Check if the email is valid according to a simple regex
-        public static bool IsValidEmail(string email)
-        {
-            var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+<span class="math-inline">"\);
-return emailRegex\.IsMatch\(email\);
-\}
-/// <summary\>
-/// /// Check if the phone number is valid according to a simple regex
-/// </summary\>
-/// <param name\="phoneNumber"\></param\>
-/// <returns\></returns\>
-public static bool IsValidPhoneNumber\(string phoneNumber\)
-\{
-string pattern \= @"^\(\\\+972\|0\)5\[0\-9\]\{8\}</span>|^(0[2-9][0-9]{7})$";
-            Regex regex = new Regex(pattern);
-            return regex.IsMatch(phoneNumber);
-        }
-
-        #endregion
-
-        #region Getters
-
-        // Get the number of treated open calls for a volunteer
-        public static int getNumOCTreated(int volID)
-        {
-            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
-            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.Finished);
-        }
-
-        // Get the number of canceled open calls for a volunteer
-        public static int getNumOCCanceled(int volID)
-        {
-            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
-            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.SelfCancellation);
-        }
-
-        // Get the number of expired open calls for a volunteer
-        public static int getNumOCExpired(int volID)
-        {
-            var volunteerAssignmentList = s_dal.Assignment.ReadAll().Where(a => a.Volunteerid == volID);
-            return volunteerAssignmentList.Count(a => a.EndType == DO.EndType.Expired);
-        }
-
-        /// <summary>
-        /// /// Get the call in progress for a volunteer
-        /// </summary>
-        /// <param name="vol"></param>
-        /// <returns></returns>
-        public static BO.CallInProgress? buildCallInProgress(int vol)
-        {
-            int callID = GetNOCInProgress(vol) ?? -1;
-            if (callID == -1) return null;
-            var assignment = s_dal.Assignment.ReadAll().FirstOrDefault(a => a.Volunteerid == vol && a.Callid == callID);
-            if (assignment == null) return null;
-            var volunteer = s_dal.Volunteer.Read(vol);
-            var call = s_dal.Call.Read(callID);
-            if (volunteer == null || call == null) return null;
-            return new BO.CallInProgress
-            {
-                Id = assignment.Id,
-                CallId = call.Id,
-                CallType = (BO.CallType)call.CallType,
-                ReadingDescription = call.ReadingDescription,
-                Address = call.Address,
-                OpeningTime = call.OpeningTime,
-                MaxTime = call.MaxTime,
-                Beginning = assignment.Beginning,
-                Status = (CallStatus)CallManager.GetCallStatus(call, s_dal.Assignment.ReadAll(a => a.Volunteerid == vol)),
-                Distance = Tools.DistanceCalculator
- */

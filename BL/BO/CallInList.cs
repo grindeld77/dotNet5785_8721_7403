@@ -2,15 +2,15 @@
 
 public class CallInList
 {
-    public int? AssignmentId { get; set; }//קוד הקצאה
-    public int CallId { get; init; }//קוד קריאה
-    public BO.CallType CallType { get; set; }//סוג קריאה
-    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
-    public TimeSpan? RemainingTime { get; set; } // מחושב
-    public string? LastVolunteer { get; set; }//שם המתנדב האחרון שטיפל בקריאה
-    public TimeSpan? TotalHandlingTime { get; set; }//סה"כ זמן טיפול בקריאה
-    public CallStatus Status { get; set; } // ENUM עבור סטטוס הקריאה
-    public int TotalAssignments { get; set; }//סה"כ מתנדבים שהוקצו לקריאה
+    public int? AssignmentId { get; set; } // Assignment code
+    public int CallId { get; init; } // Call code
+    public BO.CallType CallType { get; set; } // Call type
+    public DateTime OpenTime { get; set; } // Call open time
+    public TimeSpan? RemainingTime { get; set; } // Calculated remaining time
+    public string? LastVolunteer { get; set; } // Name of the last volunteer who handled the call
+    public TimeSpan? TotalHandlingTime { get; set; } // Total handling time for the call
+    public CallStatus Status { get; set; } // Call status ENUM
+    public int TotalAssignments { get; set; } // Total volunteers assigned to the call
     public override string ToString()
     {
         return $"ID: {AssignmentId?.ToString() ?? "N/A"}, " +

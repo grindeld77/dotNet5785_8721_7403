@@ -29,7 +29,13 @@ namespace PL
 
         public static readonly DependencyProperty SelectedFilterProperty =
             DependencyProperty.Register("SelectedFilter", typeof(BO.CallStatus), typeof(CallManagementWindow),
-            new PropertyMetadata(BO.CallStatus.ALL));
+            new PropertyMetadata(BO.CallStatus.ALL, onSelectedFilterChange));
+
+        private static void onSelectedFilterChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var window = d as CallManagementWindow;
+            window?.queryCallList();
+        }
 
         public BO.CallStatus SelectedFilter
         {
@@ -39,7 +45,13 @@ namespace PL
 
         public static readonly DependencyProperty SelectedSortProperty =
     DependencyProperty.Register("SelectedSort", typeof(BO.CallInListFields), typeof(CallManagementWindow),
-    new PropertyMetadata(BO.CallInListFields.CallId));
+    new PropertyMetadata(BO.CallInListFields.CallId, onSelectedSorChange));
+
+        private static void onSelectedSorChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var window = d as CallManagementWindow;
+            window?.queryCallList();
+        }
 
         public BO.CallInListFields SelectedSort
         {
@@ -51,14 +63,12 @@ namespace PL
         {
             id = Id;
             InitializeComponent();
-            this.DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
         }
-        ListView listView;
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (listView.SelectedItem is BO.CallInList selectedCallInList)
+            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
             {
                 try
                 {

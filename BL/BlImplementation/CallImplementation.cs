@@ -30,6 +30,7 @@ internal class CallImplementation : ICall
             (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
             var call = new DO.Call
             {
+                Id = boCall.Id,
                 Status = (DO.CallStatus)boCall.Status,
                 Type = (DO.CallType)boCall.Type,
                 Address = boCall.FullAddress,
@@ -359,7 +360,7 @@ internal class CallImplementation : ICall
                 callsList = doCalls.Select(c => CallManager.converterFromDoToBoCallInList(c));
             }
 
-            if (filterField != null && filterValue != null) // Filter the calls based on the specified field
+            if (filterField != null) // Filter the calls based on the specified field
             {
                 switch (filterField) // Filter the calls based on the specified field
                 {

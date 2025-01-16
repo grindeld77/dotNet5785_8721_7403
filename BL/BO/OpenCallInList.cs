@@ -2,13 +2,13 @@
 
 public class OpenCallInList
 {
-    public int Id { get; init; }//קוד קריאה
-    public CallType Type { get; set; }//סוג קריאה
-    public string? Description { get; set; }//תיאור הקריאה
-    public string FullAddress { get; set; }//כתובת מלאה
-    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
-    public DateTime? MaxEndTime { get; set; }//זמן סיום מירבי
-    public double DistanceFromVolunteer { get; set; }//מרחק מהמתנדב
+    public int Id { get; init; } // Call ID  
+    public CallType Type { get; set; } // Call Type  
+    public string? Description { get; set; } // Call Description  
+    public string FullAddress { get; set; } // Full Address  
+    public DateTime OpenTime { get; set; } // Call Open Time  
+    public DateTime? MaxEndTime { get; set; } // Maximum End Time  
+    public double DistanceFromVolunteer { get; set; } // Distance from Volunteer  
     public override string ToString()
     {
         return $"ID: {Id}, " +

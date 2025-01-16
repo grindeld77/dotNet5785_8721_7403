@@ -10,10 +10,6 @@ using System.Text;
 using System.Xml.Linq;
 internal static class Tools
 {
-
-    /// <summary>
-    /// ממירה אובייקט מסוג T למחרוזת המכילה את פרטי המאפיינים שלו.
-    /// </summary>
     public static bool IsValidAddress(string fullAddress, out double latitude, out double longitude) // Validate the address and return the latitude and longitude by using a geocoding service
     {
         throw new NotImplementedException();
@@ -187,20 +183,17 @@ internal static class Tools
 
         internal static object CalculateDistance(double latitude1, double longitude1, double latitude2, double longitude2 , double radius = 6371)
         {
-            // המרה לרדיאנים
             double dLat = ToRadians(latitude2 - latitude1);
             double dLon = ToRadians(longitude2 - longitude1);
 
             latitude1 = ToRadians(latitude1);
             latitude2 = ToRadians(latitude2);
 
-            // חישוב ההאברסין
             double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
                       Math.Cos(latitude1) * Math.Cos(latitude2) *
                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            // חישוב המרחק
             double distance = radius * c;
 
             return distance;

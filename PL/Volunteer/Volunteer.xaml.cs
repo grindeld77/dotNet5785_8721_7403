@@ -34,21 +34,19 @@ namespace PL.Volunteer
 
             if (id == 0)
             {
-                // מצב הוספה
                 CurrentVolunteer = new BO.Volunteer();
                 ButtonText = "Add";
                 IsAddMode = true;
             }
             else
             {
-                // מצב עדכון
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
                 ButtonText = "Update";
                 IsAddMode = false;
             }
             _volunteerId = requesting;
             Roles = Enum.GetValues(typeof(BO.Role));
-            DataContext = this; // קישור ל-DataContext של החלון
+            DataContext = this;
         }
 
         private void SaveCommand_Execute(object sender, RoutedEventArgs e)
@@ -61,7 +59,7 @@ namespace PL.Volunteer
                 }
                 else
                 {
-                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer); // שימוש במזהה ששמרנו
+                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
                 }
 
                 MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -107,31 +105,25 @@ namespace PL.Volunteer
                 return;
             }
 
-            // חלונית אישור למחיקה
             var result = MessageBox.Show("Are you sure you want to delete this volunteer?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
                 try
                 {
-                    // קריאה לפונקציה למחיקת המתנדב
                     s_bl.Volunteer.DeleteVolunteer(_volunteerId);
 
-                    // הודעת הצלחה
                     MessageBox.Show("Volunteer deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    // סגירת החלון לאחר מחיקה
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    // טיפול בשגיאה
                     MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                // אם המשתמש לחץ על ביטול, לא עושים כלום
                 MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -139,7 +131,6 @@ namespace PL.Volunteer
         {
             get
             {
-                // כפתור מחיקה יוצג רק אם המתנדב קיים (לא במצב הוספה)
                 return _volunteerId != 0;
             }
         }

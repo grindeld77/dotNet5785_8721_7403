@@ -1,17 +1,7 @@
 ﻿using PL.Volunteer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Call
 {
@@ -20,18 +10,18 @@ namespace PL.Call
         private int callId;
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public bool IsAddMode { get; set; }
 
-        public static readonly DependencyProperty ButtonProperty =
-            DependencyProperty.Register("ButtonText", typeof(string), typeof(CallWindow));
-        public string Button
+        public static readonly DependencyProperty ButtonTextProperty =
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(CallWindow), new PropertyMetadata(""));
+
+        public string ButtonText
         {
-            get => (string)GetValue(ButtonProperty);
-            set => SetValue(ButtonProperty, value);
+            get => (string)GetValue(ButtonTextProperty);
+            set => SetValue(ButtonTextProperty, value);
         }
 
         public static readonly DependencyProperty CurrentCallProperty =
-            DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow));
+            DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
         public BO.Call CurrentCall
         {
@@ -39,51 +29,50 @@ namespace PL.Call
             set => SetValue(CurrentCallProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedCallTypeProperty =
-            DependencyProperty.Register("SelectedCallType", typeof(BO.CallType), typeof(CallWindow));
-        public static readonly DependencyProperty SelectedCallTypeInCallWindowProperty =
-            DependencyProperty.Register("SelectedCallTypeInCallWindow", typeof(BO.CallType), typeof(CallWindow));
+        public static readonly DependencyProperty IsDeleteButtonVisibleProperty =
+            DependencyProperty.Register("IsDeleteButtonVisible", typeof(Visibility), typeof(CallWindow), new PropertyMetadata(Visibility.Collapsed));
 
-        public BO.CallType SelectedCallType
+        public Visibility IsDeleteButtonVisible
         {
-            get => (BO.CallType)GetValue(SelectedCallTypeProperty);
-            set => SetValue(SelectedCallTypeProperty, value);
-        }
-        public BO.CallType SelectedCallTypeInCallWindow
-        {
-            get => (BO.CallType)GetValue(SelectedCallTypeInCallWindowProperty);
-            set => SetValue(SelectedCallTypeInCallWindowProperty, value);
+            get => (Visibility)GetValue(IsDeleteButtonVisibleProperty);
+            set => SetValue(IsDeleteButtonVisibleProperty, value);
         }
 
         public CallWindow(int id)
         {
             InitializeComponent();
+
             if (id == -1)
             {
-                // מצב הוספה
-                CurrentCall = new BO.Call();
-                Button = "Add";
-                IsAddMode = true;
+                CurrentCall = new BO.Call
+                {
+                    OpenTime = DateTime.Now,
+                    MaxEndTime = DateTime.Now.AddHours(1),
+                    Status = BO.CallStatus.Open,
+                    Assignments = null,
+                };
+                ButtonText = "Add";
+                IsDeleteButtonVisible = Visibility.Collapsed;
             }
             else
             {
-                // מצב עדכון
                 CurrentCall = s_bl.Call.GetCallDetails(id);
-                Button = "Update";
-                IsAddMode = false;
+                ButtonText = "Update";
+                IsDeleteButtonVisible = Visibility.Visible;
                 callId = id;
             }
-            SelectedCallType = CurrentCall.Type;
         }
+
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (Button == "Add")
+                if (ButtonText == "Add")
                 {
                     s_bl.Call.AddCall(CurrentCall);
                 }
@@ -100,6 +89,7 @@ namespace PL.Call
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (callId == -1)
@@ -109,7 +99,7 @@ namespace PL.Call
             }
 
             var result = MessageBox.Show("Are you sure you want to delete this Call?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
+
             if (result == MessageBoxResult.Yes)
             {
                 try
@@ -126,13 +116,6 @@ namespace PL.Call
             else
             {
                 MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-        public bool IsDeleteButtonVisible
-        {
-            get
-            {
-                return callId != -1;
             }
         }
     }

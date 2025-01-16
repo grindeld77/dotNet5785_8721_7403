@@ -2,16 +2,16 @@
 
 public class Call
 {
-    public int Id { get; init; } //קוד קריאה
-    public CallType Type { get; set; }//סוג קריאה
-    public string? Description { get; set; }//תיאור הקריאה
-    public string? FullAddress { get; set; }//כתובת מלאה
-    public double? Latitude { get; set; }//קו רוחב
-    public double? Longitude { get; set; }//קו אורך
-    public DateTime OpenTime { get; set; }//זמן פתיחת הקריאה
-    public DateTime MaxEndTime { get; set; }//זמן סיום מירבי
-    public CallStatus Status { get; set; }// ENUM עבור סטטוס הקריאה
-    public List<BO.CallAssignInList>? Assignments { get; set; } =null;//רשימת הקצאות
+    public int Id { get; init; } // Call ID
+    public CallType Type { get; set; } // Call type
+    public string? Description { get; set; } // Call description
+    public string? FullAddress { get; set; } // Full address
+    public double? Latitude { get; set; } // Latitude
+    public double? Longitude { get; set; } // Longitude
+    public DateTime OpenTime { get; set; } // Call open time
+    public DateTime MaxEndTime { get; set; } // Maximum end time
+    public CallStatus Status { get; set; } // Call status
+    public List<BO.CallAssignInList>? Assignments { get; set; } = null; // List of assignments
 
     public override string ToString()
     {

@@ -396,12 +396,11 @@ public static class Initialization
     OpenAtRisk,         //call is open and at risk
     InProgressAtRisk    //call is in progress and at risk*/
 
-        // יצירת 45 שיחות רגילות
         for (int i = 0; i < 45; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); // זמן פתיחה בין 5 ל-60 דקות אחורה
-            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); // זמן מקסימלי בין 25 ל-100 דקות אחרי הפתיחה
+            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); 
+            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100));
             CallStatus callStatus = CallStatus.Open;
 
             TimeSpan difference = maxTime - currentTime;
@@ -445,12 +444,11 @@ public static class Initialization
 
             s_dal!.Call.Create(callToAdd);
         }
-        // יצירת 5 שיחות שפג תוקפן
         for (int i = 45; i < 50; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddDays(-s_rand.Next(1, 10)).AddMinutes(-s_rand.Next(60, 120)); // זמן פתיחה ימים ושעות אחורה
-            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); // זמן מקסימלי קצר אחרי הפתיחה
+            DateTime openTime = currentTime.AddDays(-s_rand.Next(1, 10)).AddMinutes(-s_rand.Next(60, 120)); 
+            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); 
             TimeSpan difference = maxTime - currentTime;
             if (difference.TotalSeconds > 0)
                 maxTime = currentTime;
@@ -469,12 +467,11 @@ public static class Initialization
 
             s_dal!.Call.Create(callToAdd);
         }
-        // יצירת 15 שיחות פתוחות/סגורות ולא מוקצות
         for (int i = 0; i < 15; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); // זמן פתיחה בין 5 ל-60 דקות אחורה
-            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); // זמן מקסימלי בין 25 ל-100 דקות אחרי הפתיחה
+            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); 
+            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); 
             CallStatus callStatus = CallStatus.Open;
             TimeSpan difference = maxTime - currentTime;
 
@@ -600,71 +597,11 @@ public static class Initialization
             }
 
             i++;
-
-
-
-
-
-            //    // Select a random volunteer from the list
-            //    int index = s_rand.Next(0, volunteersList.Count());
-            //Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
-
-            //// Set StartTime to be between the call's opening time and the current time
-            //DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, Math.Max(1, (int)(currentTime - call.OpenedAt).TotalMinutes)) % 36);
-
-            //DateTime? EndTime = null;
-            //CompletionStatus status;
-
-            //switch (s_rand.Next(0, 4)) // Assign different statuses in a randomized order
-            //{
-            //    case 0: // Call in treatment
-            //        status = CompletionStatus.Handled;
-            //        EndTime = null; // Still ongoing
-            //        break;
-
-            //    case 1: // Self-cancellation
-            //        status = CompletionStatus.SelfCancel;
-            //        EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
-            //            ? call.MaxCompletionTime
-            //            : StartTime.AddMinutes(s_rand.Next(1, 60)); // Within the current time
-            //        break;
-
-            //    case 2: // Completed by manager
-            //        status = CompletionStatus.AdminCancel;
-            //        EndTime = StartTime.AddMinutes(s_rand.Next(1, 180)); // Within 3 hours of StartTime
-            //        if (call.MaxCompletionTime.HasValue && call.MaxCompletionTime < EndTime)
-            //            EndTime = call.MaxCompletionTime.Value; // Adjust within max completion time
-            //        break;
-
-            //    case 3:
-            //    default: // Expired call, no treatment
-            //        status = CompletionStatus.Expired;
-            //        if (call.MaxCompletionTime.HasValue)
-            //        {
-            //            EndTime = call.MaxCompletionTime.Value.AddMinutes(-s_rand.Next(1, 60));
-            //        }
-            //        else
-            //        {
-            //            EndTime = currentTime.AddMinutes(-s_rand.Next(1, 180)); // Ensure it's in the past
-            //        }
-            //        break;
-            //}
-
-            //// Ensure EndTime is not in the future
-            //if (EndTime.HasValue && EndTime > currentTime)
-            //{
-            //    EndTime = currentTime.AddMinutes(-s_rand.Next(1, 60));
-            //}
-
-            //// Create the assignment
-            //Assignment assignmentToAdd = new Assignment(id, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-            //s_dal!.Assignment.Create(assignmentToAdd);
         }
     }
 
     public static void Do()//stage 4
     {
-        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
         s_dal = DalApi.Factory.Get; //stage 4
         s_dal.ResetDB();
         Console.WriteLine("Reset Configuration values and List values...");

@@ -17,7 +17,7 @@ internal static class CallManager
             throw new BO.BloesNotExistException("Call does not exist.");
         }
         IEnumerable<DO.Assignment> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id); //to fix!
-        IEnumerable<BO.CallAssignInList> assignmentsInList = CallManager.AssignmentToCallAssignInList(assignments);
+        IEnumerable<BO.CallAssignInList>? assignmentsInList = CallManager.AssignmentToCallAssignInList(assignments);
         return new BO.Call
         {
             Id = call.Id,
@@ -29,16 +29,22 @@ internal static class CallManager
             OpenTime = call.OpenedAt,
             MaxEndTime = (DateTime)call.MaxCompletionTime,
             Status = (BO.CallStatus)call.Status,
-            Assignments = assignmentsInList
+            Assignments = assignmentsInList.ToList()
         };
     }
-
-    private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<Assignment> assignments)
+    private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<DO.Assignment> assignments)
     {
         IEnumerable<CallAssignInList> list;
+        return list = assignments.Select(a => new CallAssignInList
+        {
+            VolunteerId = a.VolunteerId,
+            EndTime = a.CompletionTime,
+            StartTime = a.EntryTime,
+            VolunteerName = s_dal.Volunteer.Read(a.VolunteerId).FullName,
+            Status = (BO.CompletionStatus)a.CompletionStatus
 
+        });
     }
-
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
         IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()
@@ -83,29 +89,6 @@ internal static class CallManager
     {
         var call = s_dal.Call.Read(id) ?? throw new BloesNotExistException("Call does not exist.");
         return (BO.CallStatus)call.Status;
-        //var assignments = s_dal.Assignment.ReadAll(a => a.CallId == id).ToList();
-        //if (assignments.Count == 0)
-        //{
-        //    return BO.CallStatus.Open;
-        //}
-        //var lastAssignment = assignments.OrderByDescending(a => a.EntryTime).First();
-        //if (lastAssignment.CompletionStatus == DO.CompletionStatus.Handled)
-        //{
-        //    return BO.CallStatus.Closed;
-        //}
-        //if (lastAssignment.CompletionStatus == DO.CompletionStatus.AdminCancel)
-        //{
-        //    return BO.CallStatus.Closed;
-        //}
-        //if (lastAssignment.CompletionStatus == DO.CompletionStatus.SelfCancel)
-        //{
-        //    return BO.CallStatus.Closed;
-        //}
-        //if (lastAssignment.CompletionStatus == DO.CompletionStatus.Expired)
-        //{
-        //    return BO.CallStatus.Expired;
-        //}
-        //return DateTime.Now > lastAssignment.EntryTime.AddMinutes(30) ? BO.CallStatus.OpenAtRisk : BO.CallStatus.Open;
     }
 
     internal static CallInList converterFromDoToBoCallInList(DO.Call c)
