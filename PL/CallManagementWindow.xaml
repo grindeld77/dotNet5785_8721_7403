@@ -8,7 +8,78 @@
         Title="Call Management" 
         Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Height="640" Width="1000">
+        Height="640" Width="1100">
+
+    <Window.Resources>
+        <local:CallStatusToIsActiveConverter x:Key="CallStatusToIsActiveConverter" />
+
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Style for Label -->
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+        </Style>
+
+        <!-- Style for Button -->
+        <Style TargetType="Button" x:Key="RoundedButtonStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for ListView -->
+        <Style TargetType="ListView" x:Key="StyledListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- Style for GridView Column Headers -->
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Style for TextBlock -->
+        <Style TargetType="TextBlock" x:Key="StyledTextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -19,19 +90,19 @@
 
         <!-- Filtering and Grouping Section -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-            <Label Content="Filter by Status:" VerticalAlignment="Center" />
+            <Label Content="Filter by Status:" VerticalAlignment="Center" Style="{StaticResource LabelStyle}" />
             <ComboBox ItemsSource="{Binding Source={StaticResource CallCollectionFilterKey}}" 
                       SelectedValue="{Binding SelectedFilter}" 
-                      Margin="5" Width="150"/>
+                      Style="{StaticResource ComboBoxStyle}" />
 
-            <Label Content="Sort by:" VerticalAlignment="Center" Margin="20,0,0,0" />
+            <Label Content="Sort by:" VerticalAlignment="Center" Margin="20,0,0,0" Style="{StaticResource LabelStyle}" />
             <ComboBox ItemsSource="{Binding Source={StaticResource CallCollectionSortKey}}"
                       SelectedValue="{Binding SelectedSort}" 
-                      Margin="5" Width="150"/>
+                      Style="{StaticResource ComboBoxStyle}"/>
         </StackPanel>
 
         <!-- Calls ListView -->
-        <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10"
+        <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10" Style="{StaticResource StyledListView}"
                   MouseDoubleClick="ListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
@@ -41,32 +112,25 @@
                     <GridViewColumn Header="Last Volunteer" DisplayMemberBinding="{Binding LastVolunteer}" Width="150" />
                     <GridViewColumn Header="Total Assignments" DisplayMemberBinding="{Binding TotalAssignments}" Width="150" />
 
-                    <!-- Boolean Column with CheckBox -->
-                    <GridViewColumn Header="Is Active" Width="100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsEnabled="False" IsChecked="{Binding IsActive}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
                     <!-- Delete Action Column -->
-                    <GridViewColumn Header="Delete" Width="100">
+                    <GridViewColumn Header="Delete" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Delete" 
                                         Click="DeleteButton_Click" 
+                                        Style="{StaticResource RoundedButtonStyle}" 
                                         Margin="5" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
                     <!-- Unassign Action Column -->
-                    <GridViewColumn Header="Unassign" Width="100">
+                    <GridViewColumn Header="Unassign" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Unassign" 
                                         Click="UnassignButton_Click" 
+                                        Style="{StaticResource RoundedButtonStyle}" 
                                         Margin="5" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -76,7 +140,7 @@
         </ListView>
 
         <!-- Add Call Button -->
-        <Button Content="Add Call" Grid.Row="2" Height="40" Width="120" HorizontalAlignment="Center" Margin="10"
-                 Click="AddButton_Click" />
+        <Button Content="Add Call" Grid.Row="2" HorizontalAlignment="Center" Style="{StaticResource RoundedButtonStyle}" 
+                Click="AddButton_Click" />
     </Grid>
 </Window>

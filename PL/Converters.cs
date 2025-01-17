@@ -17,5 +17,21 @@ namespace PL
             return (value is Visibility visibility && visibility == Visibility.Visible);
         }
     }
+    public class CallStatusToIsActiveConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is BO.CallStatus status)
+            {
+                return (status == BO.CallStatus.Open || status == BO.CallStatus.OpenAtRisk || status == BO.CallStatus.InProgressAtRisk, status == BO.CallStatus.InProgress);
+            }
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 

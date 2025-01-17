@@ -53,7 +53,7 @@ internal class CallImplementation : ICall
 
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
-        ICall help= new CallImplementation();
+        ICall help = new CallImplementation();
         var calltamp = _dal.Call.Read(callId); // Check if the call exists
         if (calltamp == null)
             throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
@@ -62,6 +62,13 @@ internal class CallImplementation : ICall
         // Validate inputs
         if (volunteerId < 200000000 || volunteerId > 400000000)
             throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
+
+        if (_dal.Volunteer.Read(volunteerId) == null)
+            throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
+
+        //if (CallManager.IsVolunteerBusy(volunteerId)) //TO ADD
+        //    throw new BO.BlInvalidOperationException("Volunteer is already assigned to a call.");
+
         if (callId < 0)
             throw new BO.BlInvalidCallIdException("Invalid call ID.", nameof(callId));
 

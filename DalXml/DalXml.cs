@@ -2,7 +2,7 @@
 using DalApi;
 using System.Diagnostics;
 
-sealed internal class DalXml :IDal
+sealed internal class DalXml : IDal
 {
     public static IDal Instance { get; } = new DalXml();
     private DalXml() { }

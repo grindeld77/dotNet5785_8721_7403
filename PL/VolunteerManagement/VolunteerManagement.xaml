@@ -5,45 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerListWindow" Height="640" Width="800"
+        Title="VolunteerListWindow" Height="800" Width="1232"
         Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-    <Grid>
+    <Window.Resources>
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Style for Label -->
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+        </Style>
+
+        <!-- Style for ListView -->
+        <Style TargetType="ListView" x:Key="StyledListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
+        <!-- Style for GridView Columns -->
+        <Style TargetType="GridViewColumnHeader" x:Key="GridViewColumnHeaderStyle">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Height" Value="60"/>
+        </Style>
+
+        <!-- Style for Button -->
+        <Style TargetType="Button" x:Key="RoundedButtonStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for Section Titles -->
+        <Style TargetType="TextBlock" x:Key="SectionTitleStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="10,10,10,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,-44">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Section Title for ComboBox (Call Type) -->
+        <TextBlock Grid.Row="0" Text="Filter by Call Type: " Style="{StaticResource SectionTitleStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
         <!-- ComboBox for Call Types -->
-        <Label Grid.Row="0" Grid.Column="0" Content="Call Type" HorizontalAlignment="Left" Margin="5"/>
         <ComboBox ItemsSource="{Binding Source={StaticResource VolunteerCollectionKey}}"
-                  Grid.Row="0" Grid.Column="1"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
+                  Grid.Row="0"
                   SelectedValue="{Binding SelectedCallType, Mode=TwoWay}"
-                  SelectedValuePath="." />
+                  SelectedValuePath="."
+                  Style="{StaticResource ComboBoxStyle}" Margin="176,0,10,0" />
+
+        <!-- Section Title for Volunteer List -->
+        <TextBlock Grid.Row="1" Text="Volunteer List" Style="{StaticResource SectionTitleStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <!-- ListView for Volunteers -->
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding VolunteerList}" MouseDoubleClick="ListView_MouseDoubleClick">
+        <ListView Margin="5,40,5,171" ItemsSource="{Binding VolunteerList}" MouseDoubleClick="ListView_MouseDoubleClick" Style="{StaticResource StyledListView}" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150"/>
-                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="100"/>
-                    <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="120"/>
-                    <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="120"/>
-                    <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="120"/>
-                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}" Width="120"/>
-                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="120"/>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
         <!-- Add Button -->
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="AddButton_Click"/>
+        <Button Content="Add" Grid.Row="1" HorizontalAlignment="Center" Height="NaN" Width="150" Style="{StaticResource RoundedButtonStyle}" Click="AddButton_Click" Margin="0,617,0,84"/>
     </Grid>
 </Window>
-
-

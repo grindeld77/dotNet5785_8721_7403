@@ -58,11 +58,11 @@ namespace PL
             get => (BO.CallInListFields)GetValue(SelectedSortProperty);
             set => SetValue(SelectedSortProperty, value);
         }
-
         public CallManagementWindow(int Id)
         {
             id = Id;
             InitializeComponent();
+            DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
         }
@@ -72,7 +72,6 @@ namespace PL
             {
                 try
                 {
-                    // קבלת המתנדב המלא לפי ID
                     var selectedCall = s_bl.Call.GetCallDetails(selectedCallInList.CallId);
                     var volunteerWindow = new CallWindow(selectedCallInList.CallId);  
                     volunteerWindow.Show();
