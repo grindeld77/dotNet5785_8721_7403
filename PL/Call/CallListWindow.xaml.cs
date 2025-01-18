@@ -31,8 +31,6 @@ namespace PL.Call
                 ClosedCalls = new ObservableCollection<BO.ClosedCallInList>(
                     BlApi.Factory.Get().Call.GetClosedCallsByVolunteer(volunteerId, null, null)
                 );
-
-                DataContext = this;
             }
             catch (Exception ex)
             {

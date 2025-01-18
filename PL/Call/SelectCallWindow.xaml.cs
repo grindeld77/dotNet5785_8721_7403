@@ -54,8 +54,6 @@ namespace PL.Call
             UserId = id;
             try
             {
-                DataContext = this;
-
                 // קריאה מיד לאחר אתחול הערכים
                 OpenList = s_bl.Call.GetOpenCallsForVolunteer(id, null, null);
 

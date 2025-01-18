@@ -4,11 +4,122 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Select Call Window" Height="800" Width="1100">
+        Title="Select Call Window" Height="800" Width="1464"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <!-- Style for Label -->
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="8,0,8,0"/>
+        </Style>
+
+        <!-- Style for ListView -->
+        <Style TargetType="ListView" x:Key="StyledListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
+        <!-- Style for GridView Columns -->
+        <Style TargetType="GridViewColumnHeader" x:Key="GridViewColumnHeaderStyle">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
+
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style TargetType="TextBox" x:Key="TextBoxStyle">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#D32F2F" />
+            <Setter Property="BorderBrush" Value="#D32F2F" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="6" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <!-- Button Style -->
+        <Style TargetType="Button" x:Key="RoundedButtonStyle">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#D32F2F" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#D32F2F" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid" x:Key="DataGridStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FFEBEE"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <!-- DataGrid Column Header Style -->
+        <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderStyle">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="80"/>
+        </Style>
+
+        <!-- Style for Titles -->
+        <Style TargetType="TextBlock" x:Key="TitleStyle">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="10">
         <!-- filter and sort-->
-        <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-            <TextBlock Text="Filter and Sort Calls" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+        <StackPanel Orientation="Vertical" Margin="0,0,10,0">
+            <TextBlock Text="Select the Call you want:" Style="{StaticResource TitleStyle}" />
 
             <!-- filter by call type -->
             <Grid Margin="0,5">
@@ -16,8 +127,9 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Filter by Call Type:" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                <TextBlock Text="Filter by Call Type:" FontSize="25" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold" Foreground="#D32F2F"/>
                 <ComboBox Grid.Column="1"
+                          Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{Binding Source={StaticResource OpenCallCollectionTypeKey}}"
                           SelectedValue="{Binding SelectedCallType, Mode=TwoWay}" 
                           SelectedValuePath="."
@@ -30,8 +142,9 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Sort by:" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                <TextBlock Text="Sort by:" FontSize="25" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold" Foreground="#D32F2F"/>
                 <ComboBox Grid.Column="1"
+                          Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{Binding Source={StaticResource OpenCallCollectionKey}}"
                           SelectedValue="{Binding SelectedSort, Mode=TwoWay}" 
                           SelectedValuePath="."
@@ -40,19 +153,19 @@
         </StackPanel>
 
         <!-- open call list -->
-        <ListView Name="OpenCallsList" Margin="0,100,0,50" ItemsSource="{Binding OpenList}">
+        <ListView Name="OpenCallsList" Margin="0,153,0,50" ItemsSource="{Binding OpenList}" Style="{StaticResource StyledListView}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="120"/>
-                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="200"/>
-                    <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="120"/>
-                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="200"/>
-                    <GridViewColumn Header="Open Time" DisplayMemberBinding="{Binding OpenTime}" Width="150"/>
-                    <GridViewColumn Header="Max End Time" DisplayMemberBinding="{Binding MaxEndTime}" Width="150"/>
-                    <GridViewColumn Header="Actions" Width="100">
+                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Open Time" DisplayMemberBinding="{Binding OpenTime}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Max End Time" DisplayMemberBinding="{Binding MaxEndTime}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Actions" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Select" Click="SelectCall_Click" Tag="{Binding}" />
+                                <Button Content="Select" Click="SelectCall_Click" Tag="{Binding}" Style="{StaticResource RoundedButtonStyle}"  />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

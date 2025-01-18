@@ -49,14 +49,6 @@
     <CompletionStatus>Handled</CompletionStatus>
   </Assignment>
   <Assignment>
-    <Id>6</Id>
-    <CallId>9</CallId>
-    <VolunteerId>315676239</VolunteerId>
-    <EntryTime>2025-01-16T17:57:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
-  </Assignment>
-  <Assignment>
     <Id>7</Id>
     <CallId>10</CallId>
     <VolunteerId>235426327</VolunteerId>
@@ -383,5 +375,21 @@
     <EntryTime>2025-01-16T17:21:43</EntryTime>
     <CompletionTime>2025-01-16T18:07:43</CompletionTime>
     <CompletionStatus>AdminCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>48</Id>
+    <CallId>0</CallId>
+    <VolunteerId>315676239</VolunteerId>
+    <EntryTime>2025-01-18T20:40:09.0856623+02:00</EntryTime>
+    <CompletionTime xsi:nil="true" />
+    <CompletionStatus xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>6</Id>
+    <CallId>9</CallId>
+    <VolunteerId>315676239</VolunteerId>
+    <EntryTime>2025-01-16T17:57:43</EntryTime>
+    <CompletionTime>2025-01-18T20:40:24.6696792+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
   </Assignment>
 </ArrayOfAssignment>

@@ -1,10 +1,124 @@
 ﻿<Window x:Class="PL.Call.CallListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Closed Call List" Height="500" Width="900">
+        Title="Closed Call List" Height="500" Width="900"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <!-- Style for Label -->
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="8,0,8,0"/>
+        </Style>
+
+        <!-- Style for ListView -->
+        <Style TargetType="ListView" x:Key="StyledListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
+        <!-- Style for GridView Columns -->
+        <Style TargetType="GridViewColumnHeader" x:Key="GridViewColumnHeaderStyle">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
+
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style TargetType="TextBox" x:Key="TextBoxStyle">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#D32F2F" />
+            <Setter Property="BorderBrush" Value="#D32F2F" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="6" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <!-- Button Style -->
+        <Style TargetType="Button" x:Key="RoundedButtonStyle">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#D32F2F" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#D32F2F" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="180" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid" x:Key="DataGridStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FFEBEE"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <!-- DataGrid Column Header Style -->
+        <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderStyle">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+
+        <!-- Style for Titles -->
+        <Style TargetType="TextBlock" x:Key="TitleStyle">
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <!-- title -->
+        <TextBlock Text="View Call History:" Style="{StaticResource TitleStyle}" />
         <!-- closed call data -->
-        <DataGrid ItemsSource="{Binding ClosedCalls}" AutoGenerateColumns="False" Margin="10">
+        <DataGrid ItemsSource="{Binding ClosedCalls}" AutoGenerateColumns="False" Margin="10,49,10,10" Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
@@ -12,11 +126,11 @@
                 <DataGridTextColumn Header="Open Time" Binding="{Binding OpenTime, StringFormat=dd/MM/yyyy HH:mm}" />
                 <DataGridTextColumn Header="Assigned Time" Binding="{Binding AssignedTime, StringFormat=dd/MM/yyyy HH:mm}" />
                 <DataGridTextColumn Header="Closed Time" Binding="{Binding ClosedTime, StringFormat=dd/MM/yyyy HH:mm}" />
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- button for closing window -->
-        <Button Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Width="100" Click="Close_Click" />
+        <Button Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="103" Click="Close_Click" Style="{StaticResource RoundedButtonStyle}" Height="44" />
     </Grid>
 </Window>

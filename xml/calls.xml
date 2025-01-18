@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Call>
-    <Id>0</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Heart attack reported.</Description>
-    <Address>Weizmann St 2, Rehovot</Address>
-    <Latitude>31.8938</Latitude>
-    <Longitude>34.8113</Longitude>
-    <OpenedAt>2025-01-16T17:33:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:54:43</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>1</Id>
     <Type>PatientTransport</Type>
     <Description>Elderly transport to hospital.</Description>
@@ -87,17 +76,6 @@
     <OpenedAt>2025-01-16T17:04:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T17:35:43</MaxCompletionTime>
     <Status>Closed</Status>
-  </Call>
-  <Call>
-    <Id>9</Id>
-    <Type>MassCausalities</Type>
-    <Description>Explosion causing multiple casualties.</Description>
-    <Address>Palmach St 10, Nahariya</Address>
-    <Latitude>33.0081</Latitude>
-    <Longitude>35.0952</Longitude>
-    <OpenedAt>2025-01-16T17:48:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T19:08:43</MaxCompletionTime>
-    <Status>InProgress</Status>
   </Call>
   <Call>
     <Id>10</Id>
@@ -713,6 +691,28 @@
     <Longitude>34.7702</Longitude>
     <OpenedAt>2025-01-16T17:53:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T18:23:43</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Heart attack reported.</Description>
+    <Address>Weizmann St 2, Rehovot</Address>
+    <Latitude>31.8938</Latitude>
+    <Longitude>34.8113</Longitude>
+    <OpenedAt>2025-01-16T17:33:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:54:43</MaxCompletionTime>
+    <Status>InProgressAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>9</Id>
+    <Type>MassCausalities</Type>
+    <Description>Explosion causing multiple casualties.</Description>
+    <Address>Palmach St 10, Nahariya</Address>
+    <Latitude>33.0081</Latitude>
+    <Longitude>35.0952</Longitude>
+    <OpenedAt>2025-01-16T17:48:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T19:08:43</MaxCompletionTime>
     <Status>Open</Status>
   </Call>
 </ArrayOfCall>
