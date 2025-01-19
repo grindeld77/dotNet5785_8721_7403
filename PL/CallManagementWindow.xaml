@@ -8,12 +8,12 @@
         Title="Call Management" 
         Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Height="640" Width="1100">
+        Height="640" Width="700">
 
     <Window.Resources>
         <local:CallStatusToIsActiveConverter x:Key="CallStatusToIsActiveConverter" />
 
-        <!-- Style for ComboBox -->
+        <!-- Style definitions remain unchanged -->
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Background" Value="White"/>
@@ -25,7 +25,6 @@
             <Setter Property="Height" Value="35"/>
         </Style>
 
-        <!-- Style for Label -->
         <Style TargetType="Label" x:Key="LabelStyle">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -33,7 +32,6 @@
             <Setter Property="Margin" Value="10,0,10,0"/>
         </Style>
 
-        <!-- Style for Button -->
         <Style TargetType="Button" x:Key="RoundedButtonStyle">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Background" Value="#D32F2F"/>
@@ -57,14 +55,12 @@
             </Setter>
         </Style>
 
-        <!-- Style for ListView -->
         <Style TargetType="ListView" x:Key="StyledListView">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#D32F2F"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
-        <!-- Style for GridView Column Headers -->
         <Style TargetType="GridViewColumnHeader">
             <Setter Property="Background" Value="#D32F2F"/>
             <Setter Property="Foreground" Value="White"/>
@@ -73,7 +69,6 @@
             <Setter Property="Height" Value="35"/>
         </Style>
 
-        <!-- Style for TextBlock -->
         <Style TargetType="TextBlock" x:Key="StyledTextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#D32F2F"/>
@@ -103,7 +98,7 @@
 
         <!-- Calls ListView -->
         <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10" Style="{StaticResource StyledListView}"
-                  MouseDoubleClick="ListView_MouseDoubleClick">
+                  MouseDoubleClick="ListView_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding CallId}" Width="100" />
@@ -111,36 +106,21 @@
                     <GridViewColumn Header="Remaining Time" DisplayMemberBinding="{Binding RemainingTime}" Width="150" />
                     <GridViewColumn Header="Last Volunteer" DisplayMemberBinding="{Binding LastVolunteer}" Width="150" />
                     <GridViewColumn Header="Total Assignments" DisplayMemberBinding="{Binding TotalAssignments}" Width="150" />
-
-                    <!-- Delete Action Column -->
-                    <GridViewColumn Header="Delete" Width="200">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Delete" 
-                                        Click="DeleteButton_Click" 
-                                        Style="{StaticResource RoundedButtonStyle}" 
-                                        Margin="5" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <!-- Unassign Action Column -->
-                    <GridViewColumn Header="Unassign" Width="200">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Unassign" 
-                                        Click="UnassignButton_Click" 
-                                        Style="{StaticResource RoundedButtonStyle}" 
-                                        Margin="5" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
 
         <!-- Add Call Button -->
-        <Button Content="Add Call" Grid.Row="2" HorizontalAlignment="Center" Style="{StaticResource RoundedButtonStyle}" 
+
+
+        <!-- Action Buttons Section (bottom) -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="10" VerticalAlignment="Center">
+            <Button Content="Add Call" Grid.Row="2" HorizontalAlignment="Center" Style="{StaticResource RoundedButtonStyle}" 
                 Click="AddButton_Click" />
+            <Button Content="Delete" Click="DeleteButton_Click" 
+                    Style="{StaticResource RoundedButtonStyle}" Margin="10" IsEnabled="{Binding IsSelectedCall}" />
+            <Button Content="Unassign" Click="UnassignButton_Click" 
+                    Style="{StaticResource RoundedButtonStyle}" Margin="10" IsEnabled="{Binding IsSelectedCall}" />
+        </StackPanel>
     </Grid>
 </Window>

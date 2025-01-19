@@ -23,17 +23,6 @@
     <Status>InProgressAtRisk</Status>
   </Call>
   <Call>
-    <Id>4</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue operation for a trapped individual.</Description>
-    <Address>Emek Refaim St 34, Jerusalem</Address>
-    <Latitude>31.7614</Latitude>
-    <Longitude>35.2219</Longitude>
-    <OpenedAt>2025-01-16T17:47:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T19:10:43</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>5</Id>
     <Type>FireEmergency</Type>
     <Description>Fire in a residential building.</Description>

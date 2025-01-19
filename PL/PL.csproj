@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Admin\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 
   <ItemGroup>

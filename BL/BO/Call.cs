@@ -11,7 +11,7 @@ public class Call
     public DateTime OpenTime { get; set; } // Call open time
     public DateTime MaxEndTime { get; set; } // Maximum end time
     public CallStatus Status { get; set; } // Call status
-    public List<BO.CallAssignInList>? Assignments { get; set; } = null; // List of assignments
+    public IEnumerable<BO.CallAssignInList>? Assignments { get; set; } = null; // List of assignments
 
     public override string ToString()
     {
