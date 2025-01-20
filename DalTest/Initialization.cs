@@ -112,9 +112,16 @@ public static class Initialization
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@gmail.com";
             string password = s_rand.Next(1000000, 999999999).ToString();
+            Volunteer volunteerToAdd;
 
-            Volunteer volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Volunteer, true, password, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
-
+            if (i == 1 || i == 2)
+            {
+                volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Admin, true, password, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
+            }
+            else
+            {
+                volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Volunteer, true, password, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
+            }
             s_dal.Volunteer.Create(volunteerToAdd);
         }
     }
