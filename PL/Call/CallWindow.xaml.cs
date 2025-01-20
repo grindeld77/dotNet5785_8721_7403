@@ -55,11 +55,7 @@ namespace PL.Call
             if (id == -1)
             {
                 ButtonText = "Add";
-                CurrentCall = new BO.Call
-                {
-                    OpenTime = DateTime.Now,
-                    MaxEndTime = DateTime.Now.AddHours(1),
-                };
+                CurrentCall = new BO.Call();
                 IsDeleteButtonVisible = Visibility.Collapsed;
             }
             else
@@ -78,11 +74,18 @@ namespace PL.Call
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentCall == null)
+            {
+                MessageBox.Show("Call details are missing.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             try
             {
                 if (ButtonText == "Add")
                 {
+                    CurrentCall.OpenTime = s_bl.Admin.GetClock();
                     s_bl.Call.AddCall(CurrentCall);
+                    Close();
                 }
                 else
                 {
@@ -96,6 +99,30 @@ namespace PL.Call
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void queryCall()
+        {
+            int id = CurrentCall!.Id;
+            CurrentCall = s_bl.Call.GetCallDetails(id);
+        }
+        private void callObserver()
+        {
+            queryCall();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CurrentCall!.Id != -1)
+                s_bl.Call.AddObserver(CurrentCall!.Id, callObserver);
+        }
+
+        /// <summary>
+        /// Event handler for when the window is closed.
+        /// </summary>
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (CurrentCall!.Id != 0)
+                s_bl.Call.RemoveObserver(CurrentCall!.Id, callObserver);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

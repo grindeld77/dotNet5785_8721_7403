@@ -76,14 +76,11 @@ namespace PL.Volunteer
             {
                 try
                 {
-                    // קבלת המתנדב המלא לפי ID
                     var selectedVolunteer = s_bl.Volunteer.GetVolunteerDetails(selectedVolunteerInList.Id);
            
-                    // פתיחת חלון עם הנתונים של המתנדב
                     var volunteerWindow = new VolunteerWindow(tampUserId, selectedVolunteer.Id);
                     volunteerWindow.Show(); 
 
-                    // רענון הרשימה לאחר סגירת החלון
                     queryVolunteerList();
                 }
                 catch (Exception ex)
@@ -111,7 +108,7 @@ namespace PL.Volunteer
             {
                 // Load the updated list of volunteers
                 VolunteerList = BlApi.Factory.Get().Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);
-                DataContext = this;
+                queryVolunteerList();
             }
             catch (Exception ex)
             {

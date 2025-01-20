@@ -485,12 +485,37 @@ internal class CallImplementation : ICall
 
     IEnumerable<BO.OpenCallInList> ICall.GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField)
     {
-            // Fetch open calls for the volunteer
-            IEnumerable<BO.OpenCallInList> openCallsInList = CallManager.GetOpenCallInList(volunteerId);
-            if (filterType != null)
+            // Retrieve the volunteer from the DAL
+            DO.Volunteer volunteer = _dal.Volunteer.Read(volunteerId);
+            if (volunteer == null)
+                throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+
+            var allCalls = _dal.Call.ReadAll();
+
+            var allAssignments = _dal.Assignment.ReadAll();
+
+            double lonVol = (double)volunteer.Longitude;
+            double latVol = (double)volunteer.Latitude;
+
+            var openCallsInList = from call in allCalls
+                                let boCall = CallManager.ConvertDoCallToBoCall(call)
+                                where (boCall.Status == BO.CallStatus.Open || boCall.Status == BO.CallStatus.OpenAtRisk) 
+                                select new BO.OpenCallInList
+                                {
+                                    Id = call.Id,
+                                    Type = (BO.CallType)call.Type,
+                                    FullAddress = boCall.FullAddress,
+                                    OpenTime  = call.OpenedAt,
+                                    MaxEndTime = call.MaxCompletionTime.HasValue ? AdminManager.Now.Add(call.MaxCompletionTime.Value - call.OpenedAt) : (DateTime?)null,
+                                    DistanceFromVolunteer = volunteer?.CurrentAddress != null ?
+                                    VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude) : 0,
+                                    Description = boCall.Description
+                                };
+        if (filterType != null)
             {
-                openCallsInList = openCallsInList.Where(call => call.Type == filterType).ToList();
+                openCallsInList = openCallsInList.Where(call => call.Type == filterType);
             }
+        openCallsInList = openCallsInList.Where(call => call.DistanceFromVolunteer <= volunteer.MaxCallDistance);
         if (sortField != null)
         {
             openCallsInList = sortField switch
@@ -504,7 +529,8 @@ internal class CallImplementation : ICall
                 _ => openCallsInList
             };
         }
-        else openCallsInList = openCallsInList.OrderBy(call => call.Id).ToList();
+        else 
+            openCallsInList = openCallsInList.OrderBy(call => call.Id);
         return openCallsInList;
     }
 

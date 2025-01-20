@@ -123,7 +123,8 @@
             <!-- id -->
             <StackPanel Orientation="Horizontal" Margin="0,8">
                 <TextBlock Text="Call ID:" Width="90" VerticalAlignment="Center" FontSize="16" Foreground="#D32F2F" FontWeight="Bold"/>
-                <TextBox Text="{Binding CurrentCall.Id}" IsReadOnly="True" Style="{StaticResource TextBoxStyle}" />
+                <TextBox Text="{Binding CurrentCall.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" 
+         IsReadOnly="True"  Style="{StaticResource TextBoxStyle}" />
             </StackPanel>
 
             <!-- call Description -->
