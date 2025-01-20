@@ -24,10 +24,10 @@ internal class CallImplementation : ICall
             if (boCall.OpenTime >= boCall.MaxEndTime)
                 throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
+            (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
+
             if (!Tools.IsValidAddress(boCall.FullAddress, out double latitude, out double longitude))
                 throw new BO.BlInvalidAddressException("Address is not valid.");
-
-            (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
             var call = new DO.Call
             {
                 Id = boCall.Id,
@@ -549,6 +549,7 @@ internal class CallImplementation : ICall
             throw new BO.BlGeneralException("Failed to update the call.", ex);
         }
     }
+
     #region Stage 5
     public void AddObserver(Action listObserver) =>
     CallManager.Observers.AddListObserver(listObserver); //stage 5

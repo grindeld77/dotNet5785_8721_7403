@@ -58,11 +58,22 @@ namespace PL
             get => (BO.CallInListFields)GetValue(SelectedSortProperty);
             set => SetValue(SelectedSortProperty, value);
         }
+
+        // DependencyProperty for SelectedCall
+        public static readonly DependencyProperty SelectedCallProperty = DependencyProperty.Register(
+            "SelectedCall", typeof(BO.CallInList), typeof(CallManagementWindow), new PropertyMetadata(null));
+
+        // Property wrapper for SelectedCall
+        public BO.CallInList SelectedCall
+        {
+            get { return (BO.CallInList)GetValue(SelectedCallProperty); }
+            set { SetValue(SelectedCallProperty, value); }
+        }
+
         public CallManagementWindow(int Id)
         {
             id = Id;
             InitializeComponent();
-            DataContext = this;
             Loaded += Window_Loaded;
             Closed += Window_Closed;
         }
@@ -73,7 +84,7 @@ namespace PL
                 try
                 {
                     var selectedCall = s_bl.Call.GetCallDetails(selectedCallInList.CallId);
-                    var volunteerWindow = new CallWindow(selectedCallInList.CallId);  
+                    var volunteerWindow = new CallWindow(selectedCallInList.CallId);
                     volunteerWindow.Show();
                     queryCallList();
                 }
@@ -121,43 +132,46 @@ namespace PL
             // Refresh the list after closing the window
             queryCallList();
         }
+        // כפתור מחיקה
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
+            if (SelectedCall != null)
             {
-                if (MessageBox.Show("Are you sure you want to delete the selected call?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                try
                 {
-                    try
+                    if (MessageBox.Show("Are you sure you want to delete the selected call?", "Confirm Deletion",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.DeleteCall(selectedCallInList.CallId);
+                        s_bl.Call.DeleteCall(SelectedCall.CallId);
                         queryCallList();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error deleting call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
+        // כפתור ביטול הקצאה
         private void UnassignButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ListView listView && listView.SelectedItem is BO.CallInList selectedCallInList)
+            if (SelectedCall != null)
             {
-                if (MessageBox.Show("Are you sure you want to unassign the selected call?", "Confirm Unassignment", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                try
                 {
-                    try
+                    if (MessageBox.Show("Are you sure you want to unassign the selected call?", "Confirm Unassignment",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.CancelCallAssignment(id, selectedCallInList.CallId);
+                        s_bl.Call.CancelCallAssignment(id, SelectedCall.CallId);
                         queryCallList();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error unassigning call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error unassigning call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
         }
     }
 }

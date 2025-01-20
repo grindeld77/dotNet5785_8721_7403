@@ -16,8 +16,26 @@ internal static class CallManager
         {
             throw new BO.BloesNotExistException("Call does not exist.");
         }
-        IEnumerable<DO.Assignment> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id); //to fix!
-        IEnumerable<BO.CallAssignInList>? assignmentsInList = CallManager.AssignmentToCallAssignInList(assignments);
+
+        var assignments = s_dal.Assignment.ReadAll()?.Where(a => a.CallId == call.Id) ?? Enumerable.Empty<DO.Assignment>();
+
+        var assignmentsInList = AssignmentToCallAssignInList(assignments);
+        if (call.Status == DO.CallStatus.InProgressAtRisk || call.Status == DO.CallStatus.InProgress)
+        {
+            return new BO.Call
+            {
+                Id = call.Id,
+                Type = (BO.CallType)call.Type,
+                Description = call.Description,
+                FullAddress = call.Address,
+                Latitude = call.Latitude,
+                Longitude = call.Longitude,
+                OpenTime = call.OpenedAt,
+                MaxEndTime = call.MaxCompletionTime ?? default(DateTime),
+                Status = (BO.CallStatus)call.Status,
+                Assignments = null
+            };
+        }
         return new BO.Call
         {
             Id = call.Id,
@@ -27,24 +45,29 @@ internal static class CallManager
             Latitude = call.Latitude,
             Longitude = call.Longitude,
             OpenTime = call.OpenedAt,
-            MaxEndTime = (DateTime)call.MaxCompletionTime,
+            MaxEndTime = call.MaxCompletionTime ?? default(DateTime),
             Status = (BO.CallStatus)call.Status,
-            Assignments = assignmentsInList.ToList()
+            Assignments = assignmentsInList
         };
     }
-    private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<DO.Assignment> assignments)
+
+    private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<DO.Assignment>? assignments)
     {
-        IEnumerable<CallAssignInList> list;
-        return list = assignments.Select(a => new CallAssignInList
+        if (assignments == null || !assignments.Any())
+        {
+            return Enumerable.Empty<CallAssignInList>();
+        }
+
+        return assignments.Select(a => new CallAssignInList
         {
             VolunteerId = a.VolunteerId,
-            EndTime = a.CompletionTime,
+            EndTime = a.CompletionTime ?? default(DateTime),
             StartTime = a.EntryTime,
-            VolunteerName = s_dal.Volunteer.Read(a.VolunteerId).FullName,
+            VolunteerName = s_dal.Volunteer.Read(a.VolunteerId)?.FullName ?? "Unknown",
             Status = (BO.CompletionStatus)a.CompletionStatus
-
         });
     }
+
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
         IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()

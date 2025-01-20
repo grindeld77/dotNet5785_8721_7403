@@ -37,8 +37,7 @@ public enum CompletionStatus//call completion status
     Handled, //call was handled
     SelfCancel, //volunteer canceled the call
     AdminCancel,    // admin canceled the call
-    Expired, // call expired
-    InProgress,         //call is in progress
+    Expired// call expired
 }
 public enum DistanceType//distance type
 {

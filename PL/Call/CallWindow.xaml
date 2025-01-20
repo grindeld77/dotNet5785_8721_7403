@@ -164,9 +164,10 @@
                 <TextBox Text="{Binding CurrentCall.Status}" IsReadOnly="True" Style="{StaticResource TextBoxStyle}" />
             </StackPanel>
 
-            <!-- assignmentList -->
-            <GroupBox Header="Assignments" Margin="0,16" Height="180" FontSize="18" Foreground="#D32F2F" FontWeight="Bold">
-                <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False" Height="130" Style="{StaticResource DataGridStyle}">
+            <GroupBox Header="Assignments" Margin="0,16" FontSize="18" Foreground="#D32F2F" FontWeight="Bold"
+          Height="180" Visibility="{Binding IsDeleteButtonVisible}">
+                <DataGrid ItemsSource="{Binding CurrentCall.Assignments}" AutoGenerateColumns="False" CanUserAddRows="False" 
+              Height="130" Style="{StaticResource DataGridStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Volunteer ID" Binding="{Binding VolunteerId}" />
                         <DataGridTextColumn Header="Volunteer Name" Binding="{Binding VolunteerName}" />
@@ -176,7 +177,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-
+            
             <!-- buttons area -->
             <StackPanel Orientation="Horizontal" Margin="0,16" HorizontalAlignment="Center" Height="90">
                 <Button Content="{Binding ButtonText}" Margin="8" Click="SaveButton_Click" Style="{StaticResource RoundedButtonStyle}" />

@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Serialization;
 
 namespace PL.Call
 {
@@ -38,20 +39,27 @@ namespace PL.Call
             set => SetValue(IsDeleteButtonVisibleProperty, value);
         }
 
+        public static readonly DependencyProperty IsAssignmentVisibleProperty =
+            DependencyProperty.Register("IsAssignmentVisible", typeof(Visibility), typeof(CallWindow), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility IsAssignmentVisible
+        {
+            get => (Visibility)GetValue(IsAssignmentVisibleProperty);
+            set => SetValue(IsAssignmentVisibleProperty, value);
+        }
+
         public CallWindow(int id)
         {
             InitializeComponent();
 
             if (id == -1)
             {
+                ButtonText = "Add";
                 CurrentCall = new BO.Call
                 {
                     OpenTime = DateTime.Now,
                     MaxEndTime = DateTime.Now.AddHours(1),
-                    Status = BO.CallStatus.Open,
-                    Assignments = null,
                 };
-                ButtonText = "Add";
                 IsDeleteButtonVisible = Visibility.Collapsed;
             }
             else
