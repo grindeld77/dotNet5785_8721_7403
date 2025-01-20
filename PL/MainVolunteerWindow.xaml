@@ -141,7 +141,7 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Call ID:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.CallId, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.CallId, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Call Type:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
@@ -173,7 +173,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Status:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Status, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True"/>
+                    <TextBox Text="{Binding CurrentVolunteer.CurrentCall.Status, Mode=TwoWay, TargetNullValue='N/A'}" Width="300" IsReadOnly="True" TextChanged="TextBox_TextChanged"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

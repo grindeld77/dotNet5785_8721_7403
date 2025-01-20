@@ -104,7 +104,7 @@ internal class CallImplementation : ICall
                     Longitude = calltamp?.Longitude ?? 0.0,
                     OpenTime = calltamp.OpenedAt,
                     MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
-                    Status = BO.CallStatus.InProgressAtRisk,
+                    Status = BO.CallStatus.InProgress,
                     Assignments = null
                 };
                 help.UpdateCall(newCall);

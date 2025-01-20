@@ -153,14 +153,6 @@
     <CompletionStatus xsi:nil="true" />
   </Assignment>
   <Assignment>
-    <Id>20</Id>
-    <CallId>25</CallId>
-    <VolunteerId>363461914</VolunteerId>
-    <EntryTime>2025-01-16T17:43:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
-  </Assignment>
-  <Assignment>
     <Id>21</Id>
     <CallId>26</CallId>
     <VolunteerId>356921650</VolunteerId>
@@ -391,5 +383,53 @@
     <EntryTime>2025-01-16T17:57:43</EntryTime>
     <CompletionTime>2025-01-18T20:40:24.6696792+02:00</CompletionTime>
     <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>20</Id>
+    <CallId>25</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-16T17:43:43</EntryTime>
+    <CompletionTime>2025-01-16T18:02:44</CompletionTime>
+    <CompletionStatus>Handled</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>49</Id>
+    <CallId>2</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-19T11:36:21.1637271+02:00</EntryTime>
+    <CompletionTime>2025-01-19T11:55:51.9536356+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>50</Id>
+    <CallId>4</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-19T11:56:05.0776417+02:00</EntryTime>
+    <CompletionTime>2025-01-19T11:56:25.1258741+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>51</Id>
+    <CallId>50</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-19T12:30:41.8423686+02:00</EntryTime>
+    <CompletionTime>2025-01-19T12:31:38.6597133+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>52</Id>
+    <CallId>50</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-19T12:31:57.4415762+02:00</EntryTime>
+    <CompletionTime>2025-01-19T12:32:23.869555+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>53</Id>
+    <CallId>4</CallId>
+    <VolunteerId>363461914</VolunteerId>
+    <EntryTime>2025-01-19T12:32:27.9142049+02:00</EntryTime>
+    <CompletionTime xsi:nil="true" />
+    <CompletionStatus xsi:nil="true" />
   </Assignment>
 </ArrayOfAssignment>

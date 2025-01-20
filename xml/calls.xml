@@ -23,17 +23,6 @@
     <Status>InProgressAtRisk</Status>
   </Call>
   <Call>
-    <Id>4</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue operation for a trapped individual.</Description>
-    <Address>Emek Refaim St 34, Jerusalem</Address>
-    <Latitude>31.7614</Latitude>
-    <Longitude>35.2219</Longitude>
-    <OpenedAt>2025-01-16T17:47:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T19:10:43</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>5</Id>
     <Type>FireEmergency</Type>
     <Description>Fire in a residential building.</Description>
@@ -518,17 +507,6 @@
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>50</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Heart attack reported.</Description>
-    <Address>Weizmann St 2, Rehovot</Address>
-    <Latitude>31.8938</Latitude>
-    <Longitude>34.8113</Longitude>
-    <OpenedAt>2025-01-16T17:08:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:10:43</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
     <Id>51</Id>
     <Type>PatientTransport</Type>
     <Description>Elderly transport to hospital.</Description>
@@ -683,17 +661,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>2</Id>
-    <Type>TerrorAttack</Type>
-    <Description>a bomb in a tower</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-16T17:53:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:23:43</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>0</Id>
     <Type>MedicalEmergency</Type>
     <Description>Heart attack reported.</Description>
@@ -714,5 +681,38 @@
     <OpenedAt>2025-01-16T17:48:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T19:08:43</MaxCompletionTime>
     <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <Type>TerrorAttack</Type>
+    <Description>a bomb in a tower</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-01-16T17:53:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:23:43</MaxCompletionTime>
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>50</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Heart attack reported.</Description>
+    <Address>Weizmann St 2, Rehovot</Address>
+    <Latitude>31.8938</Latitude>
+    <Longitude>34.8113</Longitude>
+    <OpenedAt>2025-01-16T17:08:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:10:43</MaxCompletionTime>
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>4</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue operation for a trapped individual.</Description>
+    <Address>Emek Refaim St 34, Jerusalem</Address>
+    <Latitude>31.7614</Latitude>
+    <Longitude>35.2219</Longitude>
+    <OpenedAt>2025-01-16T17:47:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T19:10:43</MaxCompletionTime>
+    <Status>InProgress</Status>
   </Call>
 </ArrayOfCall>
