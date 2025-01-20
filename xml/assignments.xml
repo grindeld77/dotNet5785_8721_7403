@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAssignment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Assignment>
-    <Id>0</Id>
-    <CallId>3</CallId>
-    <VolunteerId>317567329</VolunteerId>
-    <EntryTime>2025-01-16T17:38:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
-  </Assignment>
-  <Assignment>
     <Id>1</Id>
     <CallId>4</CallId>
     <VolunteerId>359400405</VolunteerId>
@@ -31,14 +23,6 @@
     <EntryTime>2025-01-16T17:49:43</EntryTime>
     <CompletionTime>2025-01-16T17:56:43</CompletionTime>
     <CompletionStatus>SelfCancel</CompletionStatus>
-  </Assignment>
-  <Assignment>
-    <Id>4</Id>
-    <CallId>7</CallId>
-    <VolunteerId>356921650</VolunteerId>
-    <EntryTime>2025-01-16T17:51:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
   </Assignment>
   <Assignment>
     <Id>5</Id>
@@ -103,14 +87,6 @@
     <EntryTime>2025-01-16T17:18:43</EntryTime>
     <CompletionTime>2025-01-16T17:38:43</CompletionTime>
     <CompletionStatus>Handled</CompletionStatus>
-  </Assignment>
-  <Assignment>
-    <Id>14</Id>
-    <CallId>17</CallId>
-    <VolunteerId>317567329</VolunteerId>
-    <EntryTime>2025-01-16T18:00:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
   </Assignment>
   <Assignment>
     <Id>15</Id>
@@ -237,14 +213,6 @@
     <CallId>39</CallId>
     <VolunteerId>235426327</VolunteerId>
     <EntryTime>2025-01-16T17:23:43</EntryTime>
-    <CompletionTime xsi:nil="true" />
-    <CompletionStatus xsi:nil="true" />
-  </Assignment>
-  <Assignment>
-    <Id>32</Id>
-    <CallId>41</CallId>
-    <VolunteerId>317567329</VolunteerId>
-    <EntryTime>2025-01-16T17:50:43</EntryTime>
     <CompletionTime xsi:nil="true" />
     <CompletionStatus xsi:nil="true" />
   </Assignment>
@@ -429,6 +397,62 @@
     <CallId>4</CallId>
     <VolunteerId>363461914</VolunteerId>
     <EntryTime>2025-01-19T12:32:27.9142049+02:00</EntryTime>
+    <CompletionTime xsi:nil="true" />
+    <CompletionStatus xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>4</Id>
+    <CallId>7</CallId>
+    <VolunteerId>356921650</VolunteerId>
+    <EntryTime>2025-01-16T17:51:43</EntryTime>
+    <CompletionTime>2025-01-20T23:44:52.7807976+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>54</Id>
+    <CallId>2</CallId>
+    <VolunteerId>356921650</VolunteerId>
+    <EntryTime>2025-01-20T23:44:42.2637381+02:00</EntryTime>
+    <CompletionTime>2025-01-16T18:02:44</CompletionTime>
+    <CompletionStatus>Handled</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>0</Id>
+    <CallId>3</CallId>
+    <VolunteerId>317567329</VolunteerId>
+    <EntryTime>2025-01-16T17:38:43</EntryTime>
+    <CompletionTime>2025-01-20T23:52:06.7510069+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>14</Id>
+    <CallId>17</CallId>
+    <VolunteerId>317567329</VolunteerId>
+    <EntryTime>2025-01-16T18:00:43</EntryTime>
+    <CompletionTime>2025-01-20T23:52:09.3415516+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>32</Id>
+    <CallId>41</CallId>
+    <VolunteerId>317567329</VolunteerId>
+    <EntryTime>2025-01-16T17:50:43</EntryTime>
+    <CompletionTime>2025-01-20T23:52:11.9940302+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>55</Id>
+    <CallId>10</CallId>
+    <VolunteerId>317567329</VolunteerId>
+    <EntryTime>2025-01-20T23:51:58.6226128+02:00</EntryTime>
+    <CompletionTime>2025-01-20T23:52:14.5418187+02:00</CompletionTime>
+    <CompletionStatus>SelfCancel</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>56</Id>
+    <CallId>12</CallId>
+    <VolunteerId>228028528</VolunteerId>
+    <EntryTime>2025-01-20T23:54:38.9144418+02:00</EntryTime>
     <CompletionTime xsi:nil="true" />
     <CompletionStatus xsi:nil="true" />
   </Assignment>

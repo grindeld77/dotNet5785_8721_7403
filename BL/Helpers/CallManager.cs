@@ -82,7 +82,7 @@ internal static class CallManager
                                                   AssignedTime = assignment.EntryTime,
                                                   ClosedTime = assignment.CompletionTime,
                                                   Status = (BO.CompletionStatus?)assignment.CompletionStatus
-                                              }).ToList();
+                                              });
         // Notify the observers about the updated list of closed calls.
         Observers.NotifyListUpdated(); // Notify that the list of closed calls was updated.
 
@@ -107,6 +107,15 @@ internal static class CallManager
 
         Observers.NotifyItemUpdated(c.Id); // stage 5
         return callInList;
+    }
+
+    internal static bool IsVolunteerBusy(int volunteerId)
+    {
+        var  v = s_dal.Volunteer.Read(volunteerId);
+        var assignments = s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteerId && a.CompletionStatus != null);
+        if (assignments.Any())
+            { return false; }
+        return true;
     }
 }
 

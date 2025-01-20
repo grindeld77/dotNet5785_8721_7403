@@ -26,8 +26,6 @@ internal class CallImplementation : ICall
 
             (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
 
-            if (!Tools.IsValidAddress(boCall.FullAddress, out double latitude, out double longitude))
-                throw new BO.BlInvalidAddressException("Address is not valid.");
             var call = new DO.Call
             {
                 Id = boCall.Id,
@@ -66,8 +64,8 @@ internal class CallImplementation : ICall
         if (_dal.Volunteer.Read(volunteerId) == null)
             throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
 
-        //if (CallManager.IsVolunteerBusy(volunteerId)) //TO ADD
-        //    throw new BO.BlInvalidOperationException("Volunteer is already assigned to a call.");
+        if (CallManager.IsVolunteerBusy(volunteerId)) //TO ADD
+            throw new BO.BlInvalidOperationException("Volunteer is already assigned to a call.");
 
         if (callId < 0)
             throw new BO.BlInvalidCallIdException("Invalid call ID.", nameof(callId));
@@ -75,7 +73,6 @@ internal class CallImplementation : ICall
         DO.Assignment? assignment = _dal.Assignment // Check if the call is already assigned to a volunteer
             .ReadAll(a => a.CallId == callId)
             ?.OrderBy(a => a.CallId)
-            ?.ToList()
             ?.LastOrDefault();
 
         if (assignment == null || (assignment.CompletionStatus != DO.CompletionStatus.Handled && assignment.CompletionStatus != DO.CompletionStatus.Expired)) // Check if the call is open
@@ -318,8 +315,7 @@ internal class CallImplementation : ICall
         {
             var calls = _dal.Call.ReadAll(); // Fetch all calls from the data layer
             var groupedCalls = calls.GroupBy(c => (int)c.Status) // Use LINQ to group by status and count occurrences
-                                    .Select(g => new { Status = g.Key, Count = g.Count() })
-                                    .ToList();
+                                    .Select(g => new { Status = g.Key, Count = g.Count() });
 
             int maxStatus = Enum.GetValues(typeof(DO.CallStatus)).Cast<int>().Max(); // Determine the maximum status index for array sizing
             int[] result = new int[maxStatus + 1]; // Initialize the result array with zero counts
@@ -520,12 +516,12 @@ internal class CallImplementation : ICall
         {
             openCallsInList = sortField switch
             {
-                BO.OpenCallInListFields.Id => openCallsInList.OrderBy(call => call.Id).ToList(),
-                BO.OpenCallInListFields.Type => openCallsInList.OrderBy(call => call.Type).ToList(),
-                BO.OpenCallInListFields.FullAddress => openCallsInList.OrderBy(call => call.FullAddress).ToList(),
-                BO.OpenCallInListFields.OpenTime => openCallsInList.OrderBy(call => call.OpenTime).ToList(),
-                BO.OpenCallInListFields.MaxEndTime => openCallsInList.OrderBy(call => call.MaxEndTime).ToList(),
-                BO.OpenCallInListFields.DistanceFromVolunteer => openCallsInList.OrderBy(call => call.DistanceFromVolunteer).ToList(),
+                BO.OpenCallInListFields.Id => openCallsInList.OrderBy(call => call.Id),
+                BO.OpenCallInListFields.Type => openCallsInList.OrderBy(call => call.Type),
+                BO.OpenCallInListFields.FullAddress => openCallsInList.OrderBy(call => call.FullAddress),
+                BO.OpenCallInListFields.OpenTime => openCallsInList.OrderBy(call => call.OpenTime),
+                BO.OpenCallInListFields.MaxEndTime => openCallsInList.OrderBy(call => call.MaxEndTime),
+                BO.OpenCallInListFields.DistanceFromVolunteer => openCallsInList.OrderBy(call => call.DistanceFromVolunteer),
                 _ => openCallsInList
             };
         }
@@ -546,8 +542,8 @@ internal class CallImplementation : ICall
         if (call.OpenTime >= call.MaxEndTime)
             throw new ArgumentException("Open time must be earlier than the maximum finish time.");
 
-        //if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
-        //    throw new ArgumentException("Address is not valid.");
+        if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
+           throw new ArgumentException("Address is not valid.");
 
         // Convert BO.Call to DO.Call
         var doCall = new DO.Call

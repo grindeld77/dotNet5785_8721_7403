@@ -12,17 +12,6 @@
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>3</Id>
-    <Type>FirstAid</Type>
-    <Description>First aid for an injured person.</Description>
-    <Address>Hashalom St 12, Herzliya</Address>
-    <Latitude>32.1676</Latitude>
-    <Longitude>34.8346</Longitude>
-    <OpenedAt>2025-01-16T17:37:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:10:43</MaxCompletionTime>
-    <Status>InProgressAtRisk</Status>
-  </Call>
-  <Call>
     <Id>5</Id>
     <Type>FireEmergency</Type>
     <Description>Fire in a residential building.</Description>
@@ -45,17 +34,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>7</Id>
-    <Type>Poisoning</Type>
-    <Description>Chemical poisoning incident.</Description>
-    <Address>Sokolov St 50, Ramat Gan</Address>
-    <Latitude>32.0836</Latitude>
-    <Longitude>34.8248</Longitude>
-    <OpenedAt>2025-01-16T17:33:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:26:43</MaxCompletionTime>
-    <Status>InProgress</Status>
-  </Call>
-  <Call>
     <Id>8</Id>
     <Type>AllergicReaction</Type>
     <Description>Severe allergic reaction to food or medication.</Description>
@@ -67,17 +45,6 @@
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>10</Id>
-    <Type>TerrorAttack</Type>
-    <Description>Terror attack in a crowded area.</Description>
-    <Address>Ben Yehuda St 28, Tel Aviv</Address>
-    <Latitude>32.0795</Latitude>
-    <Longitude>34.7689</Longitude>
-    <OpenedAt>2025-01-16T17:21:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:21:43</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>11</Id>
     <Type>MedicalEmergency</Type>
     <Description>Severe dehydration reported.</Description>
@@ -87,17 +54,6 @@
     <OpenedAt>2025-01-16T17:21:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T18:19:43</MaxCompletionTime>
     <Status>InProgress</Status>
-  </Call>
-  <Call>
-    <Id>12</Id>
-    <Type>PatientTransport</Type>
-    <Description>Routine patient transport.</Description>
-    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
-    <Latitude>31.6648</Latitude>
-    <Longitude>34.5784</Longitude>
-    <OpenedAt>2025-01-16T17:24:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:54:43</MaxCompletionTime>
-    <Status>Open</Status>
   </Call>
   <Call>
     <Id>13</Id>
@@ -142,17 +98,6 @@
     <OpenedAt>2025-01-16T17:14:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T17:40:43</MaxCompletionTime>
     <Status>Closed</Status>
-  </Call>
-  <Call>
-    <Id>17</Id>
-    <Type>CardiacEmergency</Type>
-    <Description>CPR required for a collapsed individual.</Description>
-    <Address>Herzog St 22, Holon</Address>
-    <Latitude>32.0135</Latitude>
-    <Longitude>34.7713</Longitude>
-    <OpenedAt>2025-01-16T17:57:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:51:43</MaxCompletionTime>
-    <Status>InProgress</Status>
   </Call>
   <Call>
     <Id>18</Id>
@@ -406,17 +351,6 @@
     <OpenedAt>2025-01-16T17:09:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T18:14:43</MaxCompletionTime>
     <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>41</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Casualties reported after a public incident.</Description>
-    <Address>Lev Ha'ir 9, Sderot</Address>
-    <Latitude>31.5183</Latitude>
-    <Longitude>34.6004</Longitude>
-    <OpenedAt>2025-01-16T17:35:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:36:43</MaxCompletionTime>
-    <Status>InProgress</Status>
   </Call>
   <Call>
     <Id>42</Id>
@@ -683,17 +617,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>2</Id>
-    <Type>TerrorAttack</Type>
-    <Description>a bomb in a tower</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-16T17:53:43</OpenedAt>
-    <MaxCompletionTime>2025-01-16T18:23:43</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
     <Id>50</Id>
     <Type>MedicalEmergency</Type>
     <Description>Heart attack reported.</Description>
@@ -713,6 +636,83 @@
     <Longitude>35.2219</Longitude>
     <OpenedAt>2025-01-16T17:47:43</OpenedAt>
     <MaxCompletionTime>2025-01-16T19:10:43</MaxCompletionTime>
+    <Status>InProgress</Status>
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <Type>TerrorAttack</Type>
+    <Description>a bomb in a tower</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-01-16T17:53:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:23:43</MaxCompletionTime>
+    <Status>InProgressAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>7</Id>
+    <Type>Poisoning</Type>
+    <Description>Chemical poisoning incident.</Description>
+    <Address>Sokolov St 50, Ramat Gan</Address>
+    <Latitude>32.0836</Latitude>
+    <Longitude>34.8248</Longitude>
+    <OpenedAt>2025-01-16T17:33:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:26:43</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>3</Id>
+    <Type>FirstAid</Type>
+    <Description>First aid for an injured person.</Description>
+    <Address>Hashalom St 12, Herzliya</Address>
+    <Latitude>32.1676</Latitude>
+    <Longitude>34.8346</Longitude>
+    <OpenedAt>2025-01-16T17:37:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:10:43</MaxCompletionTime>
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>17</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>CPR required for a collapsed individual.</Description>
+    <Address>Herzog St 22, Holon</Address>
+    <Latitude>32.0135</Latitude>
+    <Longitude>34.7713</Longitude>
+    <OpenedAt>2025-01-16T17:57:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:51:43</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>41</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Casualties reported after a public incident.</Description>
+    <Address>Lev Ha'ir 9, Sderot</Address>
+    <Latitude>31.5183</Latitude>
+    <Longitude>34.6004</Longitude>
+    <OpenedAt>2025-01-16T17:35:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:36:43</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>10</Id>
+    <Type>TerrorAttack</Type>
+    <Description>Terror attack in a crowded area.</Description>
+    <Address>Ben Yehuda St 28, Tel Aviv</Address>
+    <Latitude>32.0795</Latitude>
+    <Longitude>34.7689</Longitude>
+    <OpenedAt>2025-01-16T17:21:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:21:43</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>12</Id>
+    <Type>PatientTransport</Type>
+    <Description>Routine patient transport.</Description>
+    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
+    <Latitude>31.6648</Latitude>
+    <Longitude>34.5784</Longitude>
+    <OpenedAt>2025-01-16T17:24:43</OpenedAt>
+    <MaxCompletionTime>2025-01-16T18:54:43</MaxCompletionTime>
     <Status>InProgress</Status>
   </Call>
 </ArrayOfCall>

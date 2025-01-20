@@ -115,19 +115,17 @@ namespace PL.Call
 
         private void SelectCall_Click(object sender, RoutedEventArgs e)
         {
-            // קבלת הפריט שנמצא ב-Tag של הכפתור
             if (sender is Button button && button.Tag is BO.OpenCallInList selectedCall)
             {
                 try
                 {
-                    // בצע את הפעולה עם הנתונים הנבחרים
                     s_bl.Call.AssignVolunteerToCall(UserId, selectedCall.Id);
                     MessageBox.Show($"Selected Call ID: {selectedCall.Id}", "Call Selected", MessageBoxButton.OK, MessageBoxImage.Information);
                     queryOpenCallList();
 
                     if (Application.Current.Windows.OfType<MainVolunteerWindow>().FirstOrDefault() is MainVolunteerWindow volunteerWindow)
                     {
-                        volunteerWindow.RefreshData(); // קריאה לפונקציה מרעננת
+                        volunteerWindow.RefreshData();
                     }
 
                 }
@@ -141,8 +139,5 @@ namespace PL.Call
                 MessageBox.Show("Failed to retrieve the selected call.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
-
-
     }
 }

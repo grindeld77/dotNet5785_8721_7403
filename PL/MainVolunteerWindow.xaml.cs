@@ -47,17 +47,11 @@ namespace PL
             {
                 InitializeComponent();
                 CurrentVolunteer = id != 0 ? s_bl.Volunteer.GetVolunteerDetails(id) : new BO.Volunteer();
-
-                // שימוש ב-SetValue במקום גישה ישירה
                 SetValue(CurrentCallProperty, s_bl.Volunteer.GetVolunteerDetails(id)?.CurrentCall);
-
-                DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                // טיפול במצב חריג
                 CurrentVolunteer = new BO.Volunteer();
                 SetValue(CurrentCallProperty, null);
                 DataContext = this;
@@ -78,8 +72,6 @@ namespace PL
             {
                 s_bl.Call.CompleteCallAssignment(CurrentVolunteer.Id, CurrentCall.Id);
                 MessageBox.Show("Call finished successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // רענון פרטי המתנדב
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
                 CurrentCall = CurrentVolunteer.CurrentCall;
             }
@@ -103,7 +95,6 @@ namespace PL
                 s_bl.Call.CancelCallAssignment(CurrentVolunteer.Id, CurrentCall.Id);
                 MessageBox.Show("Call canceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // רענון פרטי המתנדב
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
                 CurrentCall = CurrentVolunteer.CurrentCall;
             }
@@ -149,15 +140,19 @@ namespace PL
 
         private void SelectCall_Click(object sender, RoutedEventArgs e)
         {
-        SelectCallWindow selectCallWindow = new SelectCallWindow(CurrentVolunteer.Id);
-        selectCallWindow.Show();
+        if (CurrentVolunteer.CurrentCall != null)
+            {
+                MessageBox.Show("Cannot select a new call while a call is in progress.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            SelectCallWindow selectCallWindow = new SelectCallWindow(CurrentVolunteer.Id);
+            selectCallWindow.Show();
         }
 
         private void ViewCallHistory_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // טוען את הקריאות הסגורות של המתנדב
                 var closedCalls = s_bl.Call.GetClosedCallsByVolunteer(CurrentVolunteer.Id, null, null);
 
                 if (closedCalls == null || !closedCalls.Any())
@@ -166,7 +161,6 @@ namespace PL
                     return;
                 }
 
-                // פתיחת חלון חדש עם הקריאות
                 var callListWindow = new CallListWindow(CurrentVolunteer.Id);
                 callListWindow.Show();
             }
@@ -185,18 +179,18 @@ namespace PL
                     return;
                 }
 
-                // רענון פרטי המתנדב
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
-
-                // רענון פרטי הקריאה
                 CurrentCall = CurrentVolunteer.CurrentCall;
-
-                MessageBox.Show("Data refreshed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to refresh data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
