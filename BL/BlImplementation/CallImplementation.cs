@@ -42,10 +42,10 @@ internal class CallImplementation : ICall
             _dal.Call.Create(call);
             CallManager.Observers.NotifyListUpdated(); //stage 5
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
-            throw new BO.BlGeneralException("A call with the same ID already exists.", ex);
+            throw;
         }
     }
 

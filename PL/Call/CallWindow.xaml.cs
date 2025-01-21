@@ -55,7 +55,11 @@ namespace PL.Call
             if (id == -1)
             {
                 ButtonText = "Add";
-                CurrentCall = new BO.Call();
+                CurrentCall = new BO.Call()
+                { 
+                    OpenTime = s_bl.Admin.GetClock(),
+                    MaxEndTime = s_bl.Admin.GetClock().AddHours(1)
+                };
                 IsDeleteButtonVisible = Visibility.Collapsed;
             }
             else
@@ -83,7 +87,6 @@ namespace PL.Call
             {
                 if (ButtonText == "Add")
                 {
-                    CurrentCall.OpenTime = s_bl.Admin.GetClock();
                     s_bl.Call.AddCall(CurrentCall);
                     Close();
                 }
