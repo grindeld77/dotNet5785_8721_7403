@@ -11,7 +11,13 @@
 	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	  <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	  <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+	  <PackageIcon>Logo_Magen_David_Adom.ico</PackageIcon>
+	  <ApplicationIcon>Images\Logo_Magen_David_Adom.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Logo_Magen_David_Adom.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
@@ -19,11 +25,21 @@
 
   <ItemGroup>
     <Folder Include="Admin\" />
-    <Folder Include="Images\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Logo_Magen_David_Adom.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\Logo_Magen_David_Adom.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
