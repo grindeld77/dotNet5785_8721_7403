@@ -17,6 +17,7 @@ namespace PL
         {
             InitializeComponent();
         }
+
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -27,12 +28,10 @@ namespace PL
 
                 string role = s_bl.Volunteer.Login(id, password);
 
-                // Check if login is for Admin or Volunteer
                 if (AdminLoginCheckBox.IsChecked == true) // Admin login
                 {
                     if (role == "Admin")
                     {
-                        // Navigate to AdminWindow
                         new MainWindow(id).Show();
                     }
                     else
@@ -40,14 +39,13 @@ namespace PL
                         throw new Exception("This user is not an administrator..");
                     }
                 }
-                else // Volunteer login
+                else
                 {
                     new MainVolunteerWindow(id).Show();
                 }
             }
             catch (Exception ex)
             {
-                // Handle unexpected errors
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -64,6 +62,18 @@ namespace PL
             PasswordBox.Password = PasswordTextBox.Text;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordBox.Visibility = Visibility.Visible;
+        }
+
+        private void SwitchTheme_Click(object sender, RoutedEventArgs e)
+        {
+            bool useDarkTheme = Application.Current.Resources.MergedDictionaries.Any(d => d.Source.ToString().Contains("LightTheme"));
+
+            Uri newTheme = useDarkTheme
+                ? new Uri("Themes/DarkTheme.xaml", UriKind.Relative)
+                : new Uri("Themes/LightTheme.xaml", UriKind.Relative);
+
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = newTheme });
         }
     }
 }

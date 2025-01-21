@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <Color x:Key="ButtonBackgroundColor">#D32F2F</Color>
+    <Color x:Key="ButtonForegroundColor">White</Color>
+    <Color x:Key="TextBoxBorderColor">#D32F2F</Color>
+    <Color x:Key="TextBoxForegroundColor">Black</Color>
+    <Color x:Key="TextBoxBackgroundColor">White</Color>
+
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{DynamicResource ButtonBackgroundColor}"/>
+    <SolidColorBrush x:Key="ButtonForegroundBrush" Color="{DynamicResource ButtonForegroundColor}"/>
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{DynamicResource TextBoxBorderColor}"/>
+    <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="{DynamicResource TextBoxForegroundColor}"/>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{DynamicResource TextBoxBackgroundColor}"/>
+    
+    
+</ResourceDictionary>

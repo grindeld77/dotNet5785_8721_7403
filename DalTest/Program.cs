@@ -66,41 +66,49 @@ internal class Program
 
     public static int SelectingFromTheMenu()
     {
-        if (!int.TryParse(Console.ReadLine(), out int choice)) throw new FormatException
-    ("Your selection is incorrect, please try again and select a number from the menu");
+        Console.WriteLine("Please make a selection:");
+        if (!int.TryParse(Console.ReadLine(), out int choice))
+        {
+            Console.WriteLine("Invalid selection. Please enter a number corresponding to the menu options.");
+            return SelectingFromTheMenu();
+        }
         return choice;
     }
     public static int ConvertStringToNumber()
     {
-        if (!int.TryParse(Console.ReadLine(), out int choice)) throw new FormatException
-    ("Please enter a valid value.");
+        Console.WriteLine("Please enter a number:");
+        if (!int.TryParse(Console.ReadLine(), out int choice))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid number.");
+            return ConvertStringToNumber();
+        }
         return choice;
     }
     public static int mainMenu()
     {
         Console.WriteLine(
 @"    Select an option to proceed
-0 Exit main menu.
-1 Display submenu for Volunteer entity. 
-2 Display submenu for Call entity.
-3 Display submenu for Assignment entity. 
-4 Initialize data. 
-5 Display all data in the database.
-6 Display configuration submenu. 
-7 Reset database and configuration data.");
+            0 Exit main menu.
+            1 Display submenu for Volunteer entity. 
+            2 Display submenu for Call entity.
+            3 Display submenu for Assignment entity. 
+            4 Initialize data. 
+            5 Display all data in the database.
+            6 Display configuration submenu. 
+            7 Reset database and configuration data.");
         return ConvertStringToNumber();
     }
     public static int SecondaryMenu(string type)
     {
         Console.WriteLine(
 $@"        Select an option to proceed
-0 Exit sub-menu.
-1 Add a new object of the entity {type} to the list.
-2 Display an object by its ID.
-3 Display a list of all objects of the entity type.
-4 Update existing object data.
-5 Delete an existing object from the list.
-6 Delete all objects in the list.");
+            0 Exit sub-menu.
+            1 Add a new object of the entity {type} to the list.
+            2 Display an object by its ID.
+            3 Display a list of all objects of the entity type.
+            4 Update existing object data.
+            5 Delete an existing object from the list.
+            6 Delete all objects in the list.");
         return ConvertStringToNumber();
     }
     public static void VolunteerMenu()
@@ -151,7 +159,7 @@ $@"        Select an option to proceed
                         {
                             IEnumerable<Volunteer> volunteers = s_dal.Volunteer.ReadAll();
                             foreach (Volunteer v in volunteers)
-                             {
+                            {
                                 Console.WriteLine(v);
                             }
                             break;
@@ -239,7 +247,7 @@ $@"        Select an option to proceed
                         }
                     case callMenu.DisplayAll:
                         {
-                             IEnumerable <Call> ? calls = s_dal.Call.ReadAll();
+                            IEnumerable<Call>? calls = s_dal.Call.ReadAll();
                             foreach (Call c in calls)
                             {
                                 Console.WriteLine(c);
@@ -304,28 +312,39 @@ $@"        Select an option to proceed
                     case assignmentMenu.Add:
                         {
                             Console.WriteLine("Enter the call id");
-                            int callId = ConvertStringToNumber();
-                            if (s_dal.Call.Read(callId) == null)
-                                throw new Exception($"An object of type Call with such ID={callId} does not exist");
-                            Console.WriteLine("Enter the VolunteerId id");
-                            int volunteerId = ConvertStringToNumber();
-                            if (s_dal.Volunteer.Read(volunteerId) == null)
-                                throw new Exception($"An object of type Volunteer with such ID={volunteerId} does not exist");
+                            int callId;
+                            if (!int.TryParse(Console.ReadLine(), out callId))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            Console.WriteLine("Enter the volunteer id");
+                            int volunteerId;
+                            if (!int.TryParse(Console.ReadLine(), out volunteerId))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
                             s_dal.Assignment.Create(new Assignment() { CallId = callId, VolunteerId = volunteerId });
                             break;
                         }
                     case assignmentMenu.Display:
                         {
                             Console.WriteLine("Enter the assignment ID");
-                            int assignmentI = ConvertStringToNumber();
-                            Assignment a = s_dal.Assignment.Read(assignmentI);
+                            int assignmentId;
+                            if (!int.TryParse(Console.ReadLine(), out assignmentId))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            Assignment a = s_dal.Assignment.Read(assignmentId);
                             if (a != null)
                             {
                                 Console.WriteLine(a);
                             }
                             else
                             {
-                                throw new Exception($"Volunteer with ID {assignmentI} not found");
+                                throw new Exception($"Assignment with ID {assignmentId} not found");
                             }
                             break;
                         }
@@ -341,26 +360,47 @@ $@"        Select an option to proceed
                     case assignmentMenu.Update:
                         {
                             Console.WriteLine("Enter the assignment ID");
-                            int assignmentI = ConvertStringToNumber();
-                            Assignment assignment = s_dal.Assignment.Read(assignmentI);
+                            int assignmentId;
+                            if (!int.TryParse(Console.ReadLine(), out assignmentId))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            Assignment assignment = s_dal.Assignment.Read(assignmentId);
                             if (assignment != null)
                             {
                                 Console.WriteLine("Enter the call id");
-                                int callId = ConvertStringToNumber();
-                                Console.WriteLine("Enter the VolunteerId id");
-                                int volunteerId = ConvertStringToNumber();
+                                int callId;
+                                if (!int.TryParse(Console.ReadLine(), out callId))
+                                {
+                                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                                    break;
+                                }
+                                Console.WriteLine("Enter the volunteer id");
+                                int volunteerId;
+                                if (!int.TryParse(Console.ReadLine(), out volunteerId))
+                                {
+                                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                                    break;
+                                }
+                                s_dal.Assignment.Update(new Assignment() { Id = assignmentId, CallId = callId, VolunteerId = volunteerId });
                             }
                             else
                             {
-                                throw new Exception($"Volunteer with ID {assignmentI} not found");
+                                throw new Exception($"Assignment with ID {assignmentId} not found");
                             }
                             break;
                         }
                     case assignmentMenu.Delete:
                         {
                             Console.WriteLine("Enter the assignment ID");
-                            int assignmentI = ConvertStringToNumber();
-                            s_dal.Assignment.Delete(assignmentI);
+                            int assignmentId;
+                            if (!int.TryParse(Console.ReadLine(), out assignmentId))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            s_dal.Assignment.Delete(assignmentId);
                             break;
                         }
                     case assignmentMenu.DeleteAll:
@@ -384,52 +424,94 @@ $@"        Select an option to proceed
         configMenu cm;
         do
         {
-            Console.WriteLine(@"
-0 Exit sub-menu
-1 Advance system clock by minute
-2 Advance system clock by hour
-3 Advance system clock by day
-4 Advance system clock by month
-5 Display current value of system clock
-6 Set new value for system clock
-7 Display current value of risk time
-8 Set new value for risk time
-9 Reset values for all configuration variables
-");
+            choice = SecondaryMenu("config");
+            cm = (configMenu)choice;
             try
             {
-                choice = SelectingFromTheMenu();
-                cm = (configMenu)choice;
                 switch (cm)
                 {
                     case configMenu.Exit:
                         break;
                     case configMenu.AdvanceMinute:
-                        s_dal.Config.Clock.Add(TimeSpan.FromMinutes(1));
-                        break;
+                        {
+                            Console.WriteLine("Enter the number of minutes to advance");
+                            int minutes;
+                            if (!int.TryParse(Console.ReadLine(), out minutes))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddMinutes(minutes);
+                            break;
+                        }
                     case configMenu.AdvanceHour:
-                        s_dal.Config.Clock.Add(TimeSpan.FromHours(1));
-                        break;
+                        {
+                            Console.WriteLine("Enter the number of hours to advance");
+                            int hours;
+                            if (!int.TryParse(Console.ReadLine(), out hours))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddHours(hours);
+                            break;
+                        }
                     case configMenu.AdvanceDay:
-                        s_dal.Config.Clock.Add(TimeSpan.FromDays(1));
-                        break;
+                        {
+                            Console.WriteLine("Enter the number of days to advance");
+                            int days;
+                            if (!int.TryParse(Console.ReadLine(), out days))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddDays(days);
+                            break;
+                        }
                     case configMenu.AdvanceMonth:
-                        s_dal.Config.Clock.Add(TimeSpan.FromDays(30));
-                        break;
+                        {
+                            Console.WriteLine("Enter the number of months to advance");
+                            int months;
+                            if (!int.TryParse(Console.ReadLine(), out months))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid number.");
+                                break;
+                            }
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddMonths(months);
+                            break;
+                        }
                     case configMenu.DisplayClock:
-                        Console.WriteLine($"Current system clock value: {s_dal.Config.Clock}");
-                        break;
+                        {
+                            Console.WriteLine($"Current clock: {s_dal.Config.Clock}");
+                            break;
+                        }
                     case configMenu.SetClock:
-                        Console.WriteLine("Enter the new system clock value");
-                        s_dal.Config.Clock = DateTime.Parse(Console.ReadLine());
-                        break;
+                        {
+                            Console.WriteLine("Enter the new clock time (yyyy-MM-dd HH:mm:ss)");
+                            if (!DateTime.TryParse(Console.ReadLine(), out DateTime newClock))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid date and time.");
+                                break;
+                            }
+                            s_dal.Config.Clock = newClock;
+                            break;
+                        }
                     case configMenu.DisplayRiskTime:
-                        Console.WriteLine($"Current risk time value: {s_dal.Config.RiskRange}");
-                        break;
+                        {
+                            Console.WriteLine($"Current risk time: {s_dal.Config.RiskRange}");
+                            break;
+                        }
                     case configMenu.SetRiskTime:
-                        Console.WriteLine("Enter the new risk time value");
-                        s_dal.Config.RiskRange = TimeSpan.Parse(Console.ReadLine());
-                        break;
+                        {
+                            Console.WriteLine("Enter the new risk time (hh:mm:ss)");
+                            if (!TimeSpan.TryParse(Console.ReadLine(), out TimeSpan newRiskTime))
+                            {
+                                Console.WriteLine("Invalid input. Please enter a valid time span.");
+                                break;
+                            }
+                            s_dal.Config.RiskRange = newRiskTime;
+                            break;
+                        }
                     case configMenu.Reset:
                         s_dal.Config.Reset();
                         break;
@@ -445,85 +527,42 @@ $@"        Select an option to proceed
 
         } while (choice != 0);
     }
-
     static void Main(string[] args)
     {
-
-        int choice = 0;
-        Menu m;
+        int choice;
         do
         {
-            try
+            choice = mainMenu();
+            Menu menu = (Menu)choice;
+            switch (menu)
             {
-                choice = mainMenu();
-                m = (Menu)choice;
-                switch (m)
-                {
-                    case Menu.Exit:
-                        break;
-                    case Menu.Volunteer:
-                        VolunteerMenu();
-                        break;
-                    case Menu.Call:
-                        CallMenu();
-                        break;
-                    case Menu.Assignment:
-                        AssignmentMenu();
-                        break;
-                    case Menu.Initialize:
-                        //Initialization.Do(s_dal); //stage 2
-                        Initialization.Do(); //stage 4
-                        break;
-                    case Menu.DisplayAll:
-                        Console.WriteLine("All data in the database:\n volunteer\n");
-                        foreach (Assignment assignment in s_dal.Assignment.ReadAll())
-                        {
-                            Console.WriteLine(assignment);
-                            Volunteer v = s_dal.Volunteer.Read(assignment.VolunteerId);
-                            Console.Write($"Volunteer {'\n'} MaxCallDistance={v.MaxCallDistance}        ");
-                            Console.Write($"Address={v.CurrentAddress}\n");
-                            Call c = s_dal.Call.Read(assignment.CallId);
-                            Console.Write($"Call \n Address={c.Address}     Status={c.Status}       ");
-                            Console.Write($"OpenedAt={c.OpenedAt}       ");
-                            Console.WriteLine($"MaxCompletionTime={c.MaxCompletionTime}");
-                            Console.WriteLine("--------------------------------------------------------------------");
-                        }
-                        Console.WriteLine("Calls without assignment:\n");
-                        foreach (Call call in s_dal.Call.ReadAll())
-                        {
-                            if (s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id).Count() == 0)
-                            {
-                                Console.WriteLine(call);
-                            }
-                        }
-                        Console.WriteLine("Volunteers without assignment:\n");
-                        foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
-                        {
-                            if (s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteer.Id).Count() == 0)
-                            {
-                                Console.WriteLine(volunteer);
-                            }
-                        }
-                        break;
-                    case Menu.Configuration:
-                        ConfigMenu();
-                        break;
-                    case Menu.Reset:
-                        s_dal.Call.DeleteAll();
-                        s_dal.Assignment.DeleteAll();
-                        s_dal.Volunteer.DeleteAll();
-                        s_dal.Config.Reset();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid selection, please try again.");
-                        break;
-                }
+                case Menu.Exit:
+                    break;
+                case Menu.Volunteer:
+                    VolunteerMenu();
+                    break;
+                case Menu.Call:
+                    CallMenu();
+                    break;
+                case Menu.Assignment:
+                    AssignmentMenu();
+                    break;
+                case Menu.Initialize:
+                    // Initialize data
+                    break;
+                case Menu.DisplayAll:
+                    // Display all data
+                    break;
+                case Menu.Configuration:
+                    ConfigMenu();
+                    break;
+                case Menu.Reset:
+                    s_dal.ResetDB();
+                    break;
+                default:
+                    Console.WriteLine("Invalid selection, please try again.");
+                    break;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
         } while (choice != 0);
     }
 }
