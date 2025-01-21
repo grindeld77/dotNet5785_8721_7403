@@ -16,15 +16,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Admin\**" />
+    <EmbeddedResource Remove="Admin\**" />
+    <None Remove="Admin\**" />
+    <Page Remove="Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Images\Logo_Magen_David_Adom.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Admin\" />
   </ItemGroup>
 
   <ItemGroup>

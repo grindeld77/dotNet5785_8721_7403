@@ -33,6 +33,7 @@ namespace PL
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
             tampUserId= userId;
+            UpdateCallCounts();
         }
         public DateTime CurrentTime
         {
@@ -67,6 +68,22 @@ namespace PL
             s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
         }
 
+        // Dependency Property for Call Counts
+        public int[] CallCountsByStatus
+        {
+            get { return (int[])GetValue(CallCountsByStatusProperty); }
+            set { SetValue(CallCountsByStatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty CallCountsByStatusProperty =
+            DependencyProperty.Register("CallCountsByStatus", typeof(int[]), typeof(MainWindow), new PropertyMetadata(new int[6]));
+
+        // Method to Update Call Counts
+        private void UpdateCallCounts()
+        {
+            CallCountsByStatus = s_bl.Call.GetCallCountsByStatus();
+        }
+
         // Dependency Property for Risk Range
         public static readonly DependencyProperty RiskRangeProperty =
             DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow), new PropertyMetadata(TimeSpan.FromHours(1)));
@@ -89,16 +106,7 @@ namespace PL
         // Event Handler for Risk Range Update Button
         private void UpdateRiskRange_Click(object sender, RoutedEventArgs e)
         {
-            if (double.TryParse(txtRiskRange.Text, out double riskRangeInHours))
-            {
-                RiskRange = TimeSpan.FromHours(riskRangeInHours); // Update the RiskRange in the DependencyProperty
-                s_bl.Admin.SetMaxRange(RiskRange); // Call to update the risk range in DAL
-                MessageBox.Show($"Risk range updated to {RiskRange.TotalHours} hours.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Invalid number format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            s_bl.Admin.SetMaxRange(RiskRange);
         }
 
         private void clockObserver()
@@ -114,6 +122,7 @@ namespace PL
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            UpdateCallCounts(); // Ensure call counts are updated on load
             CurrentTime = s_bl.Admin.GetClock();
             TimeSpan RiskRange = s_bl.Admin.GetMaxRange();
             MaxYearRange = (int)(RiskRange.TotalDays / 365); 

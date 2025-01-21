@@ -4,14 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000"
+        Title="MainWindow" Height="400" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded" Closed="Window_Closed">
 
     <Window.Resources>
         <!-- Style for Buttons -->
-
-        <!-- Style definitions remain unchanged -->
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Background" Value="White"/>
@@ -53,20 +51,6 @@
             </Setter>
         </Style>
 
-        <Style TargetType="ListView" x:Key="StyledListView">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#D32F2F"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
-
-        <Style TargetType="GridViewColumnHeader">
-            <Setter Property="Background" Value="#D32F2F"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="35"/>
-        </Style>
-
         <Style TargetType="TextBlock" x:Key="StyledTextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#D32F2F"/>
@@ -74,54 +58,95 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!-- Define the structure of rows and columns -->
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <!-- System Clock Area -->
+            <!-- Time Display Area -->
             <RowDefinition Height="Auto" />
-            <!-- Clock Advancement Buttons Area -->
+            <!-- Call Summary Area -->
+            <RowDefinition Height="Auto" />
+            <!-- Buttons Area -->
             <RowDefinition Height="*" />
-            <!-- Configuration Variables Area -->
+            <!-- Configuration Area -->
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <!-- Main content column -->
+            <ColumnDefinition Width="Auto" />
+            <!-- Right-side content (Call summary) -->
         </Grid.ColumnDefinitions>
 
-        <!-- System Clock Area -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!-- System Clock -->
-            <Label Content="System Clock:" Style="{StaticResource LabelStyle}" FontSize="30" HorizontalAlignment="Left" />
-            <Label x:Name="lblClock" Content="{Binding CurrentTime}" FontSize="20" FontWeight="Bold" Foreground="Black" />
+        <!-- System Clock Area (Top-left) -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="71" Width="884">
+            <Label Content="System Clock:" Style="{StaticResource LabelStyle}" FontSize="30" VerticalAlignment="Top" Height="68" Width="246"/>
+            <Label Content="{Binding CurrentTime}" FontSize="20" FontWeight="Bold" Style="{StaticResource LabelStyle}" Height="49" Width="267"/>
         </StackPanel>
 
-        <!-- Clock Advancement Buttons Area -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Minute" Click="AddOneMinute_Click" />
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Hour" Click="AddOneHour_Click" />
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Day" Click="AddOneDay_Click" />
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Month" Click="AddOneMonth_Click" />
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Year" Click="AddOneYear_Click" />
+        <!-- Call Summary Area (Top-right) -->
+        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+            <Label Content="Call Summary by Status:" Style="{StaticResource LabelStyle}" FontSize="20" Height="42" Width="250" />
+            <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Open:" Style="{StaticResource LabelStyle}" Width="110"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[0]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="InProgress:" Style="{StaticResource LabelStyle}" Width="110"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[1]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Closed:" Style="{StaticResource LabelStyle}" Width="110"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[2]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Expired:" Style="{StaticResource LabelStyle}" Width="110"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[3]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="OpenAtRisk:" Style="{StaticResource LabelStyle}" Width="110"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[4]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="InProgressAtRisk:" Style="{StaticResource LabelStyle}" Width="150"/>
+                    <TextBlock Text="{Binding CallCountsByStatus[5]}" Style="{StaticResource StyledTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
 
-        <!-- Configuration Variables Area -->
-        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <Label Content="Configuration Variables:" Style="{StaticResource LabelStyle}" />
+        <!-- Clock Advancement Buttons Area (Center) -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,76,0,189">
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Minute" Click="AddOneMinute_Click" Width="150"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Hour" Click="AddOneHour_Click" Width="150"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Day" Click="AddOneDay_Click" Width="150"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Month" Click="AddOneMonth_Click" Width="150"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Year" Click="AddOneYear_Click" Width="150"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="0,139,0,0" VerticalAlignment="Top" HorizontalAlignment="Center">
+
+            <Label Content="Configuration Variables:" Style="{StaticResource LabelStyle}"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
             <!-- Risk Range Configuration -->
             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                 <Label Content="Risk Range (hours):" VerticalAlignment="Center" Foreground="#D32F2F" FontWeight="Bold" />
-                <TextBox x:Name="txtRiskRange" Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold"/>
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Update" Click="UpdateRiskRange_Click" />
+                <TextBox Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Update" Click="UpdateRiskRange_Click" Width="150"/>
             </StackPanel>
 
             <!-- Buttons for Database Management -->
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Show List View" Click="btnVolunteer_Click" />
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" />
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" />
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" />
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Show List View" Click="btnVolunteer_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" Width="150"/>
             </StackPanel>
         </StackPanel>
+
+        <!-- Configuration Variables Area (Bottom) -->
     </Grid>
 </Window>
