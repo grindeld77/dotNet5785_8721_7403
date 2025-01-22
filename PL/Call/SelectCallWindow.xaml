@@ -156,9 +156,9 @@
         <ListView Name="OpenCallsList" Margin="0,153,0,50" ItemsSource="{Binding OpenList}" Style="{StaticResource StyledListView}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
-                    <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Open Time" DisplayMemberBinding="{Binding OpenTime}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Max End Time" DisplayMemberBinding="{Binding MaxEndTime}" Width="200" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>

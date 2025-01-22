@@ -76,7 +76,7 @@ internal static class VolunteerManager
         DO.Assignment assignmentOpen = null;
         if (assignment.Any())
         {
-            assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionTime == null);
+            assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionStatus == null);
         }
 
         DO.Call callOpen = null;
@@ -101,7 +101,7 @@ internal static class VolunteerManager
                 MaxDistanceForCall = v.MaxCallDistance,
                 DistanceType = (BO.DistanceType)v.DistancePreference,
                 TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
-                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel || a.CompletionStatus == DO.CompletionStatus.AdminCancel),
                 TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
                 CurrentCall = new BO.CallInProgress
                 {
@@ -137,7 +137,7 @@ internal static class VolunteerManager
                 MaxDistanceForCall = v.MaxCallDistance,
                 DistanceType = (BO.DistanceType)v.DistancePreference,
                 TotalCompletedCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Handled),
-                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel),
+                TotalCancelledCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.SelfCancel || a.CompletionStatus == DO.CompletionStatus.AdminCancel),
                 TotalExpiredCalls = assignment.Count(a => a.CompletionStatus == DO.CompletionStatus.Expired),
                 CurrentCall = null
             };

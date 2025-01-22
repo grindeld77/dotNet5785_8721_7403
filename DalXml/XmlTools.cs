@@ -15,9 +15,15 @@ static class XMLTools
     }
 
     #region SaveLoadWithXMLSerializer
+
+
+    static int counter = 0;
     public static void SaveListToXMLSerializer<T>(List<T> list, string xmlFileName) where T : class
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
+        counter++;
+        Console.WriteLine($"Call #{counter}: Saving {xmlFileName} to {s_xmlDir}");
+        Console.WriteLine($"Directory: {s_xmlDir}, FileName: {xmlFileName}");////check if the file is created
 
         try
         {
@@ -26,8 +32,14 @@ static class XMLTools
         }
         catch (Exception ex)
         {
-            throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+            Console.WriteLine($"Exception: {ex}");
+            throw new DalXMLFileLoadCreateException($"Fail to create xml file: {xmlFilePath}, {ex}");
         }
+
+        //catch (Exception ex)
+        //{
+        //    throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+        //}
     }
     public static List<T> LoadListFromXMLSerializer<T>(string xmlFileName) where T : class
     {

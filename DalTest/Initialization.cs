@@ -423,17 +423,11 @@ public static class Initialization
             {
                 if (difference.TotalMinutes < 15)
                 {
-                    if (i % 2 == 0)
                         callStatus = CallStatus.OpenAtRisk;
-                    else
-                        callStatus = CallStatus.InProgressAtRisk;
                 }
                 else
                 {
-                    if (i % 2 == 0)
                         callStatus = CallStatus.Open;
-                    else
-                        callStatus = CallStatus.InProgress;
                 }
             }
 

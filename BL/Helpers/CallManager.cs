@@ -67,12 +67,13 @@ internal static class CallManager
             Status = (BO.CompletionStatus)a.CompletionStatus
         });
     }
-
+   
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
         IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()
                                               join assignment in s_dal.Assignment.ReadAll(x => x.VolunteerId == volunteerId) on call.Id equals assignment.CallId
                                               where assignment.CompletionStatus == DO.CompletionStatus.Handled
+
                                               select new BO.ClosedCallInList
                                               {
                                                   Id = call.Id,

@@ -120,13 +120,13 @@
         <!-- closed call data -->
         <DataGrid ItemsSource="{Binding ClosedCalls}" AutoGenerateColumns="False" Margin="10,49,10,10" Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                <DataGridTextColumn Header="Full Address" Binding="{Binding FullAddress}" />
-                <DataGridTextColumn Header="Open Time" Binding="{Binding OpenTime, StringFormat=dd/MM/yyyy HH:mm}" />
-                <DataGridTextColumn Header="Assigned Time" Binding="{Binding AssignedTime, StringFormat=dd/MM/yyyy HH:mm}" />
-                <DataGridTextColumn Header="Closed Time" Binding="{Binding ClosedTime, StringFormat=dd/MM/yyyy HH:mm}" />
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Full Address" Binding="{Binding FullAddress}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Open Time" Binding="{Binding OpenTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Assigned Time" Binding="{Binding AssignedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Closed Time" Binding="{Binding ClosedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
 using System.Windows;
+using BO;
 
 namespace PL.Call
 {
@@ -21,22 +22,18 @@ namespace PL.Call
     {
         public ObservableCollection<BO.ClosedCallInList> ClosedCalls { get; set; }
 
-        public CallListWindow(int volunteerId)
+        public CallListWindow(IEnumerable<BO.ClosedCallInList> closedCalls)
         {
-            InitializeComponent();
-
             try
             {
-                // קריאה ל-ICall לקבלת רשימת הקריאות הסגורות
-                ClosedCalls = new ObservableCollection<BO.ClosedCallInList>(
-                    BlApi.Factory.Get().Call.GetClosedCallsByVolunteer(volunteerId, null, null)
-                );
+                ClosedCalls = new ObservableCollection<BO.ClosedCallInList>(closedCalls);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load closed calls: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }
+            InitializeComponent();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -45,4 +42,3 @@ namespace PL.Call
         }
     }
 }
-

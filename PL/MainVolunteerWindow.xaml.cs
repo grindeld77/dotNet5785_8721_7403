@@ -161,7 +161,7 @@ namespace PL
                     return;
                 }
 
-                var callListWindow = new CallListWindow(CurrentVolunteer.Id);
+                var callListWindow = new CallListWindow(closedCalls);
                 callListWindow.Show();
             }
             catch (Exception ex)
