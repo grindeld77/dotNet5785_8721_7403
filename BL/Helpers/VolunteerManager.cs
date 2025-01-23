@@ -82,7 +82,7 @@ internal static class VolunteerManager
         DO.Call callOpen = null;
         if (assignmentOpen != null)
         {
-            callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.Id);
+            callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.CallId);
         }
         if (callOpen != null)
         {

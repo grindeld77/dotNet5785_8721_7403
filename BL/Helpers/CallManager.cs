@@ -113,10 +113,10 @@ internal static class CallManager
     internal static bool IsVolunteerBusy(int volunteerId)
     {
         var  v = s_dal.Volunteer.Read(volunteerId);
-        var assignments = s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteerId && a.CompletionStatus != null);
+        var assignments = s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteerId && a.CompletionStatus == null);
         if (assignments.Any())
-            { return false; }
-        return true;
+            { return true; }
+        return false;
     }
 }
 

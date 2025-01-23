@@ -120,13 +120,13 @@
         <!-- closed call data -->
         <DataGrid ItemsSource="{Binding ClosedCalls}" AutoGenerateColumns="False" Margin="10,49,10,10" Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                <DataGridTextColumn Header="Full Address" Binding="{Binding FullAddress}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Open Time" Binding="{Binding OpenTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Assigned Time" Binding="{Binding AssignedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Closed Time" Binding="{Binding ClosedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True" SortMemberPath="Id"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" SortMemberPath="Type"/>
+                <DataGridTextColumn Header="Full Address" Binding="{Binding FullAddress}" IsReadOnly="True" SortMemberPath="FullAddress"/>
+                <DataGridTextColumn Header="Open Time" Binding="{Binding OpenTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True" SortMemberPath="OpenTime"/>
+                <DataGridTextColumn Header="Assigned Time" Binding="{Binding AssignedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True" SortMemberPath="AssignedTime"/>
+                <DataGridTextColumn Header="Closed Time" Binding="{Binding ClosedTime, StringFormat=dd/MM/yyyy HH:mm}" IsReadOnly="True" SortMemberPath="ClosedTime"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True" SortMemberPath="Status"/>
             </DataGrid.Columns>
         </DataGrid>
 

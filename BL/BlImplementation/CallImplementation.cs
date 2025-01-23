@@ -53,30 +53,25 @@ internal class CallImplementation : ICall
     {
         ICall help = new CallImplementation();
         var calltamp = _dal.Call.Read(callId); // Check if the call exists
+        IEnumerable<Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
+
         if (calltamp == null)
             throw new BO.BloesNotExistException($"Call with ID {callId} does not exist.");
         if (calltamp.Status != DO.CallStatus.Open&& calltamp.Status!= DO.CallStatus.OpenAtRisk)
             throw new BO.BlInvalidOperationException("Call is already assigned");
-        // Validate inputs
-        if (volunteerId < 200000000 || volunteerId > 400000000)
-            throw new BO.BlInvalidIdentityNumberException("Invalid volunteer ID.", nameof(volunteerId));
-
         if (_dal.Volunteer.Read(volunteerId) == null)
             throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
-
-        if (CallManager.IsVolunteerBusy(volunteerId)) //TO ADD
+        if (CallManager.IsVolunteerBusy(volunteerId))
             throw new BO.BlInvalidOperationException("Volunteer is already assigned to a call.");
-
         if (callId < 0)
             throw new BO.BlInvalidCallIdException("Invalid call ID.", nameof(callId));
-
-        DO.Assignment? assignment = _dal.Assignment // Check if the call is already assigned to a volunteer
-            .ReadAll(a => a.CallId == callId)
-            ?.OrderBy(a => a.CallId)
-            ?.LastOrDefault();
-
-        if (assignment == null || (assignment.CompletionStatus != DO.CompletionStatus.Handled && assignment.CompletionStatus != DO.CompletionStatus.Expired)) // Check if the call is open
+        foreach (var item in assignment)
         {
+            if (item.CompletionStatus == DO.CompletionStatus.Handled||
+               item.CompletionStatus ==null)
+                throw new BO.BlInvalidOperationException("Call is already assigned");
+        }
+
             var newAssignment = new DO.Assignment // Create a new assignment
             {
                 Id = -1,
@@ -89,45 +84,30 @@ internal class CallImplementation : ICall
 
             _dal.Assignment.Create(newAssignment); // Assign the call to the volunteer
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
-            if (calltamp.Status == DO.CallStatus.Open)
-            {
-                var newCall = new BO.Call
-                {
-                    Id = callId,
-                    Type = (BO.CallType)calltamp.Type,
-                    Description = calltamp?.Description ?? null,
-                    FullAddress = calltamp?.Address ?? null,
-                    Latitude = calltamp?.Latitude ?? 0.0,
-                    Longitude = calltamp?.Longitude ?? 0.0,
-                    OpenTime = calltamp.OpenedAt,
-                    MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
-                    Status = BO.CallStatus.InProgress,
-                    Assignments = null
-                };
-                help.UpdateCall(newCall);
-            }
-            else if(calltamp.Status == DO.CallStatus.OpenAtRisk)
-            {
-                var newCall = new BO.Call
-                {
-                    Id = callId,
-                    Type = (BO.CallType)calltamp.Type,
-                    Description = calltamp?.Description ?? null,
-                    FullAddress = calltamp?.Address ?? null,
-                    Latitude = calltamp?.Latitude ?? 0.0,
-                    Longitude = calltamp?.Longitude ?? 0.0,
-                    OpenTime = calltamp.OpenedAt,
-                    MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
-                    Status = BO.CallStatus.InProgressAtRisk,
-                    Assignments = null
-                };
-                help.UpdateCall(newCall);
-            }
 
+            BO.CallStatus s = BO.CallStatus.InProgress;// Update the call status
+            if (calltamp.Status == DO.CallStatus.Open)
+                     s = BO.CallStatus.InProgress;
+            else if(calltamp.Status == DO.CallStatus.OpenAtRisk)
+                    s= BO.CallStatus.InProgressAtRisk;
+
+                var newCall = new BO.Call
+                {
+                    Id = callId,
+                    Type = (BO.CallType)calltamp.Type,
+                    Description = calltamp?.Description ?? null,
+                    FullAddress = calltamp?.Address ?? null,
+                    Latitude = calltamp?.Latitude ?? 0.0,
+                    Longitude = calltamp?.Longitude ?? 0.0,
+                    OpenTime = calltamp.OpenedAt,
+                    MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                    Status = s,
+                    Assignments = null
+                };
+                help.UpdateCall(newCall);
+            
             CallManager.Observers.NotifyItemUpdated(callId); //stage 5
             return;
-        }
-        throw new BLAlreadyAssignedException("Call is already assigned");
     }
 
 
@@ -180,25 +160,12 @@ internal class CallImplementation : ICall
         ICall help = new CallImplementation();
         var calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
 
+        BO.CallStatus s = BO.CallStatus.InProgress;// Update the call status
         if (calltamp.Status == DO.CallStatus.InProgress)
-        {
-            var newCall = new BO.Call
-            {
-                Id = assignment.CallId,
-                Type = (BO.CallType)calltamp.Type,
-                Description = calltamp?.Description ?? null,
-                FullAddress = calltamp?.Address ?? null,
-                Latitude = calltamp?.Latitude ?? 0.0,
-                Longitude = calltamp?.Longitude ?? 0.0,
-                OpenTime = calltamp.OpenedAt,
-                MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
-                Status = BO.CallStatus.Open,
-                Assignments = null
-            };
-            help.UpdateCall(newCall);
-        }
+            s = BO.CallStatus.Open;
         else if (calltamp.Status == DO.CallStatus.InProgressAtRisk)
-        {
+            s = BO.CallStatus.OpenAtRisk;
+
             var newCall = new BO.Call
             {
                 Id = assignment.CallId,
@@ -209,11 +176,11 @@ internal class CallImplementation : ICall
                 Longitude = calltamp?.Longitude ?? 0.0,
                 OpenTime = calltamp.OpenedAt,
                 MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
-                Status = BO.CallStatus.OpenAtRisk,
+                Status = s,
                 Assignments = null
             };
             help.UpdateCall(newCall);
-        }
+
         try
         {
             _dal.Assignment.Update(updateAssignment);
@@ -267,6 +234,23 @@ internal class CallImplementation : ICall
             _dal.Assignment.Update(updateAssignment);  // Mark the assignment as completed
             AssignmentManager.Observers.NotifyItemUpdated(updateAssignment.Id);  //stage 5
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
+
+            ICall help = new CallImplementation();
+            var calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
+            var newCall = new BO.Call
+            {
+                Id = assignment.CallId,
+                Type = (BO.CallType)calltamp.Type,
+                Description = calltamp?.Description ?? null,
+                FullAddress = calltamp?.Address ?? null,
+                Latitude = calltamp?.Latitude ?? 0.0,
+                Longitude = calltamp?.Longitude ?? 0.0,
+                OpenTime = calltamp.OpenedAt,
+                MaxEndTime = (DateTime)calltamp.MaxCompletionTime,
+                Status = BO.CallStatus.Closed,
+                Assignments = null
+            };
+            help.UpdateCall(newCall);
         }
         catch (Exception ex)
         {
@@ -502,7 +486,7 @@ internal class CallImplementation : ICall
                                     Type = (BO.CallType)call.Type,
                                     FullAddress = boCall.FullAddress,
                                     OpenTime  = call.OpenedAt,
-                                    MaxEndTime = call.MaxCompletionTime.HasValue ? AdminManager.Now.Add(call.MaxCompletionTime.Value - call.OpenedAt) : (DateTime?)null,
+                                    MaxEndTime = call.MaxCompletionTime,// ? AdminManager.Now.Add(call.MaxCompletionTime.Value - call.OpenedAt) : (DateTime?)null,
                                     DistanceFromVolunteer = volunteer?.CurrentAddress != null ?
                                     VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude) : 0,
                                     Description = boCall.Description
@@ -542,8 +526,8 @@ internal class CallImplementation : ICall
         if (call.OpenTime >= call.MaxEndTime)
             throw new ArgumentException("Open time must be earlier than the maximum finish time.");
 
-        if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
-           throw new ArgumentException("Address is not valid.");
+        //if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
+        //   throw new ArgumentException("Address is not valid.");
 
         // Convert BO.Call to DO.Call
         var doCall = new DO.Call

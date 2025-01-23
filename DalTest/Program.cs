@@ -568,63 +568,65 @@ $@"        Select an option to proceed
                     //        Console.WriteLine("--------------------------------------------------------------------");
                     //    }
                     //}
-                    //  הדפסת כל מתנדב עם כל ההקצאות שלו והפרטים על הקריאה
-                    //foreach(Volunteer volunteer1 in s_dal.Volunteer.ReadAll())
-                    //{
-                    //    Console.WriteLine(volunteer1);
-                    //    foreach (Assignment assignment in s_dal.Assignment.ReadAll())
-                    //    {
-                    //        if (assignment.VolunteerId == volunteer1.Id)
-                    //        {
-                    //            Console.WriteLine(assignment);
-                    //            Call call = s_dal.Call.Read(assignment.CallId);
-                    //            Console.WriteLine(call);
-                    //        }
-                    //    }
-                    //    Console.WriteLine("--------------------------------------------------------------------");
-                    //}
-                    ////הדפסת סכום הקריאות סכום כל ההקצאות וסכום המתנדבים
-                    //Console.WriteLine($"Total number of calls: {s_dal.Call.ReadAll().Count()}");
-                    //Console.WriteLine($"Total number of assignments: {s_dal.Assignment.ReadAll().Count()}");
-                    //Console.WriteLine($"Total number of volunteers: {s_dal.Volunteer.ReadAll().Count()}");
-
-
-
-
-                    ////הדפסה של קריאות שאין להם הקצאה
-                    //Console.WriteLine("Calls without assignment:\n");
-                    //foreach (Call call in s_dal.Call.ReadAll())
-                    //{
-                    //    if (s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id).Count() == 0)
-                    //    {
-                    //        Console.WriteLine(call);
-                    //    }
-                    //}
-                    ////הדפסה של מתנדבים שאין להם הקצאה
-                    //Console.WriteLine("Volunteers without assignment:\n");
-                    //foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
-                    //{
-                    //    if (s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteer.Id).Count() == 0)
-                    //    {
-                    //        Console.WriteLine(volunteer);
-                    //    }
-                    //}
-
-
-                    foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
+                   // הדפסת כל מתנדב עם כל ההקצאות שלו והפרטים על הקריאה
+                    foreach (Volunteer volunteer1 in s_dal.Volunteer.ReadAll())
                     {
-                        Console.WriteLine(volunteer);
+                        Console.WriteLine(volunteer1);
+                        foreach (Assignment assignment in s_dal.Assignment.ReadAll())
+                        {
+                            if (assignment.VolunteerId == volunteer1.Id)
+                            {
+                                Console.WriteLine('\n');
+                                Console.WriteLine(assignment);
+                                Call call = s_dal.Call.Read(assignment.CallId);
+                                Console.WriteLine('\n');
+                                Console.WriteLine(call);
+                            }
+                        }
+                        Console.WriteLine("--------------------------------------------------------------------");
                     }
-                    Console.WriteLine("call\n");
+                    //הדפסת סכום הקריאות סכום כל ההקצאות וסכום המתנדבים
+                    Console.WriteLine($"Total number of calls: {s_dal.Call.ReadAll().Count()}");
+                    Console.WriteLine($"Total number of assignments: {s_dal.Assignment.ReadAll().Count()}");
+                    Console.WriteLine($"Total number of volunteers: {s_dal.Volunteer.ReadAll().Count()}");
+
+
+
+
+                    //הדפסה של קריאות שאין להם הקצאה
+                    Console.WriteLine("Calls without assignment:\n");
                     foreach (Call call in s_dal.Call.ReadAll())
                     {
-                        Console.WriteLine(call);
+                        if (s_dal.Assignment.ReadAll().Where(a => a.CallId == call.Id).Count() == 0)
+                        {
+                            Console.WriteLine(call);
+                        }
                     }
-                    Console.WriteLine("assignment\n");
-                    foreach (Assignment assignment in s_dal.Assignment.ReadAll())
+                    //הדפסה של מתנדבים שאין להם הקצאה
+                    Console.WriteLine("Volunteers without assignment:\n");
+                    foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
                     {
-                        Console.WriteLine(assignment);
+                        if (s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteer.Id).Count() == 0)
+                        {
+                            Console.WriteLine(volunteer);
+                        }
                     }
+
+
+                    //foreach (Volunteer volunteer in s_dal.Volunteer.ReadAll())
+                    //{
+                    //    Console.WriteLine(volunteer);
+                    //}
+                    //Console.WriteLine("call\n");
+                    //foreach (Call call in s_dal.Call.ReadAll())
+                    //{
+                    //    Console.WriteLine(call);
+                    //}
+                    //Console.WriteLine("assignment\n");
+                    //foreach (Assignment assignment in s_dal.Assignment.ReadAll())
+                    //{
+                    //    Console.WriteLine(assignment);
+                    //}
                     break;
                 case Menu.Configuration:
                     ConfigMenu();
