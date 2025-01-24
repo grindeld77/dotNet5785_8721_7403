@@ -9,7 +9,13 @@ internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    // Login method for volunteers. Returns the role of the volunteer if login is successful.
+    /// <summary>
+    /// Logs in a volunteer to the system.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlInvalidIdentificationException"></exception>
     string IVolunteer.Login(int id, string password)
     {
         DO.Volunteer? volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
@@ -27,7 +33,13 @@ internal class VolunteerImplementation : IVolunteer
         return volunteer.Role.ToString();
     }
 
-    // Retrieves a list of volunteers based on their active status, sorting parameter, and call type.
+    /// <summary>
+    /// Retrieves a collection of active volunteers in the system.
+    /// </summary>
+    /// <param name="isActive"></param>
+    /// <param name="VolunteerParameter"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
     IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter, BO.CallType? type)
     {
         IEnumerable<DO.Volunteer> doVolunteers;
@@ -123,7 +135,12 @@ internal class VolunteerImplementation : IVolunteer
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
 
-    // Retrieves the details of a specific volunteer by their ID.
+    /// <summary>
+    /// get the Volunteer details 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlGeneralException"></exception>
     BO.Volunteer IVolunteer.GetVolunteerDetails(int id)
     {
         try
@@ -141,7 +158,15 @@ internal class VolunteerImplementation : IVolunteer
         }
     }
 
-    // Updates the details of a volunteer. Only the volunteer themselves or an admin can update the details.
+    /// <summary>
+    /// Updates a volunteer in the system.
+    /// </summary>
+    /// <param name="requesterId"></param>
+    /// <param name="volunteer"></param>
+    /// <exception cref="BO.BlInvalidRequestException"></exception>
+    /// <exception cref="Exception"></exception>
+    /// <exception cref="BO.BloesNotExistException"></exception>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
     {
         try
@@ -187,7 +212,12 @@ internal class VolunteerImplementation : IVolunteer
         }
     }
 
-    // Adds a new volunteer to the system.
+    /// <summary>
+    /// Adds a new volunteer to the system.
+    /// </summary>
+    /// <param name="volunteer"></param>
+    /// <exception cref="BO.BlAlreadyExistsException"></exception>
+    /// <exception cref="BO.BlException"></exception>
     public void AddVolunteer(BO.Volunteer volunteer)
     {
         VolunteerManager.ValidateVolunteerData(volunteer); // Validate volunteer data
@@ -226,7 +256,13 @@ internal class VolunteerImplementation : IVolunteer
         Console.WriteLine("Volunteer added successfully.");
     }
 
-    // Deletes a volunteer from the system. Throws an exception if the volunteer is assigned to a call.
+    /// <summary>
+    /// Deletes a volunteer from the system.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <exception cref="BO.BlInvalidOperationException"></exception>
+    /// <exception cref="BO.BloesNotExistException"></exception>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void IVolunteer.DeleteVolunteer(int id)
     {
         DO.Assignment chak = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == id);

@@ -1,35 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows;
-using System.Globalization;
 using static PL.Helpers;
-
 
 namespace PL.Volunteer
 {
     public partial class VolunteerWindow : Window
     {
-        public ICommand DeleteCommand { get; }
+        public static readonly DependencyProperty ButtonTextProperty =
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
+
+        public string ButtonText
+        {
+            get => (string)GetValue(ButtonTextProperty);
+            set => SetValue(ButtonTextProperty, value);
+        }
+
+        public static readonly DependencyProperty CurrentVolunteerProperty =
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
+
+        public BO.Volunteer CurrentVolunteer
+        {
+            get => (BO.Volunteer)GetValue(CurrentVolunteerProperty);
+            set => SetValue(CurrentVolunteerProperty, value);
+        }
+
+        public static readonly DependencyProperty RolesProperty =
+            DependencyProperty.Register("Roles", typeof(Array), typeof(VolunteerWindow), new PropertyMetadata(null));
+
+        public Array Roles
+        {
+            get => (Array)GetValue(RolesProperty);
+            set => SetValue(RolesProperty, value);
+        }
 
         private int _volunteerId;
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public BO.Volunteer CurrentVolunteer { get; set; }
-        public string ButtonText { get; set; }
-        public Array Roles { get; set; }
         public bool IsAddMode { get; set; }
-
 
         public VolunteerWindow(int requesting, int id = 0)
         {
@@ -48,39 +55,65 @@ namespace PL.Volunteer
                 IsAddMode = false;
             }
 
-            DeleteCommand = new RelayCommand(DeleteVolunteer, CanDeleteVolunteer);
-
             _volunteerId = requesting;
             Roles = Enum.GetValues(typeof(BO.Role));
-            DataContext = this;
+
+        }
+        private void queryVoulnteer()
+        {
+            int id = CurrentVolunteer!.Id;
+            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
         }
 
-        private void SaveCommand_Execute(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ButtonText == "Add")
+                if (CurrentVolunteer.Id != 0) 
                 {
-                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
-                }
-                else
-                {
-                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
+                    s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, volunteerObserver);
                 }
 
-                MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                s_bl.Volunteer.AddObserver(UpdateVolunteersList);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error in Window_Loaded: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
-            Close();
+            try
+            {
+                if (CurrentVolunteer.Id == 0)
+                {
+                    s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, volunteerObserver);
+                }
+
+                s_bl.Volunteer.RemoveObserver(UpdateVolunteersList);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in Window_Closed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+        private void volunteerObserver()
+        {
+            queryVoulnteer();
+        }
+
+        private void UpdateVolunteersList()
+        {
+            if (CurrentVolunteer != null)
+            {
+                var updatedVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+
+                CurrentVolunteer = updatedVolunteer;
+            }
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -93,9 +126,8 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
                 }
-
+                volunteerObserver();
                 MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
             }
             catch (Exception ex)
             {
@@ -103,15 +135,23 @@ namespace PL.Volunteer
             }
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to delete this volunteer?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show($"Are you sure you want to delete volunteer {CurrentVolunteer.FullName}?",
+                                         "Confirm Delete",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
                 try
                 {
-                    s_bl.Volunteer.DeleteVolunteer(0);
+                    s_bl.Volunteer.DeleteVolunteer(CurrentVolunteer.Id);
 
                     MessageBox.Show("Volunteer deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -127,50 +167,13 @@ namespace PL.Volunteer
                 MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
         public bool IsDeleteButtonVisible
         {
             get
             {
                 return _volunteerId != 0;
             }
-        }
-        private void DeleteVolunteer(object parameter)
-        {
-            // מקבל את המתנדב דרך CommandParameter
-            if (parameter is BO.Volunteer volunteer)
-            {
-                var result = MessageBox.Show($"Are you sure you want to delete volunteer {volunteer.FullName}?",
-                                             "Confirm Delete",
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        // שימוש ב-ID של המתנדב מתוך האובייקט שהועבר
-                        s_bl.Volunteer.DeleteVolunteer(volunteer.Id);
-
-                        MessageBox.Show("Volunteer deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-
-
-        private bool CanDeleteVolunteer(object parameter)
-        {
-            return parameter is BO.Volunteer volunteer && volunteer.Id != 0;
         }
     }
 }

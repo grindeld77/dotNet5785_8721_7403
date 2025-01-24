@@ -2,10 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PL"
-        Title="Volunteers Management" Height="850" Width="800">
+        Title="Volunteers Management" Height="850" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        >
     <Window.Resources>
         <local:Converters x:Key="Converters" />
-        <!-- InverseBooleanConverter Definition -->
         <BooleanToVisibilityConverter x:Key="InverseBooleanConverter" />
 
         <!-- Style for ComboBox -->
@@ -32,7 +33,6 @@
             <Setter Property="Height" Value="50" />
             <Setter Property="Width" Value="250" />
             <Setter Property="FontWeight" Value="Bold" />
-
         </Style>
 
         <!-- Button Style -->
@@ -118,12 +118,8 @@
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" Margin="0,20" HorizontalAlignment="Center">
                 <Button Content="{Binding ButtonText}" Click="SaveButton_Click" Style="{StaticResource RoundedButtonStyle}" />
-                <Button Content="Cancel" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" />
-                <Button Content="Delete" 
-                        Command="{Binding DeleteCommand}" 
-                        CommandParameter="{Binding CurrentVolunteer}" 
-                        Visibility="{Binding IsDeleteButtonVisible, Converter={StaticResource Converters}}" 
-                        Style="{StaticResource RoundedButtonStyle}" />
+                <Button Content="Cancel" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}" />
+                <Button Content="Delete" Click="DeleteButton_Click" Visibility="{Binding IsDeleteButtonVisible, Converter={StaticResource Converters}}" Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
         </StackPanel>
     </Grid>

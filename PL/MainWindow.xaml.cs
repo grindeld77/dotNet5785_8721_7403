@@ -185,5 +185,10 @@ namespace PL
         {
             new CallManagementWindow(tampUserId).Show();
         }
+
+        private void StartSimulator_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

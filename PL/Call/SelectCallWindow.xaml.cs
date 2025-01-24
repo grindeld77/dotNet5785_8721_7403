@@ -54,10 +54,8 @@ namespace PL.Call
             UserId = id;
             try
             {
-                // קריאה מיד לאחר אתחול הערכים
                 OpenList = s_bl.Call.GetOpenCallsForVolunteer(id, null, null);
 
-                // הגדרת האירועים
                 Loaded += Window_Loaded;
                 Closed += Window_Closed;
             }

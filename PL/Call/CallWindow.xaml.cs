@@ -51,7 +51,6 @@ namespace PL.Call
         public CallWindow(int id)
         {
             InitializeComponent();
-
             if (id == -1)
             {
                 ButtonText = "Add";
@@ -61,6 +60,7 @@ namespace PL.Call
                     MaxEndTime = s_bl.Admin.GetClock().AddHours(1)
                 };
                 IsDeleteButtonVisible = Visibility.Collapsed;
+
             }
             else
             {
@@ -88,15 +88,13 @@ namespace PL.Call
                 if (ButtonText == "Add")
                 {
                     s_bl.Call.AddCall(CurrentCall);
-                    Close();
                 }
                 else
                 {
                     s_bl.Call.UpdateCall(CurrentCall);
                 }
-
+                callObserver();
                 MessageBox.Show("Call saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
             }
             catch (Exception ex)
             {
@@ -112,21 +110,38 @@ namespace PL.Call
         {
             queryCall();
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentCall!.Id != -1)
+            if (CurrentCall!.Id != -1) 
+            {
                 s_bl.Call.AddObserver(CurrentCall!.Id, callObserver);
+            }
+            s_bl.Call.AddObserver(UpdateCallsList);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (CurrentCall!.Id != 0) 
+            {
+                s_bl.Call.RemoveObserver(CurrentCall!.Id, callObserver);
+            }
+
+            s_bl.Call.RemoveObserver(UpdateCallsList);
         }
 
         /// <summary>
-        /// Event handler for when the window is closed.
+        /// Updates the call list.
         /// </summary>
-        private void Window_Closed(object sender, EventArgs e)
+        private void UpdateCallsList()
         {
-            if (CurrentCall!.Id != 0)
-                s_bl.Call.RemoveObserver(CurrentCall!.Id, callObserver);
+            if (CurrentCall != null)
+            {
+                var updatedCall = s_bl.Call.GetCallDetails(CurrentCall.Id);
+
+                CurrentCall = updatedCall;
+            }
         }
+
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {

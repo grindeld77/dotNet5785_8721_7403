@@ -10,6 +10,10 @@ internal class CallImplementation : ICall
     private const DO.CallStatus inProgress = DO.CallStatus.InProgress;
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
+    /// <summary>
+    /// Add a new call to the system.
+    /// </summary>
+    /// <param name="boCall"></param>
     void ICall.AddCall(BO.Call boCall)
     {
         try
@@ -49,6 +53,14 @@ internal class CallImplementation : ICall
         }
     }
 
+    /// <summary>
+    /// Assign a volunteer to a call.
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <param name="callId"></param>
+    /// <exception cref="BO.BloesNotExistException"></exception>
+    /// <exception cref="BO.BlInvalidOperationException"></exception>
+    /// <exception cref="BO.BlInvalidCallIdException"></exception>
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
         ICall help = new CallImplementation();
@@ -111,7 +123,15 @@ internal class CallImplementation : ICall
     }
 
 
-
+    /// <summary>
+    /// Cancel a call assignment.
+    /// </summary>
+    /// <param name="requesterId"></param>
+    /// <param name="assignmentId"></param>
+    /// <exception cref="BO.BloesNotExistException"></exception>
+    /// <exception cref="BO.BlInvalidRequestException"></exception>
+    /// <exception cref="BO.BlInvalidOperationException"></exception>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         // Retrieve the assignment from the data layer
@@ -195,6 +215,12 @@ internal class CallImplementation : ICall
         }
     }
 
+    /// <summary>
+    /// Complete a call assignment.
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <param name="assignmentId"></param>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.CompleteCallAssignment(int volunteerId, int assignmentId)
     {
         try
@@ -258,6 +284,14 @@ internal class CallImplementation : ICall
             throw new BO.BlGeneralException("Failed to complete the assignment.", ex);
         }
     }
+
+    /// <summary>
+    /// Delete a call from the system.
+    /// </summary>
+    /// <param name="callId"></param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="BO.BlInvalidOperationException"></exception>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.DeleteCall(int callId)
     {
         // Validate input parameter
@@ -312,6 +346,12 @@ internal class CallImplementation : ICall
         }
     }
 
+    /// <summary>
+    /// Retrieve the details of a specific call.
+    /// </summary>
+    /// <param name="callId"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlGeneralException"></exception>
     BO.Call ICall.GetCallDetails(int callId)
     {
         try
@@ -326,6 +366,15 @@ internal class CallImplementation : ICall
         }
     }
 
+
+    /// <summary>
+    /// Retrieve a list of calls based on specified criteria.
+    /// </summary>
+    /// <param name="filterField"></param>
+    /// <param name="filterValue"></param>
+    /// <param name="sortField"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlGeneralException"></exception>
     IEnumerable<BO.CallInList> ICall.GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField)
     {
         try
@@ -334,7 +383,7 @@ internal class CallImplementation : ICall
             IEnumerable<BO.CallInList> callsList = null;
 
             doCalls = _dal.Call.ReadAll();
-            
+
 
             if (doCalls != null)
             {
@@ -372,31 +421,31 @@ internal class CallImplementation : ICall
                 switch (sortField) // Sort the calls based on the specified field
                 {
                     case BO.CallInListFields.AssignmentId:
-                            callsList = callsList.OrderBy(call => call.AssignmentId);
+                        callsList = callsList.OrderBy(call => call.AssignmentId);
                         break;
                     case BO.CallInListFields.CallId:
-                            callsList = callsList.OrderBy(call => call.CallId);
+                        callsList = callsList.OrderBy(call => call.CallId);
                         break;
                     case BO.CallInListFields.CallType:
-                            callsList = callsList.OrderBy(call => call.CallType);
+                        callsList = callsList.OrderBy(call => call.CallType);
                         break;
                     case BO.CallInListFields.OpenTime:
-                            callsList = callsList.OrderBy(call => call.OpenTime);
+                        callsList = callsList.OrderBy(call => call.OpenTime);
                         break;
                     case BO.CallInListFields.RemainingTime:
-                            callsList = callsList.OrderBy(call => call.RemainingTime);
+                        callsList = callsList.OrderBy(call => call.RemainingTime);
                         break;
                     case BO.CallInListFields.LastVolunteer:
-                            callsList = callsList.OrderBy(call => call.LastVolunteer);
+                        callsList = callsList.OrderBy(call => call.LastVolunteer);
                         break;
                     case BO.CallInListFields.TotalHandlingTime:
-                            callsList = callsList.OrderBy(call => call.TotalHandlingTime);
+                        callsList = callsList.OrderBy(call => call.TotalHandlingTime);
                         break;
                     case BO.CallInListFields.Status:
-                            callsList = callsList.OrderBy(call => call.Status);
+                        callsList = callsList.OrderBy(call => call.Status);
                         break;
                     case BO.CallInListFields.TotalAssignments:
-                            callsList = callsList.OrderBy(call => call.TotalAssignments);
+                        callsList = callsList.OrderBy(call => call.TotalAssignments);
                         break;
                 }
             }
@@ -409,6 +458,14 @@ internal class CallImplementation : ICall
         }
     }
 
+    /// <summary>
+    /// Retrieve a list of closed calls handled by a specific volunteer.
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <param name="filterField"></param>
+    /// <param name="sortField"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlGeneralException"></exception>
     IEnumerable<BO.ClosedCallInList> ICall.GetClosedCallsByVolunteer(int volunteerId, BO.CallType? filterField, BO.ClosedCallInListFields? sortField)
     {
         try
@@ -457,6 +514,14 @@ internal class CallImplementation : ICall
         }
     }
 
+    /// <summary>
+    /// Retrieve a list of open calls available for a volunteer.
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <param name="filterType"></param>
+    /// <param name="sortField"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
     IEnumerable<BO.OpenCallInList> ICall.GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField)
     {
             // Retrieve the volunteer from the DAL
@@ -508,6 +573,13 @@ internal class CallImplementation : ICall
         return openCallsInList;
     }
 
+    /// <summary>
+    /// Update an existing call in the system.
+    /// </summary>
+    /// <param name="call"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.UpdateCall(BO.Call call)
     {
         // Validate the call object

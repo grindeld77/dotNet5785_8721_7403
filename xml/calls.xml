@@ -23,17 +23,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>5</Id>
-    <Type>FireEmergency</Type>
-    <Description>Fire in a residential building.</Description>
-    <Address>Balfour St 45, Bat Yam</Address>
-    <Latitude>32.0212</Latitude>
-    <Longitude>34.7515</Longitude>
-    <OpenedAt>2025-01-23T09:07:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:40:00</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
     <Id>6</Id>
     <Type>CardiacEmergency</Type>
     <Description>Cardiac arrest requiring immediate attention.</Description>
@@ -262,17 +251,6 @@
     <Longitude>34.7979</Longitude>
     <OpenedAt>2025-01-23T09:19:00</OpenedAt>
     <MaxCompletionTime>2025-01-23T10:52:00</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>29</Id>
-    <Type>Poisoning</Type>
-    <Description>Emergency response for a cardiac issue.</Description>
-    <Address>King David St 20, Jerusalem</Address>
-    <Latitude>31.7767</Latitude>
-    <Longitude>35.2273</Longitude>
-    <OpenedAt>2025-01-23T08:49:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T10:08:00</MaxCompletionTime>
     <Status>Open</Status>
   </Call>
   <Call>
@@ -595,17 +573,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>4</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue operation for a trapped individual.</Description>
-    <Address>Emek Refaim St 34, Jerusalem</Address>
-    <Latitude>31.7614</Latitude>
-    <Longitude>35.2219</Longitude>
-    <OpenedAt>2025-01-23T09:00:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:40:00</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>61</Id>
     <Type>MedicalEmergency</Type>
     <Description>Severe dehydration reported.</Description>
@@ -681,5 +648,38 @@
     <OpenedAt>2025-01-23T09:01:00</OpenedAt>
     <MaxCompletionTime>2025-01-23T09:58:00</MaxCompletionTime>
     <Status>Closed</Status>
+  </Call>
+  <Call>
+    <Id>68</Id>
+    <Type>PatientTransport</Type>
+    <Description>sfav</Description>
+    <Address>Herzl St 4, Beersheba</Address>
+    <Latitude>31.2386242</Latitude>
+    <Longitude>34.7869831</Longitude>
+    <OpenedAt>2025-01-23T09:32:00</OpenedAt>
+    <MaxCompletionTime>2025-01-30T10:32:00</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>4</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue operation.</Description>
+    <Address>Emek Refaim St 34, Jerusalem</Address>
+    <Latitude>31.7614</Latitude>
+    <Longitude>35.2219</Longitude>
+    <OpenedAt>2025-01-23T09:00:00</OpenedAt>
+    <MaxCompletionTime>2025-01-23T09:40:00</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>5</Id>
+    <Type>FireEmergency</Type>
+    <Description>Fire in a building.</Description>
+    <Address>Balfour St 45, Bat Yam</Address>
+    <Latitude>32.0212</Latitude>
+    <Longitude>34.7515</Longitude>
+    <OpenedAt>2025-01-23T09:07:00</OpenedAt>
+    <MaxCompletionTime>2025-01-23T09:40:00</MaxCompletionTime>
+    <Status>OpenAtRisk</Status>
   </Call>
 </ArrayOfCall>

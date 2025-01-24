@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="1200"
+        Title="MainWindow" Height="420" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded" Closed="Window_Closed">
 
@@ -144,6 +144,16 @@
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" Width="150"/>
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" Width="150"/>
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" Width="150"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Simulator Start Area -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="3" Height="234" Width="884">
+            <Label Content="&#xD;&#xA;Simulator:" Style="{StaticResource LabelStyle}" Height="74" Width="139" FontSize="20"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Click="StartSimulator_Click" Width="150" Content="Start"/>
+            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Left">
+                <Label Content="Interval (minutes per second):" VerticalAlignment="Center" Foreground="#D32F2F" FontWeight="Bold" />
+                <TextBox Text="{Binding SimulatorInterval, UpdateSourceTrigger=PropertyChanged}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold" Height="40" />
             </StackPanel>
         </StackPanel>
 
