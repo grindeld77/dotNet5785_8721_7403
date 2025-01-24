@@ -267,14 +267,8 @@ internal class CallImplementation : ICall
         // Retrieve the call from the data layer
         var call = _dal.Call.Read(a => a.Id == callId);
 
-        // Check if the call exists
-        if (!_dal.Assignment.ReadAll(a => a.CallId == callId).Any())
-        {
-            throw new BO.BlInvalidOperationException("Assignment was not found");
-        }
-
         // Check if the call is already assigned
-        if (_dal.Assignment.ReadAll(a => a.CallId == callId).Any() && BO.CallStatus.Open != (BO.CallStatus)call.Status)
+        if (_dal.Assignment.ReadAll(a => a.CallId == callId).Any() ||( call.Status!=DO.CallStatus.Open&& call.Status !=DO.CallStatus.OpenAtRisk))
         {
             throw new BO.BlInvalidOperationException("Call is already assigned");
         }

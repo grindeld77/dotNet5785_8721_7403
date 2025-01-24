@@ -140,7 +140,7 @@
 
             <!-- Buttons for Database Management -->
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Show List View" Click="btnVolunteer_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Volunteers" Click="btnVolunteer_Click" Width="150"/>
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" Width="150"/>
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" Width="150"/>
                 <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" Width="150"/>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +10,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows;
 using System.Globalization;
+using System;
+using System.Windows;
 
 namespace PL.Volunteer
 {
     public partial class VolunteerWindow : Window
     {
-
-        private int _volunteerId;
+        private int _volunteerId; // ID of the requester
+        private int _selectedVolunteerId; // ID of the selected volunteer
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.Volunteer CurrentVolunteer { get; set; }
@@ -27,8 +27,7 @@ namespace PL.Volunteer
         public Array Roles { get; set; }
         public bool IsAddMode { get; set; }
 
-
-        public VolunteerWindow(int requesting,int id = 0)
+        public VolunteerWindow(int requesting, int id = 0)
         {
             InitializeComponent();
 
@@ -45,36 +44,11 @@ namespace PL.Volunteer
                 IsAddMode = false;
             }
             _volunteerId = requesting;
+            _selectedVolunteerId = id; // Initialize with the provided ID
             Roles = Enum.GetValues(typeof(BO.Role));
             DataContext = this;
         }
 
-        private void SaveCommand_Execute(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ButtonText == "Add")
-                {
-                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
-                }
-                else
-                {
-                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
-                }
-
-                MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -85,7 +59,7 @@ namespace PL.Volunteer
                 }
                 else
                 {
-                    s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
+                    s_bl.Volunteer.UpdateVolunteer(_selectedVolunteerId, CurrentVolunteer);
                 }
 
                 MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -99,9 +73,9 @@ namespace PL.Volunteer
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_volunteerId == 0)
+            if (_selectedVolunteerId == 0)
             {
-                MessageBox.Show("Cannot delete a volunteer that hasn't been added yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("No volunteer selected for deletion.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -111,7 +85,7 @@ namespace PL.Volunteer
             {
                 try
                 {
-                    s_bl.Volunteer.DeleteVolunteer(_volunteerId);
+                    s_bl.Volunteer.DeleteVolunteer(_selectedVolunteerId);
 
                     MessageBox.Show("Volunteer deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -127,13 +101,20 @@ namespace PL.Volunteer
                 MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
         public bool IsDeleteButtonVisible
         {
             get
             {
-                return _volunteerId != 0;
+                return _selectedVolunteerId != 0;
             }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
+
 

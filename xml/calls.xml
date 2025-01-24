@@ -221,17 +221,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>24</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Transport to a specialized medical facility.</Description>
-    <Address>Yitzhak Rabin Blvd 50, Petah Tikva</Address>
-    <Latitude>32.0973</Latitude>
-    <Longitude>34.8774</Longitude>
-    <OpenedAt>2025-01-23T08:33:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:35:00</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
     <Id>25</Id>
     <Type>FirstAid</Type>
     <Description>Structural collapse requiring emergency response.</Description>
@@ -529,17 +518,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>52</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Car accident with multiple injuries.</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-23T09:17:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:57:00</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>53</Id>
     <Type>FirstAid</Type>
     <Description>First aid for an injured person.</Description>
@@ -604,17 +582,6 @@
     <OpenedAt>2025-01-23T08:55:00</OpenedAt>
     <MaxCompletionTime>2025-01-23T10:18:00</MaxCompletionTime>
     <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>62</Id>
-    <Type>PatientTransport</Type>
-    <Description>Routine patient transport.</Description>
-    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
-    <Latitude>31.6648</Latitude>
-    <Longitude>34.5784</Longitude>
-    <OpenedAt>2025-01-23T08:33:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T10:27:00</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
   </Call>
   <Call>
     <Id>63</Id>
@@ -694,17 +661,6 @@
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>2</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Car accident with multiple injuries.</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-23T09:01:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:58:00</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>7</Id>
     <Type>Poisoning</Type>
     <Description>Chemical poisoning incident.</Description>
@@ -716,14 +672,25 @@
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>65</Id>
-    <Type>NotAllocated</Type>
-    <Description>The guy isn't breathing.</Description>
-    <Address>Jerusalem Jaffa 13</Address>
-    <Latitude>31.7846145</Latitude>
-    <Longitude>35.21512</Longitude>
-    <OpenedAt>2025-01-23T09:32:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T10:32:00</MaxCompletionTime>
-    <Status>Open</Status>
+    <Id>24</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Transport to a specialized medical facility.</Description>
+    <Address>Yitzhak Rabin Blvd 50, Petah Tikva</Address>
+    <Latitude>32.0973</Latitude>
+    <Longitude>34.8774</Longitude>
+    <OpenedAt>2025-01-23T08:33:00</OpenedAt>
+    <MaxCompletionTime>2025-01-23T09:35:00</MaxCompletionTime>
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident with multiple injuries.</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-01-23T09:01:00</OpenedAt>
+    <MaxCompletionTime>2025-01-23T09:58:00</MaxCompletionTime>
+    <Status>Closed</Status>
   </Call>
 </ArrayOfCall>

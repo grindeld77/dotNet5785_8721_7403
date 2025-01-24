@@ -57,20 +57,6 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>309963148</Id>
-    <Name>Tomer Friedman</Name>
-    <MobilePhone>0559855022</MobilePhone>
-    <Email>tomer.friedman@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>123686333</Password>
-    <CurrentAddress>Herzl St 4, Beersheba</CurrentAddress>
-    <Latitude>31.2526</Latitude>
-    <Longitude>34.7925</Longitude>
-    <MaxCallDistance>38</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>351222765</Id>
     <Name>Naama Avidan</Name>
     <MobilePhone>0599611491</MobilePhone>
@@ -208,6 +194,20 @@
     <Latitude>32.7811</Latitude>
     <Longitude>35.0105</Longitude>
     <MaxCallDistance>52</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>309963148</Id>
+    <Name>Tomer Friedman</Name>
+    <MobilePhone>0559855022</MobilePhone>
+    <Email>tomer.friedman@gmail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>342214542</Password>
+    <CurrentAddress>Herzl St 4, Beersheba</CurrentAddress>
+    <Latitude>31.2386242</Latitude>
+    <Longitude>34.7869831</Longitude>
+    <MaxCallDistance>38</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
 </Volunteers>

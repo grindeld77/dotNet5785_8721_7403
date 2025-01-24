@@ -272,4 +272,12 @@
     <CompletionTime>2025-01-23T09:32:00</CompletionTime>
     <CompletionStatus>Handled</CompletionStatus>
   </Assignment>
+  <Assignment>
+    <Id>34</Id>
+    <CallId>2</CallId>
+    <VolunteerId>311368591</VolunteerId>
+    <EntryTime>2025-01-24T01:57:30.0746147+02:00</EntryTime>
+    <CompletionTime>2025-01-23T09:32:00</CompletionTime>
+    <CompletionStatus>Handled</CompletionStatus>
+  </Assignment>
 </ArrayOfAssignment>
