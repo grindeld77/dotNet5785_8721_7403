@@ -120,9 +120,10 @@
                 <Button Content="{Binding ButtonText}" Click="SaveButton_Click" Style="{StaticResource RoundedButtonStyle}" />
                 <Button Content="Cancel" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" />
                 <Button Content="Delete" 
-                      Click="DeleteButton_Click" 
-                      Visibility="{Binding IsDeleteButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                      Style="{StaticResource RoundedButtonStyle}" />
+                        Command="{Binding DeleteCommand}" 
+                        CommandParameter="{Binding CurrentVolunteer}" 
+                        Visibility="{Binding IsDeleteButtonVisible, Converter={StaticResource Converters}}" 
+                        Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
         </StackPanel>
     </Grid>

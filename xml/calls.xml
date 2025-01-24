@@ -562,17 +562,6 @@
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>59</Id>
-    <Type>MassCausalities</Type>
-    <Description>Explosion causing multiple casualties.</Description>
-    <Address>Palmach St 10, Nahariya</Address>
-    <Latitude>33.0081</Latitude>
-    <Longitude>35.0952</Longitude>
-    <OpenedAt>2025-01-23T08:59:00</OpenedAt>
-    <MaxCompletionTime>2025-01-23T09:56:00</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>60</Id>
     <Type>TerrorAttack</Type>
     <Description>Terror attack in a crowded area.</Description>

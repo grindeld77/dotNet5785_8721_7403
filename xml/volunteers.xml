@@ -71,20 +71,6 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>380429670</Id>
-    <Name>Ron Goldman</Name>
-    <MobilePhone>0594141363</MobilePhone>
-    <Email>ron.goldman@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>241032783</Password>
-    <CurrentAddress>Chen Blvd 3, Ra'anana</CurrentAddress>
-    <Latitude>32.1847</Latitude>
-    <Longitude>34.8709</Longitude>
-    <MaxCallDistance>51</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>231407255</Id>
     <Name>Elinor Bachar</Name>
     <MobilePhone>0581069382</MobilePhone>
