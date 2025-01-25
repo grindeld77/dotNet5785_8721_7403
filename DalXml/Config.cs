@@ -1,4 +1,6 @@
-﻿namespace Dal;
+﻿using System.Runtime.CompilerServices;
+
+namespace Dal;
 
 internal static class Config
 {
@@ -12,20 +14,32 @@ internal static class Config
 
     internal static int NextCallId
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
     }
     internal static int NextAssignmentId
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentId");
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentId", value);
     }
     internal static DateTime Clock
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetConfigDateVal(s_data_config_xml, "Clock");
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
     }
-    internal static TimeSpan RiskRange { get; set; } = TimeSpan.FromHours(1); // Default Risk Range set to 1 hour
+    internal static TimeSpan RiskRange {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+        get;
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+        set; } = TimeSpan.FromHours(1); // Default Risk Range set to 1 hour
+
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     internal static void Reset()
     {
         NextCallId = startCallId;

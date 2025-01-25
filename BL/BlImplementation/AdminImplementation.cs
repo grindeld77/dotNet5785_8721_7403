@@ -11,6 +11,7 @@ internal class AdminImplementation : IAdmin
 
     public void ForwardClock(BO.TimeUnit unit)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         DateTime newTime = AdminManager.Now;
         newTime = unit switch
         {
@@ -37,24 +38,29 @@ internal class AdminImplementation : IAdmin
 
     void IAdmin.InitializeDB()
     {
-        _dal.ResetDB();
-        DalTest.Initialization.Do();
-        AdminManager.UpdateClock(DateTime.Now);
-        AdminManager.MaxRange = AdminManager.MaxRange;
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.InitializeDB(); //stage 7
     }
 
     void IAdmin.ResetDB()
     {
-        _dal.ResetDB();
-        AdminManager.UpdateClock(DateTime.Now);
-        AdminManager.MaxRange = AdminManager.MaxRange;
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.ResetDB(); //stage 7
     }
 
     void IAdmin.SetMaxRange(TimeSpan maxRange)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         AdminManager.MaxRange = maxRange;
     }
 
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+
+    public void StopSimulator() => AdminManager.Stop(); //stage 7
     #region Stage 5
     public void AddClockObserver(Action clockObserver) => AdminManager.ClockUpdatedObservers += clockObserver;
     public void RemoveClockObserver(Action clockObserver) => AdminManager.ClockUpdatedObservers -= clockObserver;

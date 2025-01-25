@@ -10,6 +10,13 @@ internal static class CallManager
 
     internal static ObserverManager Observers = new(); //stage 5 
 
+
+    /// <summary>
+    /// Converts a DO.Call object to a BO.Call object.
+    /// </summary>
+    /// <param name="call"></param>
+    /// <returns></returns>
+    /// <exception cref="BO.BloesNotExistException"></exception>
     internal static BO.Call ConvertDoCallToBoCall(DO.Call? call)
     {
         if (call == null)
@@ -17,7 +24,9 @@ internal static class CallManager
             throw new BO.BloesNotExistException("Call does not exist.");
         }
 
-        var assignments = s_dal.Assignment.ReadAll()?.Where(a => a.CallId == call.Id) ?? Enumerable.Empty<DO.Assignment>();
+        IEnumerable<Assignment> assignments;
+        lock (AdminManager.BlMutex) //stage 7
+            assignments = s_dal.Assignment.ReadAll()?.Where(a => a.CallId == call.Id) ?? Enumerable.Empty<DO.Assignment>();
 
         var assignmentsInList = AssignmentToCallAssignInList(assignments);
         if (call.Status == DO.CallStatus.InProgressAtRisk || call.Status == DO.CallStatus.InProgress)
@@ -51,6 +60,11 @@ internal static class CallManager
         };
     }
 
+    /// <summary>
+    /// Converts a list of DO.Assignment objects to a list of BO.CallAssignInList objects.
+    /// </summary>
+    /// <param name="assignments"></param>
+    /// <returns></returns>
     private static IEnumerable<CallAssignInList> AssignmentToCallAssignInList(IEnumerable<DO.Assignment>? assignments)
     {
         if (assignments == null || !assignments.Any())
@@ -58,41 +72,65 @@ internal static class CallManager
             return Enumerable.Empty<CallAssignInList>();
         }
 
+        string Name;
+        lock (AdminManager.BlMutex) //stage 7
+            Name = s_dal.Volunteer.Read(assignments.Last().VolunteerId)?.FullName ?? "Unknown";
+
         return assignments.Select(a => new CallAssignInList
         {
             VolunteerId = a.VolunteerId,
             EndTime = a.CompletionTime ?? default(DateTime),
             StartTime = a.EntryTime,
-            VolunteerName = s_dal.Volunteer.Read(a.VolunteerId)?.FullName ?? "Unknown",
+            VolunteerName = Name,
             Status = (BO.CompletionStatus)a.CompletionStatus
         });
     }
-   
+
+    /// <summary>
+    /// Gets all the open calls.
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <returns></returns>
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
-        IEnumerable<ClosedCallInList> list = (from call in s_dal.Call.ReadAll()
-                                              join assignment in s_dal.Assignment.ReadAll(x => x.VolunteerId == volunteerId) on call.Id equals assignment.CallId
-                                              where assignment.CompletionStatus == DO.CompletionStatus.Handled
+        IEnumerable<ClosedCallInList> list;
+        lock (AdminManager.BlMutex) //stage 7
+        {
 
-                                              select new BO.ClosedCallInList
-                                              {
-                                                  Id = call.Id,
-                                                  Type = (BO.CallType)call.Type,
-                                                  FullAddress = call.Address,
-                                                  OpenTime = call.OpenedAt,
-                                                  AssignedTime = assignment.EntryTime,
-                                                  ClosedTime = assignment.CompletionTime,
-                                                  Status = (BO.CompletionStatus?)assignment.CompletionStatus
-                                              });
+
+            list = (from call in s_dal.Call.ReadAll()
+                    join assignment in s_dal.Assignment.ReadAll(x => x.VolunteerId == volunteerId) on call.Id equals assignment.CallId
+                    where assignment.CompletionStatus == DO.CompletionStatus.Handled
+
+                    select new BO.ClosedCallInList
+                    {
+                        Id = call.Id,
+                        Type = (BO.CallType)call.Type,
+                        FullAddress = call.Address,
+                        OpenTime = call.OpenedAt,
+                        AssignedTime = assignment.EntryTime,
+                        ClosedTime = assignment.CompletionTime,
+                        Status = (BO.CompletionStatus?)assignment.CompletionStatus
+                    });
+        }
         // Notify the observers about the updated list of closed calls.
         Observers.NotifyListUpdated(); // Notify that the list of closed calls was updated.
 
         return list;
     }
-
+    /// <summary>
+    /// Converts a DO.Call object to a BO.CallInList object.
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
     internal static CallInList converterFromDoToBoCallInList(DO.Call c)
     {
-        IEnumerable<DO.Assignment> assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == c.Id);
+        IEnumerable<DO.Assignment> assignments;
+        lock (AdminManager.BlMutex) // stage 7
+        {
+            assignments = s_dal.Assignment.ReadAll().Where(a => a.CallId == c.Id).ToList();
+        }
+
         BO.CallInList callInList = new BO.CallInList
         {
             AssignmentId = assignments.Any() ? assignments.Last().Id : 0,
@@ -107,16 +145,103 @@ internal static class CallManager
         };
 
         Observers.NotifyItemUpdated(c.Id); // stage 5
+
         return callInList;
     }
 
+    /// <summary>
+    /// return if the volunteer is busy or not
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <returns></returns>
     internal static bool IsVolunteerBusy(int volunteerId)
     {
-        var  v = s_dal.Volunteer.Read(volunteerId);
-        var assignments = s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteerId && a.CompletionStatus == null);
-        if (assignments.Any())
-            { return true; }
-        return false;
+        lock (AdminManager.BlMutex) // stage 7
+        {
+            var v = s_dal.Volunteer.Read(volunteerId);
+            var assignments = s_dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteerId && a.CompletionStatus == null);
+            return assignments.Any();
+        }
+    }
+
+    internal static void PeriodicCallUpdates(DateTime oldClock, DateTime newClock)
+    {
+        // Set thread name for easier debugging
+        Thread.CurrentThread.Name = $"PeriodicCallUpdates";
+
+        // Local list to store IDs for notifications outside the lock
+        List<int> expiredCallIds = new();
+
+        // Step 1: Retrieve all calls from the data source
+        List<DO.Call> activeCalls;
+        lock (AdminManager.BlMutex) // Lock for data retrieval
+        {
+            activeCalls = s_dal.Call.ReadAll()
+                                   .Where(call => call.MaxCompletionTime > oldClock && call.MaxCompletionTime <= newClock)
+                                   .ToList();
+        }
+
+        // Step 2: Process calls and perform updates
+        foreach (var call in activeCalls)
+        {
+            // Assuming these are expired calls that require updates
+            lock (AdminManager.BlMutex) // Lock for database updates
+            {
+                s_dal.Call.Update(call with { MaxCompletionTime = null }); // Update the call
+            }
+
+            // Add the call ID to the local list for notifications
+            expiredCallIds.Add(call.Id);
+        }
+
+        // Step 3: Send notifications outside the lock
+        foreach (var callId in expiredCallIds)
+        {
+            Observers.NotifyItemUpdated(callId); // Notify about the specific updated item
+        }
+
+        // Step 4: Check if the list requires a global update notification
+        if (oldClock.Year != newClock.Year || expiredCallIds.Any())
+        {
+            Observers.NotifyListUpdated(); // Notify about a global list update
+        }
+    }
+
+    public static IEnumerable <BO.OpenCallInList>  GetOpenCallForVolunteer(int id)
+    {
+        // Retrieve the volunteer from the DAL
+
+        DO.Volunteer volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            volunteer = s_dal.Volunteer.Read(id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exists");
+        IEnumerable<DO.Call> allCalls;
+        lock (AdminManager.BlMutex) //stage 7
+            allCalls = s_dal.Call.ReadAll();
+
+        IEnumerable<Assignment> allAssignments;
+        lock (AdminManager.BlMutex) //stage 7
+            allAssignments = s_dal.Assignment.ReadAll();
+
+        double lonVol = (double)volunteer.Longitude;
+        double latVol = (double)volunteer.Latitude;
+
+        var openCallsInList = from call in allCalls
+                              let boCall = CallManager.ConvertDoCallToBoCall(call)
+                              where (boCall.Status == BO.CallStatus.Open || boCall.Status == BO.CallStatus.OpenAtRisk)
+                              select new BO.OpenCallInList
+                              {
+                                  Id = call.Id,
+                                  Type = (BO.CallType)call.Type,
+                                  FullAddress = boCall.FullAddress,
+                                  OpenTime = call.OpenedAt,
+                                  MaxEndTime = call.MaxCompletionTime,// ? AdminManager.Now.Add(call.MaxCompletionTime.Value - call.OpenedAt) : (DateTime?)null,
+                                  DistanceFromVolunteer = volunteer?.CurrentAddress != null ?
+                                  VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude) : 0,
+                                  Description = boCall.Description
+                              };
+        openCallsInList = openCallsInList.Where(call => call.DistanceFromVolunteer <= volunteer.MaxCallDistance);
+
+        return openCallsInList;
     }
 }
 

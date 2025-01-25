@@ -132,7 +132,7 @@ namespace PL
             // Refresh the list after closing the window
             queryCallList();
         }
-        // כפתור מחיקה
+
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCall != null)
@@ -153,7 +153,7 @@ namespace PL
             }
         }
 
-        // כפתור ביטול הקצאה
+
         private void UnassignButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCall != null)

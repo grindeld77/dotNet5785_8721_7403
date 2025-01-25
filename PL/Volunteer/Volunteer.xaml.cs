@@ -6,6 +6,8 @@ namespace PL.Volunteer
 {
     public partial class VolunteerWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
 
@@ -34,8 +36,6 @@ namespace PL.Volunteer
         }
 
         private int _volunteerId;
-
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public bool IsAddMode { get; set; }
 
         public VolunteerWindow(int requesting, int id = 0)
@@ -56,52 +56,14 @@ namespace PL.Volunteer
             }
 
             _volunteerId = requesting;
-            Roles = Enum.GetValues(typeof(BO.Role));
 
-        }
-        private void queryVoulnteer()
-        {
-            int id = CurrentVolunteer!.Id;
-            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-        }
+           Roles = Enum.GetValues(typeof(BO.Role));
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (CurrentVolunteer.Id != 0) 
-                {
-                    s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, volunteerObserver);
-                }
-
-                s_bl.Volunteer.AddObserver(UpdateVolunteersList);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error in Window_Loaded: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            try
-            {
-                if (CurrentVolunteer.Id == 0)
-                {
-                    s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, volunteerObserver);
-                }
-
-                s_bl.Volunteer.RemoveObserver(UpdateVolunteersList);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error in Window_Closed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         private void volunteerObserver()
         {
-            queryVoulnteer();
+            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer!.Id);
         }
 
         private void UpdateVolunteersList()
@@ -113,6 +75,45 @@ namespace PL.Volunteer
                 CurrentVolunteer = updatedVolunteer;
             }
         }
+
+        //Levi, 
+        // this line must be added to the constructor of the window
+        // Loaded="Window_Loaded" Closed="Window_Closed"
+        // fix the error by adding the following code to the window class but there is a problem 
+        // with the observer pattern in the BL layer
+
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (CurrentVolunteer != null && CurrentVolunteer.Id > 0)
+        //        {
+        //            s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, volunteerObserver);
+        //            s_bl.Volunteer.AddObserver(UpdateVolunteersList);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error during Window_Loaded: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        //private void Window_Closed(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (CurrentVolunteer != null && CurrentVolunteer.Id > 0)
+        //        {
+        //            s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, volunteerObserver);
+        //        }
+        //        s_bl.Volunteer.RemoveObserver(UpdateVolunteersList);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error during Window_Closed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -165,14 +166,6 @@ namespace PL.Volunteer
             else
             {
                 MessageBox.Show("Deletion canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        public bool IsDeleteButtonVisible
-        {
-            get
-            {
-                return _volunteerId != 0;
             }
         }
     }

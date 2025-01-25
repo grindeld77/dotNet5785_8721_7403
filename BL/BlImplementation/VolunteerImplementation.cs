@@ -18,7 +18,9 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlInvalidIdentificationException"></exception>
     string IVolunteer.Login(int id, string password)
     {
-        DO.Volunteer? volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
+        DO.Volunteer? volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
 
         if (volunteer == null)
         {
@@ -47,11 +49,13 @@ internal class VolunteerImplementation : IVolunteer
 
         if (isActive.HasValue)
         {
-            doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
+            lock (AdminManager.BlMutex) //stage 7
+                doVolunteers = _dal.Volunteer.ReadAll(v => v.IsActive == isActive.Value);
         }
         else
         {
-            doVolunteers = _dal.Volunteer.ReadAll();
+            lock (AdminManager.BlMutex) //stage 7
+                doVolunteers = _dal.Volunteer.ReadAll();
         }
 
         if (doVolunteers != null)
@@ -130,8 +134,6 @@ internal class VolunteerImplementation : IVolunteer
                     break;
             }
         }
-        // Notify observers that the volunteer list has been updated.
-        // VolunteerManager.Observers.NotifyListUpdated(); //stage 5
         return volunteerInLists ?? Enumerable.Empty<BO.VolunteerInList>();
     }
 
@@ -145,11 +147,11 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-            var doVolunteer = _dal.Volunteer.Read(id);
+            DO.Volunteer doVolunteer;
+            lock (AdminManager.BlMutex) //stage 7
+                doVolunteer = _dal.Volunteer.Read(id);
 
             BO.Volunteer v = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer);
-            // Notify observers that a volunteer item has been updated.
-            // VolunteerManager.Observers.NotifyItemUpdated(id); //stage 5
             return v;
         }
         catch (DO.DalException ex)
@@ -169,18 +171,25 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlGeneralException"></exception>
     void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         try
         {
-            var doVolunteere = _dal.Volunteer.Read(requesterId); // Check if the volunteer exists
-                                                                 // Check the identity of the requester
+            DO.Volunteer doVolunteere;
+            lock (AdminManager.BlMutex) //stage 7
+                doVolunteere = _dal.Volunteer.Read(requesterId); // Check if the volunteer exists
+
+            // Check the identity of the requester
             if (requesterId != volunteer.Id && doVolunteere.Role != DO.Role.Admin)
                 throw new BO.BlInvalidRequestException("You are not authorized to update this volunteer.");
+
             VolunteerManager.ValidateVolunteerData(volunteer); // Validate volunteer data
             DO.Role Pos = doVolunteere.Role;
+
             if ((doVolunteere.Role.ToString() != volunteer.Role.ToString()) && Pos != DO.Role.Admin) // Check if the volunteer can change roles
             {
                 throw new Exception("A volunteer could not change roles");
             }
+
             DO.Volunteer doVolunteerNew = new DO.Volunteer
             {
                 Id = volunteer.Id,
@@ -198,9 +207,11 @@ internal class VolunteerImplementation : IVolunteer
                 MaxCallDistance = volunteer.MaxDistanceForCall ?? doVolunteere.MaxCallDistance,
                 DistancePreference = doVolunteere.DistancePreference,
             };
-            _dal.Volunteer.Update(doVolunteerNew);
+            lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Update(doVolunteerNew);
             VolunteerManager.Observers.NotifyItemUpdated(doVolunteere.Id);  // Notify observers that a volunteer item has been updated.
             VolunteerManager.Observers.NotifyListUpdated();  // Notify observers that the volunteer list has been updated.
+            CallManager.Observers.NotifyListUpdated();  // Notify observers that the call list has been updated.
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -220,6 +231,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlException"></exception>
     public void AddVolunteer(BO.Volunteer volunteer)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         VolunteerManager.ValidateVolunteerData(volunteer); // Validate volunteer data
         try
         {
@@ -241,7 +253,8 @@ internal class VolunteerImplementation : IVolunteer
                 DistancePreference = (DO.DistanceType)volunteer.DistanceType,
             };
 
-            _dal.Volunteer.Create(doVolunteer); // Attempt to add the volunteer
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Volunteer.Create(doVolunteer); // Attempt to add the volunteer
             VolunteerManager.Observers.NotifyListUpdated(); // Notify observers that the volunteer list has been updated.
         }
         catch (DO.DalAlreadyExistsException)
@@ -265,14 +278,18 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlGeneralException"></exception>
     void IVolunteer.DeleteVolunteer(int id)
     {
-        DO.Assignment chak = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == id);
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        DO.Assignment chak;
+        lock (AdminManager.BlMutex) //stage 7
+            chak = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == id);
         if (chak != null)
         {
             throw new BO.BlInvalidOperationException("The volunteer is assigned to a call and cannot be deleted.");
         }
         try
         {
-            _dal.Volunteer.Delete(id);
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Volunteer.Delete(id);
             VolunteerManager.Observers.NotifyListUpdated(); // Notify observers that the volunteer list has been updated.
         }
         catch (DO.DalDoesNotExistException)

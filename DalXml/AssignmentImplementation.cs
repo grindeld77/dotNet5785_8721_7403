@@ -4,10 +4,12 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 internal class AssignmentImplementation : IAssignment
 {
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Create(Assignment item)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
@@ -16,6 +18,7 @@ internal class AssignmentImplementation : IAssignment
         XMLTools.SaveListToXMLSerializer(assignments, Config.s_assignments_xml); // save updated list of assignments to XML
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Delete(int id)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
@@ -24,11 +27,13 @@ internal class AssignmentImplementation : IAssignment
         XMLTools.SaveListToXMLSerializer(assignments, Config.s_assignments_xml); // save updated list of assignments to XML
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignments_xml); // save empty list of assignments to XML 
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Assignment? Read(int id)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
@@ -38,6 +43,7 @@ internal class AssignmentImplementation : IAssignment
         return toReturn; // return assignment with ID==id
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
@@ -47,6 +53,7 @@ internal class AssignmentImplementation : IAssignment
         return toReturn; // return assignment that matches the filter
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML
@@ -56,6 +63,7 @@ internal class AssignmentImplementation : IAssignment
             return assignments.Where(filter); // return all assignments
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Update(Assignment item)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml); // load list of assignments from XML    

@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static Helpers.Tools;
 
 namespace Helpers;
 
@@ -45,8 +46,13 @@ internal static class VolunteerManager
 
     public static BO.VolunteerInList converterFromDoToBoVolunteerInList(DO.Volunteer v)
     {
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
-        IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignments.Any(a => a.CallId == c.Id));
+        IEnumerable<DO.Call> calls;
+        IEnumerable<DO.Assignment> assignments;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            assignments = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
+            calls = _dal.Call.ReadAll().Where(c => assignments.Any(a => a.CallId == c.Id));
+        }
 
         BO.VolunteerInList volunteerInList = new BO.VolunteerInList
         {
@@ -72,17 +78,21 @@ internal static class VolunteerManager
             return null;
         }
 
-        IEnumerable<DO.Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
+        IEnumerable<DO.Assignment> assignment;
+        lock (AdminManager.BlMutex) //stage 7
+            assignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == v.Id);
         DO.Assignment assignmentOpen = null;
         if (assignment.Any())
         {
-            assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionStatus == null);
+            lock (AdminManager.BlMutex) //stage 7
+                assignmentOpen = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == v.Id && a.CompletionStatus == null);
         }
 
         DO.Call callOpen = null;
         if (assignmentOpen != null)
         {
-            callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.CallId);
+            lock (AdminManager.BlMutex) //stage 7
+                callOpen = (DO.Call)_dal.Call.Read(assignmentOpen.CallId);
         }
         if (callOpen != null)
         {
@@ -262,16 +272,18 @@ internal static class VolunteerManager
 
     public static string GetPositionBypas(string Password)
     {
-        var volunteer = _dal.Volunteer.ReadAll()
-                                    .FirstOrDefault(v => v.Password == Password);
+        DO.Volunteer? volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+             volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Password == Password);
         return volunteer.Role.ToString(); 
     }
 
 
     public static string GetPositionById(int ID)
     {
-        var volunteer = _dal.Volunteer.ReadAll()
-                .FirstOrDefault(v => v.Id == ID);
+        DO.Volunteer? volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+           volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == ID);
         return volunteer.Role.ToString();    
 
     }
@@ -298,19 +310,104 @@ internal static class VolunteerManager
     }
 
 
+    private static readonly Random s_rand = new();
+    private static int s_simulatorCounter = 0;
 
-    internal static void PeriodicVolunteersUpdates(object oldClock, DateTime newClock)
+    internal static void SimulateCourseRegistrationAndGrade() // stage 7
     {
-        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll();
-        foreach (var volunteer in volunteers)
+        Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+
+        LinkedList<int> volunteersToUpdate = new(); // stage 7
+        List<DO.Volunteer> doVolunteerList;
+
+        lock (AdminManager.BlMutex) // stage 7
+            doVolunteerList = _dal.Volunteer.ReadAll(st => st.IsActive).ToList();
+
+        foreach (var doVolunteer in doVolunteerList)
         {
-            if (volunteer.IsActive)
+            int volunteerId = 0;
+
+            lock (AdminManager.BlMutex) // stage 7
             {
-                IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == volunteer.Id);
-                IEnumerable<DO.Call> calls = _dal.Call.ReadAll().Where(c => assignments.Any(a => a.CallId == c.Id));
-                BO.VolunteerInList volunteerInList = converterFromDoToBoVolunteerInList(volunteer);
-                Observers.NotifyItemUpdated(volunteer.Id);
-            }
+                // אם אין למתנדב קריאה בטיפולו
+                if (!CallManager.IsVolunteerBusy(doVolunteer.Id))
+                {
+                    // בחירה רנדומלית של קריאה לטיפול בהסתברות של 20%
+                    if (s_rand.NextDouble() < 0.2)
+                    {
+                        var openCalls = CallManager.GetOpenCallForVolunteer(doVolunteer.Id);
+                        if (openCalls.Any())
+                        {
+                            int randomIndex = s_rand.Next(0, openCalls.Count());
+                            var selectedCall = openCalls.ElementAt(randomIndex);
+
+                            // הקצאת קריאה למתנדב
+                            //AssignmentManager.AssignVolunteerToCall(doVolunteer.Id, selectedCall.Id);
+                            volunteerId = doVolunteer.Id;
+                        }
+                    }
+                }
+                else // אם למתנדב יש קריאה בטיפולו
+                {
+                    var activeAssignment = _dal.Assignment
+                        .ReadAll(a => a.VolunteerId == doVolunteer.Id && a.CompletionTime == null)
+                        .FirstOrDefault();
+
+                    if (activeAssignment != null)
+                    {
+                        var elapsedTime = DateTime.Now - activeAssignment.EntryTime;
+
+                        // בדיקת אם עבר "מספיק זמן"
+                        var relatedCall = _dal.Call.Read(activeAssignment.CallId);
+                        var estimatedTime = CalculateEstimatedTime(doVolunteer, relatedCall);
+
+                        if (elapsedTime >= estimatedTime) // מספיק זמן
+                        {
+                            // סיום הקריאה
+                            //AssignmentManager.UpdateCallForVolunteer(
+                            //    doVolunteer.Id,
+                            //    activeAssignment.CallId,
+                            //    DateTime.Now,
+                            //    BO.CompletionStatus.Handled
+                            //);
+
+                            volunteerId = doVolunteer.Id;
+                        }
+                        else if (s_rand.NextDouble() < 0.1) // הסתברות של 10% לביטול
+                        {
+                            //AssignmentManager.CancelAssignment(activeAssignment.Id);
+                            //volunteerId = doVolunteer.Id;
+                        }
+                    }
+                }
+            } // lock
+
+            if (volunteerId != 0)
+                volunteersToUpdate.AddLast(volunteerId);
         }
+
+        foreach (int id in volunteersToUpdate)
+            Observers.NotifyItemUpdated(id);
+    }
+
+    /// <summary>
+    /// מחשב את הזמן המוערך לטיפול בקריאה, בהתבסס על מרחק וזמן רנדומלי נוסף
+    /// </summary>
+    /// <param name="volunteer"></param>
+    /// <param name="call"></param>
+    /// <returns></returns>
+    private static TimeSpan CalculateEstimatedTime(DO.Volunteer volunteer, DO.Call call)
+    {
+        // חישוב מרחק (אפשר להוסיף כאן חישוב מרחק גיאוגרפי אם יש פונקציה קיימת)
+        double distance = VolunteerManager.CalculateDistance(
+            (double)volunteer.Latitude, (double)volunteer.Longitude,
+            (double)call.Latitude, (double)call.Longitude
+        );
+
+        // תוספת זמן רנדומלית בין 10 ל-30 דקות
+        double randomMinutes = s_rand.Next(10, 30);
+
+        // זמן מוערך: זמן מבוסס מרחק + זמן רנדומלי
+        return TimeSpan.FromMinutes(distance / 10 + randomMinutes); // לדוגמה: 10 קמ"ש
     }
 }

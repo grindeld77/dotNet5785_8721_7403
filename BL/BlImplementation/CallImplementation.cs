@@ -16,6 +16,7 @@ internal class CallImplementation : ICall
     /// <param name="boCall"></param>
     void ICall.AddCall(BO.Call boCall)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         try
         {
             // Validate the call object
@@ -43,7 +44,8 @@ internal class CallImplementation : ICall
                 Description = boCall.Description
             };
 
-            _dal.Call.Create(call);
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Call.Create(call);
             CallManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (Exception)
@@ -63,8 +65,11 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlInvalidCallIdException"></exception>
     void ICall.AssignVolunteerToCall(int volunteerId, int callId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         ICall help = new CallImplementation();
-        var calltamp = _dal.Call.Read(callId); // Check if the call exists
+        DO.Call? calltamp;
+        lock (AdminManager.BlMutex) //stage 7
+            calltamp = _dal.Call.Read(callId); // Check if the call exists
         IEnumerable<Assignment> assignment = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
 
         if (calltamp == null)
@@ -93,8 +98,8 @@ internal class CallImplementation : ICall
                 CompletionTime = null,
                 CompletionStatus = null
             };
-
-            _dal.Assignment.Create(newAssignment); // Assign the call to the volunteer
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Assignment.Create(newAssignment); // Assign the call to the volunteer
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
 
             BO.CallStatus s = BO.CallStatus.InProgress;// Update the call status
@@ -102,7 +107,6 @@ internal class CallImplementation : ICall
                      s = BO.CallStatus.InProgress;
             else if(calltamp.Status == DO.CallStatus.OpenAtRisk)
                     s= BO.CallStatus.InProgressAtRisk;
-
                 var newCall = new BO.Call
                 {
                     Id = callId,
@@ -134,17 +138,24 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         // Retrieve the assignment from the data layer
-        DO.Assignment assignment = _dal.Assignment.Read(a => a.Id == assignmentId);
+        DO.Assignment assignment;
+        lock (AdminManager.BlMutex) //stage 7
+            assignment = _dal.Assignment.Read(a => a.Id == assignmentId);
 
 
         // Retrieve the volunteer associated with the assignment
-        var volunteer = _dal.Volunteer.Read(a => a.Id == assignment.VolunteerId);
+        DO.Volunteer volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            volunteer = _dal.Volunteer.Read(a => a.Id == assignment.VolunteerId);
         if (volunteer == null)
             throw new BO.BloesNotExistException($"Volunteer with ID {assignment.VolunteerId} does not exist.");
 
         // Check authorization: requester must be the volunteer or an admin
-        var requester = _dal.Volunteer.Read(requesterId);
+        DO.Volunteer requester;
+        lock (AdminManager.BlMutex) //stage 7
+            requester = _dal.Volunteer.Read(requesterId);
         if (requester == null)
             throw new BO.BloesNotExistException($"Requester with ID {requesterId} does not exist.");
 
@@ -178,7 +189,9 @@ internal class CallImplementation : ICall
         };
 
         ICall help = new CallImplementation();
-        var calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
+        DO.Call calltamp;
+        lock (AdminManager.BlMutex) //stage 7
+            calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
 
         BO.CallStatus s = BO.CallStatus.InProgress;// Update the call status
         if (calltamp.Status == DO.CallStatus.InProgress)
@@ -203,7 +216,8 @@ internal class CallImplementation : ICall
 
         try
         {
-            _dal.Assignment.Update(updateAssignment);
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Assignment.Update(updateAssignment);
             AssignmentManager.Observers.NotifyItemUpdated(updateAssignment.Id);  //stage 5
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
 
@@ -223,18 +237,19 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.CompleteCallAssignment(int volunteerId, int assignmentId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         try
         {
 
             // Retrieve the assignment from the data layer
-            DO.Assignment assignment = _dal.Assignment.Read(a => a.Id == assignmentId && a.VolunteerId == volunteerId);
-            if (assignment == null)
-                throw new BO.BloesNotExistException($"Assignment with ID {assignmentId} does not exist.");
+            DO.Assignment assignment;
+            lock (AdminManager.BlMutex) //stage 7
+                assignment = _dal.Assignment.Read(a => a.Id == assignmentId && a.VolunteerId == volunteerId) ?? throw new BO.BloesNotExistException($"Assignment with ID {assignmentId} does not exist.");
 
             // Retrieve the volunteer associated with the assignment
-            var volunteer = _dal.Volunteer.Read(volunteerId);
-            if (volunteer == null)
-                throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
+            DO.Volunteer volunteer;
+            lock (AdminManager.BlMutex)
+                 volunteer  = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BloesNotExistException($"Volunteer with ID {volunteerId} does not exist.");
 
             // Check authorization: volunteer must be the one who took the assignment
             if (volunteer.Id != assignment.VolunteerId)
@@ -257,12 +272,15 @@ internal class CallImplementation : ICall
                 CompletionStatus = DO.CompletionStatus.Handled
             };
 
-            _dal.Assignment.Update(updateAssignment);  // Mark the assignment as completed
+            lock (AdminManager.BlMutex)
+                _dal.Assignment.Update(updateAssignment);  // Mark the assignment as completed
             AssignmentManager.Observers.NotifyItemUpdated(updateAssignment.Id);  //stage 5
             AssignmentManager.Observers.NotifyListUpdated(); //stage 5
 
             ICall help = new CallImplementation();
-            var calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
+            DO.Call calltamp;
+            lock (AdminManager.BlMutex) //stage 7
+                calltamp = _dal.Call.Read(assignment.CallId); // Check if the call exists
             var newCall = new BO.Call
             {
                 Id = assignment.CallId,
@@ -294,15 +312,22 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.DeleteCall(int callId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         // Validate input parameter
         if (callId < 0)
             throw new ArgumentException("Invalid call ID.", nameof(callId));
 
         // Retrieve the call from the data layer
-        var call = _dal.Call.Read(a => a.Id == callId);
+        DO.Call call;
+        lock (AdminManager.BlMutex) //stage 7
+            call = _dal.Call.Read(a => a.Id == callId);
 
+
+        bool any;
+        lock (AdminManager.BlMutex) //stage 7
+            any = _dal.Assignment.ReadAll(a => a.CallId == callId).Any();
         // Check if the call is already assigned
-        if (_dal.Assignment.ReadAll(a => a.CallId == callId).Any() ||( call.Status!=DO.CallStatus.Open&& call.Status !=DO.CallStatus.OpenAtRisk))
+        if (any || ( call.Status!=DO.CallStatus.Open && call.Status !=DO.CallStatus.OpenAtRisk))
         {
             throw new BO.BlInvalidOperationException("Call is already assigned");
         }
@@ -310,7 +335,8 @@ internal class CallImplementation : ICall
         // Attempt to delete the call from the data layer
         try
         {
-            _dal.Call.Delete(callId);
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Call.Delete(callId);
             CallManager.Observers.NotifyListUpdated(); //stage 5
         }
 
@@ -321,11 +347,19 @@ internal class CallImplementation : ICall
 
         }
     }
+
+    /// <summary>
+    /// Retrieve a list of calls based on specified criteria.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="BO.BlGeneralException"></exception>
     int[] ICall.GetCallCountsByStatus()
     {
         try
         {
-            var calls = _dal.Call.ReadAll(); // Fetch all calls from the data layer
+            IEnumerable<DO.Call> calls;
+            lock (AdminManager.BlMutex) //stage 7
+                calls = _dal.Call.ReadAll(); // Fetch all calls from the data layer
             var groupedCalls = calls.GroupBy(c => (int)c.Status) // Use LINQ to group by status and count occurrences
                                     .Select(g => new { Status = g.Key, Count = g.Count() });
 
@@ -356,7 +390,9 @@ internal class CallImplementation : ICall
     {
         try
         {
-            DO.Call call = _dal.Call.Read(callId);
+            DO.Call call;
+            lock (AdminManager.BlMutex) //stage 7
+                call = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");
             return CallManager.ConvertDoCallToBoCall(call);
         }
         catch (Exception ex)
@@ -382,7 +418,8 @@ internal class CallImplementation : ICall
             IEnumerable<DO.Call> doCalls;
             IEnumerable<BO.CallInList> callsList = null;
 
-            doCalls = _dal.Call.ReadAll();
+            lock (AdminManager.BlMutex) //stage 7
+                 doCalls = _dal.Call.ReadAll();
 
 
             if (doCalls != null)
@@ -524,14 +561,18 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlDoesNotExistException"></exception>
     IEnumerable<BO.OpenCallInList> ICall.GetOpenCallsForVolunteer(int volunteerId, BO.CallType? filterType, BO.OpenCallInListFields? sortField)
     {
-            // Retrieve the volunteer from the DAL
-            DO.Volunteer volunteer = _dal.Volunteer.Read(volunteerId);
-            if (volunteer == null)
-                throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        // Retrieve the volunteer from the DAL
 
-            var allCalls = _dal.Call.ReadAll();
+        DO.Volunteer volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            volunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        IEnumerable<DO.Call> allCalls;
+        lock (AdminManager.BlMutex) //stage 7
+            allCalls = _dal.Call.ReadAll();
 
-            var allAssignments = _dal.Assignment.ReadAll();
+        IEnumerable<Assignment> allAssignments;
+        lock (AdminManager.BlMutex) //stage 7
+            allAssignments = _dal.Assignment.ReadAll();
 
             double lonVol = (double)volunteer.Longitude;
             double latVol = (double)volunteer.Latitude;
@@ -582,6 +623,7 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlGeneralException"></exception>
     void ICall.UpdateCall(BO.Call call)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         // Validate the call object
         if (call == null)
             throw new ArgumentNullException(nameof(call));
@@ -612,7 +654,8 @@ internal class CallImplementation : ICall
         // Attempt to update the call in the data layer
         try
         {
-            _dal.Call.Update(doCall);
+            lock (AdminManager.BlMutex) //stage 7
+                _dal.Call.Update(doCall);
             CallManager.Observers.NotifyItemUpdated(doCall.Id); //stage 5
         }
         catch (Exception ex)

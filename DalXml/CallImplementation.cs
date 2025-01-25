@@ -2,11 +2,14 @@
 using DalApi;
 using DO;
 using System;
+using System.Runtime.CompilerServices;
+
 //using System.Collections.Generic;
 //using System.Linq;
 
 internal class CallImplementation : ICall
 {
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Create(Call item)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
@@ -14,6 +17,8 @@ internal class CallImplementation : ICall
         calls.Add(Item); // add new call to list 
         XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml); // save updated list of calls to XML
     }
+
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Delete(int id)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
@@ -22,11 +27,13 @@ internal class CallImplementation : ICall
         XMLTools.SaveListToXMLSerializer(calls, Config.s_calls_xml); // save updated list of calls to XML
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void DeleteAll()
     {
          XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml); // save empty list of calls to XML 
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Call? Read(int id)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
@@ -36,6 +43,7 @@ internal class CallImplementation : ICall
         return toReturn; // return call with ID==id
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Call? Read(Func<Call, bool> filter)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
@@ -45,7 +53,7 @@ internal class CallImplementation : ICall
         return toReturn; // return call that matches the filter
     }
 
-
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML
@@ -55,6 +63,7 @@ internal class CallImplementation : ICall
             return calls.Where(filter); // return all calls
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Update(Call item)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml); // load list of calls from XML    

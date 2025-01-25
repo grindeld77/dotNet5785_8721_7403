@@ -53,9 +53,21 @@ namespace PL.Volunteer
 
         private void queryVolunteerList()
         {
-            VolunteerList = SelectedCallType == BO.CallType.None
-                ? s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, null)
-                : s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);
+            try
+            {
+                if (SelectedCallType == BO.CallType.None)
+                {
+                    VolunteerList = s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, null);
+                }
+                else
+                {
+                    VolunteerList = s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error querying call list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -99,21 +111,7 @@ namespace PL.Volunteer
             volunteerWindow.Show();
 
             // Refresh the list after closing the window
-            RefreshVolunteerList();
-        }
-
-        private void RefreshVolunteerList()
-        {
-            try
-            {
-                // Load the updated list of volunteers
-                VolunteerList = BlApi.Factory.Get().Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);
-                queryVolunteerList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error refreshing volunteer list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            queryVolunteerList();
         }
     }
 }

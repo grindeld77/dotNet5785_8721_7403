@@ -120,6 +120,38 @@ public class BLAlreadyAssignedException : BlException
     public BLAlreadyAssignedException(string message) : base(message) { }
 }
 
+[Serializable]
+internal class BlDoesNotExistException : Exception
+{
+    public BlDoesNotExistException()
+    {
+    }
+
+    public BlDoesNotExistException(string? message) : base(message)
+    {
+    }
+
+    public BlDoesNotExistException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+}
+
+[Serializable]
+internal class BLTemporaryNotAvailableException : Exception
+{
+    public BLTemporaryNotAvailableException()
+    {
+    }
+
+    public BLTemporaryNotAvailableException(string? message) : base(message)
+    {
+    }
+
+    public BLTemporaryNotAvailableException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+}
+
 ///BlException: שגיאה כללית
 //BloesNotExistException: ישות לא נמצאה
 //BlAlreadyExistsException: ישות כבר קיימת
