@@ -173,6 +173,20 @@ internal static class VolunteerManager
         return (10 - (sum % 10)) % 10 == int.Parse(idStr[8].ToString());
     }
 
+    public static string HashPassword(string password)
+    {
+        using (var sha256 = System.Security.Cryptography.SHA256.Create())
+        {
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(bytes);
+        }
+    }
+
+    public static bool VerifyPassword(string inputPassword, string storedHashedPassword)
+    {
+        string hashedInput = HashPassword(inputPassword);
+        return hashedInput == storedHashedPassword;
+    }
 
     public static bool IsValidEmail(string email)
     {
@@ -255,19 +269,17 @@ internal static class VolunteerManager
             password[i] = (password[i] - 7) / 3;
         return password;
     }
-    public static bool IsStrongPassword(string password)
+    public static bool IsPasswordStrong(string password)
     {
-        if (password.Length < 8)
-            return false;
-        string specialCharPattern = @"[!@#$%^&*(),.?\:{ }|<>]";
-        string upperCasePattern = @"[A-Z]";
-        string numberPattern = @"[0-9]";
+        if (string.IsNullOrEmpty(password)) return false;
 
-        bool hasSpecialChar = Regex.IsMatch(password, specialCharPattern);
-        bool hasUpperCase = Regex.IsMatch(password, upperCasePattern);
-        bool hasNumber = Regex.IsMatch(password, numberPattern);
+        bool hasUpperCase = password.Any(char.IsUpper);
+        bool hasLowerCase = password.Any(char.IsLower);
+        bool hasDigit = password.Any(char.IsDigit);
+        bool hasSpecialChar = password.Any(ch => "!@#$%^&*".Contains(ch));
+        bool isLongEnough = password.Length >= 8;
 
-        return hasSpecialChar && hasUpperCase && hasNumber;
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && isLongEnough;
     }
 
     public static string GetPositionBypas(string Password)
@@ -291,6 +303,10 @@ internal static class VolunteerManager
 
     public static void ValidateVolunteerData(BO.Volunteer volunteer)
     {
+        if (!IsPasswordStrong(volunteer.PasswordHash))
+        {
+            throw new ArgumentException("Password is not strong enough");
+        }
         if (!IsValidEmail(volunteer.Email))
         {
             throw new BO.InvalidEmailException("Invalid email address");
@@ -364,19 +380,14 @@ internal static class VolunteerManager
                         if (elapsedTime >= estimatedTime) // מספיק זמן
                         {
                             // סיום הקריאה
-                            //AssignmentManager.UpdateCallForVolunteer(
-                            //    doVolunteer.Id,
-                            //    activeAssignment.CallId,
-                            //    DateTime.Now,
-                            //    BO.CompletionStatus.Handled
-                            //);
+                            AssignmentManager.UpdateCallForVolunteer(doVolunteer.Id, activeAssignment.Id);
 
                             volunteerId = doVolunteer.Id;
                         }
                         else if (s_rand.NextDouble() < 0.1) // הסתברות של 10% לביטול
                         {
-                            //AssignmentManager.CancelAssignment(activeAssignment.Id);
-                            //volunteerId = doVolunteer.Id;
+                            volunteerId = doVolunteer.Id;
+                            AssignmentManager.CancelAssignment(volunteerId , activeAssignment.Id);
                         }
                     }
                 }

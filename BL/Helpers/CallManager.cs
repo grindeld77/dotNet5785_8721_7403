@@ -243,5 +243,48 @@ internal static class CallManager
 
         return openCallsInList;
     }
+    internal static void UpdateCall(BO.Call call)
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        // Validate the call object
+        if (call == null)
+            throw new ArgumentNullException(nameof(call));
+
+        if (string.IsNullOrWhiteSpace(call.FullAddress))
+            throw new ArgumentException("Address is required.");
+
+        if (call.OpenTime >= call.MaxEndTime)
+            throw new ArgumentException("Open time must be earlier than the maximum finish time.");
+
+        //if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
+        //   throw new ArgumentException("Address is not valid.");
+
+        // Convert BO.Call to DO.Call
+        var doCall = new DO.Call
+        {
+            Id = call.Id,
+            Address = call.FullAddress,
+            Latitude = (double)call.Latitude,
+            Longitude = (double)call.Longitude,
+            OpenedAt = call.OpenTime,
+            MaxCompletionTime = call.MaxEndTime,
+            Status = (DO.CallStatus)call.Status,
+            Type = (DO.CallType)call.Type,
+            Description = call.Description
+        };
+
+        // Attempt to update the call in the data layer
+        try
+        {
+            lock (AdminManager.BlMutex) //stage 7
+                s_dal.Call.Update(doCall);
+            CallManager.Observers.NotifyItemUpdated(doCall.Id); //stage 5
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions from the data layer and rethrow as a BO exception
+            throw new BO.BlGeneralException("Failed to update the call.", ex);
+        }
+    }
 }
 

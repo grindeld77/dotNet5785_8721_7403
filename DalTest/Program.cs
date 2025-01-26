@@ -3,6 +3,12 @@ using DalApi;
 using DO;
 using Dal;
 using System.Data.SqlTypes;
+using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+
 internal class Program
 {
     //static readonly IDal s_dal = new DalList(); //stage 2
@@ -131,19 +137,41 @@ $@"        Select an option to proceed
                             int volunteerI = ConvertStringToNumber();
                             if (s_dal.Volunteer.Read(volunteerI) != null)
                                 throw new Exception($"An object of type Volunteer with such ID={volunteerI} already exists");
+
                             Console.WriteLine("Enter the volunteer name");
                             string volunteerName = Console.ReadLine();
+
                             Console.WriteLine("Enter the volunteer phone number");
                             string volunteerPhone = Console.ReadLine();
+
                             Console.WriteLine("Enter the volunteer address");
                             string volunteerAddress = Console.ReadLine();
-                            s_dal.Volunteer.Create(new Volunteer() { Id = volunteerI, FullName = volunteerName, MobilePhone = volunteerPhone, CurrentAddress = volunteerAddress });
+
+                            Console.WriteLine("Enter the volunteer password");
+                            string volunteerPassword = Console.ReadLine();
+
+                            if (!IsPasswordStrong(volunteerPassword))
+                                throw new Exception("Password is not strong enough. Ensure it meets complexity requirements.");
+
+                            string hashedPassword = HashPassword(volunteerPassword);
+
+                            s_dal.Volunteer.Create(new Volunteer()
+                            {
+                                Id = volunteerI,
+                                FullName = volunteerName,
+                                MobilePhone = volunteerPhone,
+                                CurrentAddress = volunteerAddress,
+                                Password = hashedPassword
+                            });
+
+                            Console.WriteLine("Volunteer added successfully!");
                             break;
                         }
                     case volunteerMenu.Display:
                         {
                             Console.WriteLine("Enter the volunteer ID");
                             int volunteerI = ConvertStringToNumber();
+
                             Volunteer v = s_dal.Volunteer.Read(volunteerI);
                             if (v != null)
                             {
@@ -168,16 +196,44 @@ $@"        Select an option to proceed
                         {
                             Console.WriteLine("Enter the volunteer ID");
                             int volunteerI = ConvertStringToNumber();
+
                             Volunteer volunteer = s_dal.Volunteer.Read(volunteerI);
                             if (volunteer != null)
                             {
                                 Console.WriteLine("Enter the volunteer name");
                                 string volunteerName = Console.ReadLine();
+
                                 Console.WriteLine("Enter the volunteer phone number");
                                 string volunteerPhone = Console.ReadLine();
+
                                 Console.WriteLine("Enter the volunteer address");
                                 string volunteerAddress = Console.ReadLine();
-                                s_dal.Volunteer.Update(new Volunteer() { Id = volunteerI, FullName = volunteerName, MobilePhone = volunteerPhone, CurrentAddress = volunteerAddress });
+
+                                Console.WriteLine("Do you want to update the password? (y/n)");
+                                string updatePassword = Console.ReadLine();
+                                string hashedPassword = volunteer.Password; // keep the existing password
+
+                                if (updatePassword?.ToLower() == "y")
+                                {
+                                    Console.WriteLine("Enter the new password");
+                                    string newPassword = Console.ReadLine();
+
+                                    if (!IsPasswordStrong(newPassword))
+                                        throw new Exception("Password is not strong enough. Ensure it meets complexity requirements.");
+
+                                    hashedPassword = HashPassword(newPassword);
+                                }
+
+                                s_dal.Volunteer.Update(new Volunteer()
+                                {
+                                    Id = volunteerI,
+                                    FullName = volunteerName,
+                                    MobilePhone = volunteerPhone,
+                                    CurrentAddress = volunteerAddress,
+                                    Password = hashedPassword
+                                });
+
+                                Console.WriteLine("Volunteer updated successfully!");
                             }
                             else
                             {
@@ -189,11 +245,14 @@ $@"        Select an option to proceed
                         {
                             Console.WriteLine("Enter the volunteer ID");
                             int volunteerI = ConvertStringToNumber();
+
                             s_dal.Volunteer.Delete(volunteerI);
+                            Console.WriteLine("Volunteer deleted successfully!");
                             break;
                         }
                     case volunteerMenu.DeleteAll:
                         s_dal.Volunteer.DeleteAll();
+                        Console.WriteLine("All volunteers deleted successfully!");
                         break;
                     default:
                         Console.WriteLine("Invalid selection, please try again.");
@@ -207,6 +266,31 @@ $@"        Select an option to proceed
 
         } while (choice != 0);
     }
+
+    // Check if the password meets complexity requirements
+    private static bool IsPasswordStrong(string password)
+    {
+        if (string.IsNullOrEmpty(password)) return false;
+
+        bool hasUpper = password.Any(char.IsUpper);
+        bool hasLower = password.Any(char.IsLower);
+        bool hasDigit = password.Any(char.IsDigit);
+        bool hasSpecial = password.Any(ch => !char.IsLetterOrDigit(ch));
+        bool hasMinLength = password.Length >= 8;
+
+        return hasUpper && hasLower && hasDigit && hasSpecial && hasMinLength;
+    }
+
+    // Hash the password using SHA256
+    private static string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+    } 
+
     public static void CallMenu()
     {
         int choice = 0;
