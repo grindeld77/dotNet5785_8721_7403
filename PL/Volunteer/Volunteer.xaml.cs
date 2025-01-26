@@ -17,6 +17,7 @@ namespace PL.Volunteer
             set => SetValue(ButtonTextProperty, value);
         }
 
+
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
 
