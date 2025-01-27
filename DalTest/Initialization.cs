@@ -110,7 +110,7 @@ public static class Initialization
             while (s_dal!.Volunteer.Read(id) != null);
 
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
-            string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@gmail.com";
+            string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@ail.com";
             string password = s_rand.Next(1000000, 999999999).ToString();
             Volunteer volunteerToAdd;
 

@@ -358,7 +358,7 @@ internal static class VolunteerManager
                             var selectedCall = openCalls.ElementAt(randomIndex);
 
                             // הקצאת קריאה למתנדב
-                            //AssignmentManager.AssignVolunteerToCall(doVolunteer.Id, selectedCall.Id);
+                            AssignmentManager.AssignVolunteerToCall(doVolunteer.Id, selectedCall.Id);
                             volunteerId = doVolunteer.Id;
                         }
                     }

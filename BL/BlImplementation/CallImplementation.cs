@@ -46,6 +46,7 @@ internal class CallImplementation : ICall
 
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Call.Create(call);
+            CallManager.SendCallOpenMail(boCall);
             CallManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (Exception)
@@ -213,6 +214,8 @@ internal class CallImplementation : ICall
                 Assignments = null
             };
             help.UpdateCall(newCall);
+
+        CallManager.SendCancelationMail(assignment); // Send a cancellation email to the volunteer
 
         try
         {
@@ -656,6 +659,8 @@ internal class CallImplementation : ICall
         {
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Call.Update(doCall);
+            
+            CallManager.SendCallOpenMail(call);
             CallManager.Observers.NotifyItemUpdated(doCall.Id); //stage 5
         }
         catch (Exception ex)

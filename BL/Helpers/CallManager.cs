@@ -2,6 +2,8 @@
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Net.Mail;
+using System.Net;
 
 namespace Helpers;
 internal static class CallManager
@@ -284,6 +286,77 @@ internal static class CallManager
         {
             // Handle exceptions from the data layer and rethrow as a BO exception
             throw new BO.BlGeneralException("Failed to update the call.", ex);
+        }
+    }
+
+    internal static void SendCancelationMail(DO.Assignment a)
+    {
+        var fromAddress = new MailAddress("shimon78900@gmail.com");
+        MailAddress? toAddress = null;
+        lock (AdminManager.BlMutex)
+            toAddress = new MailAddress(s_dal.Volunteer.Read(a.VolunteerId)!.Email, s_dal.Volunteer.Read(a.VolunteerId)!.FullName);
+        const string fromPassword = "shimon78900";
+        const string subject = "Assignment Cancelation";
+        string body = "Your assignment is no longer under your treatment!\nThank you for your service.\nReason: " + a.CompletionStatus.ToString();
+
+        var smtp = new SmtpClient
+        {
+            Host = "smtp.gmail.com",
+            Port = 587,
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+        };
+        using (var message = new MailMessage(fromAddress, toAddress)
+        {
+            Subject = subject,
+            Body = body
+        })
+        {
+            smtp.Send(message);
+        }
+    }
+
+
+    internal static void SendCallOpenMail(BO.Call call)
+    {
+        IEnumerable<DO.Volunteer> doVolunteers;
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteers = s_dal.Volunteer.ReadAll();
+
+        var Volunteers = from Volunteer in doVolunteers
+                         where Volunteer.MaxCallDistance <= VolunteerManager.CalculateDistance((double)Volunteer.Latitude, (double)Volunteer.Longitude, (double)call.Latitude, (double)call.Longitude)
+                         where Volunteer.IsActive == true
+                         select Volunteer;
+
+        foreach (var Volunteer in Volunteers)
+        {
+            var fromAddress = new MailAddress("shimon78900@gmail.com");
+            MailAddress? toAddress = null;
+            lock (AdminManager.BlMutex)
+                toAddress = new MailAddress(s_dal.Volunteer.Read(Volunteer.Id)!.Email, s_dal.Volunteer.Read(Volunteer.Id)!.FullName);
+            const string fromPassword = "shimon78900";
+            const string subject = "New Call Open in your area";
+            string body = "This call is open in your area!\n" + call.ToString();
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
         }
     }
 }
