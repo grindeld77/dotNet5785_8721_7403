@@ -10,6 +10,7 @@
         <local:CallCollectionFilter x:Key="CallCollectionFilterKey" />
         <local:CallCollectionSort x:Key="CallCollectionSortKey" />
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <local:SimulatorButtonContentConverter x:Key="SimulatorButtonContentConverter"/>
 
         <ResourceDictionary x:Key="Theme">
             <ResourceDictionary.MergedDictionaries>

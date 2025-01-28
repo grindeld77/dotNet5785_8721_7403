@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace PL.Call
@@ -9,6 +10,8 @@ namespace PL.Call
     public partial class CallWindow : Window
     {
         private int callId;
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
@@ -101,14 +104,16 @@ namespace PL.Call
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void queryCall()
-        {
-            int id = CurrentCall!.Id;
-            CurrentCall = s_bl.Call.GetCallDetails(id);
-        }
+
         private void callObserver()
         {
-            queryCall();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentCall!.Id;
+                    CurrentCall = null;
+                    CurrentCall = s_bl.Call.GetCallDetails(id);
+                });
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -116,30 +121,15 @@ namespace PL.Call
             {
                 s_bl.Call.AddObserver(CurrentCall!.Id, callObserver);
             }
-            s_bl.Call.AddObserver(UpdateCallsList);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (CurrentCall!.Id != 0) 
+            if (CurrentCall!.Id != 0)
             {
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, callObserver);
             }
 
-            s_bl.Call.RemoveObserver(UpdateCallsList);
-        }
-
-        /// <summary>
-        /// Updates the call list.
-        /// </summary>
-        private void UpdateCallsList()
-        {
-            if (CurrentCall != null)
-            {
-                var updatedCall = s_bl.Call.GetCallDetails(CurrentCall.Id);
-
-                CurrentCall = updatedCall;
-            }
         }
 
 

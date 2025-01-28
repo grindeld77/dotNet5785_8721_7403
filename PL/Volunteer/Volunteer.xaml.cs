@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Threading;
 using static PL.Helpers;
 
 namespace PL.Volunteer
@@ -7,6 +8,8 @@ namespace PL.Volunteer
     public partial class VolunteerWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow), new PropertyMetadata(""));
@@ -64,24 +67,14 @@ namespace PL.Volunteer
 
         private void volunteerObserver()
         {
-            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer!.Id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                });
         }
-
-        private void UpdateVolunteersList()
-        {
-            if (CurrentVolunteer != null)
-            {
-                var updatedVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
-
-                CurrentVolunteer = updatedVolunteer;
-            }
-        }
-
-        //Levi, 
-        // this line must be added to the constructor of the window
-        // Loaded="Window_Loaded" Closed="Window_Closed"
-        // fix the error by adding the following code to the window class but there is a problem 
-        // with the observer pattern in the BL layer
 
         //private void Window_Loaded(object sender, RoutedEventArgs e)
         //{
@@ -90,7 +83,6 @@ namespace PL.Volunteer
         //        if (CurrentVolunteer != null && CurrentVolunteer.Id > 0)
         //        {
         //            s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, volunteerObserver);
-        //            s_bl.Volunteer.AddObserver(UpdateVolunteersList);
         //        }
         //    }
         //    catch (Exception ex)

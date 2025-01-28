@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 namespace PL
 {
     /// <summary>
@@ -22,6 +23,8 @@ namespace PL
     public partial class MainVolunteerWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         public BO.Volunteer? CurrentVolunteer
         {
@@ -140,7 +143,7 @@ namespace PL
 
         private void SelectCall_Click(object sender, RoutedEventArgs e)
         {
-        if (CurrentVolunteer.CurrentCall != null)
+            if (CurrentVolunteer.CurrentCall != null)
             {
                 MessageBox.Show("Cannot select a new call while a call is in progress.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -173,20 +176,25 @@ namespace PL
         {
             try
             {
+
                 if (CurrentVolunteer == null || CurrentVolunteer.Id == 0)
                 {
                     MessageBox.Show("Volunteer ID is missing. Unable to refresh data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
-                CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
-                CurrentCall = CurrentVolunteer.CurrentCall;
+                if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                    _observerOperation = Dispatcher.BeginInvoke(() =>
+                    {
+                        CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(CurrentVolunteer.Id);
+                        CurrentCall = CurrentVolunteer.CurrentCall;
+                    });
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to refresh data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

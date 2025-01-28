@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 
 namespace PL.Volunteer
@@ -14,6 +15,9 @@ namespace PL.Volunteer
     public partial class VolunteerListWindow : Window
     {
         int tampUserId;
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         public string ButtonText { get; set; }
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -70,15 +74,26 @@ namespace PL.Volunteer
             }
         }
 
+
+        private void VolunteerListObserver()
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryVolunteerList(); //stage 5
+                });
+        }
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Volunteer.AddObserver(queryVolunteerList);
-            queryVolunteerList();
+            s_bl.Volunteer.AddObserver(VolunteerListObserver);
+            VolunteerListObserver();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            s_bl.Volunteer.RemoveObserver(queryVolunteerList);
+            s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
         }
 
 
@@ -91,9 +106,9 @@ namespace PL.Volunteer
                     var selectedVolunteer = s_bl.Volunteer.GetVolunteerDetails(selectedVolunteerInList.Id);
            
                     var volunteerWindow = new VolunteerWindow(tampUserId, selectedVolunteer.Id);
-                    volunteerWindow.Show(); 
+                    volunteerWindow.Show();
 
-                    queryVolunteerList();
+                    VolunteerListObserver();
                 }
                 catch (Exception ex)
                 {

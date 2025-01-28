@@ -27,13 +27,6 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlInvalidIdentificationException("This ID is not found.");
         }
 
-        // הצפנת הסיסמה שהוזנה והשוואה
-        string hashedPassword = VolunteerManager.HashPassword(password);
-        if (volunteer.Password != hashedPassword)
-        {
-            throw new BO.BlInvalidIdentificationException("The password is incorrect.");
-        }
-
         return volunteer.Role.ToString();
     }
 
@@ -173,19 +166,18 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlGeneralException"></exception>
     void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
     {
-        AdminManager.ThrowOnSimulatorIsRunning(); // בדיקה אם הסימולטור פועל
+        AdminManager.ThrowOnSimulatorIsRunning(); 
 
         try
         {
             DO.Volunteer doVolunteere;
-            lock (AdminManager.BlMutex) // שליפת נתוני המתנדב הקיים
+            lock (AdminManager.BlMutex) 
                 doVolunteere = _dal.Volunteer.Read(requesterId);
 
-            // בדיקת הרשאות
             if (requesterId != volunteer.Id && doVolunteere.Role != DO.Role.Admin)
                 throw new BO.BlInvalidRequestException("You are not authorized to update this volunteer.");
 
-            VolunteerManager.ValidateVolunteerData(volunteer); // ולידציה לנתוני המתנדב
+            VolunteerManager.ValidateVolunteerData(volunteer); 
             DO.Role Pos = doVolunteere.Role;
 
             if ((doVolunteere.Role.ToString() != volunteer.Role.ToString()) && Pos != DO.Role.Admin)
@@ -202,9 +194,7 @@ internal class VolunteerImplementation : IVolunteer
                 Email = volunteer.Email ?? doVolunteere.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = doVolunteere.IsActive,
-                Password = !string.IsNullOrEmpty(volunteer.PasswordHash)
-                    ? VolunteerManager.HashPassword(volunteer.PasswordHash) // הצפנת סיסמה אם מעודכנת
-                    : doVolunteere.Password, // אחרת שמירת הסיסמה הקיימת
+                Password = doVolunteere.Password, // אחרת שמירת הסיסמה הקיימת
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
                 Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0
                     ? doVolunteere.Latitude
@@ -249,7 +239,7 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             // הצפנת הסיסמה
-            string hashedPassword = VolunteerManager.HashPassword(volunteer.PasswordHash);
+            //string hashedPassword = VolunteerManager.HashPassword(volunteer.PasswordHash);
 
             DO.Volunteer doVolunteer = new DO.Volunteer
             {
@@ -259,7 +249,7 @@ internal class VolunteerImplementation : IVolunteer
                 Email = volunteer.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = volunteer.IsActive,
-                Password = hashedPassword, // שמירת הסיסמה המוצפנת
+                Password = volunteer.PasswordHash, // שמירת הסיסמה המוצפנת
                 CurrentAddress = volunteer.FullAddress,
                 Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? null
                 : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,

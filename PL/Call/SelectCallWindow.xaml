@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Select Call Window" Height="800" Width="1464"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <!-- Style for Label -->
         <Style TargetType="Label" x:Key="LabelStyle">

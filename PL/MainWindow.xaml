@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="420" Width="1200"
+        Title="MainWindow" Height="450" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded" Closed="Window_Closed">
 
@@ -36,7 +36,7 @@
             <Setter Property="Padding" Value="12"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="150"/>
+            <Setter Property="Width" Value="160"/>
             <Setter Property="BorderBrush" Value="#D32F2F"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -56,6 +56,8 @@
             <Setter Property="Foreground" Value="#D32F2F"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
 
     <Grid Margin="10">
@@ -121,11 +123,11 @@
 
         <!-- Clock Advancement Buttons Area (Center) -->
         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,76,0,189">
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Minute" Click="AddOneMinute_Click" Width="150"/>
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Hour" Click="AddOneHour_Click" Width="150"/>
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Day" Click="AddOneDay_Click" Width="150"/>
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Month" Click="AddOneMonth_Click" Width="150"/>
-            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Year" Click="AddOneYear_Click" Width="150"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Minute" Click="AddOneMinute_Click" Width="160"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Hour" Click="AddOneHour_Click" Width="160"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Day" Click="AddOneDay_Click" Width="160"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Month" Click="AddOneMonth_Click" Width="160"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Content="Add One Year" Click="AddOneYear_Click" Width="160"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Margin="0,139,0,0" VerticalAlignment="Top" HorizontalAlignment="Center">
 
@@ -135,25 +137,25 @@
             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                 <Label Content="Risk Range (hours):" VerticalAlignment="Center" Foreground="#D32F2F" FontWeight="Bold" />
                 <TextBox Text="{Binding RiskRange, UpdateSourceTrigger=PropertyChanged}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold"/>
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Update" Click="UpdateRiskRange_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Update" Click="UpdateRiskRange_Click" Width="160"/>
             </StackPanel>
 
             <!-- Buttons for Database Management -->
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Volunteers" Click="btnVolunteer_Click" Width="150"/>
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" Width="150"/>
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" Width="150"/>
-                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" Width="150"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Volunteers" Click="btnVolunteer_Click" Width="160"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Initialize Database" Click="btnInitializeDB_Click" Width="160"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Reset Database" Click="btnResetDB_Click" Width="160"/>
+                <Button Style="{StaticResource RoundedButtonStyle}" Content="Manage Calls" Click="btnManageCalls_Click" Width="160"/>
             </StackPanel>
         </StackPanel>
 
         <!-- Simulator Start Area -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="3" Height="234" Width="884">
             <Label Content="&#xD;&#xA;Simulator:" Style="{StaticResource LabelStyle}" Height="74" Width="139" FontSize="20"/>
-            <Button Style="{StaticResource RoundedButtonStyle}" Click="StartSimulator_Click" Width="150" Content="Start"/>
+            <Button Style="{StaticResource RoundedButtonStyle}" Click="StartSimulator_Click" Width="160" Content="{Binding IsSimulatorRunning, Converter={StaticResource SimulatorButtonContentConverter}}"/>
             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Left">
                 <Label Content="Interval (minutes per second):" VerticalAlignment="Center" Foreground="#D32F2F" FontWeight="Bold" />
-                <TextBox Text="{Binding SimulatorInterval, UpdateSourceTrigger=PropertyChanged}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold" Height="40" />
+                <TextBox Text="{Binding Interval, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False}" Width="180" FontSize="20" Foreground="#D32F2F" FontWeight="Bold" Height="40" />
             </StackPanel>
         </StackPanel>
 

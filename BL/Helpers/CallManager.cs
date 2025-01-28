@@ -247,8 +247,6 @@ internal static class CallManager
     }
     internal static void UpdateCall(BO.Call call)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-        // Validate the call object
         if (call == null)
             throw new ArgumentNullException(nameof(call));
 
@@ -289,13 +287,13 @@ internal static class CallManager
         }
     }
 
-    internal static void SendCancelationMail(DO.Assignment a)
+    internal static async Task SendCancelationMail(DO.Assignment a)
     {
         var fromAddress = new MailAddress("shimon78900@gmail.com");
         MailAddress? toAddress = null;
         lock (AdminManager.BlMutex)
             toAddress = new MailAddress(s_dal.Volunteer.Read(a.VolunteerId)!.Email, s_dal.Volunteer.Read(a.VolunteerId)!.FullName);
-        const string fromPassword = "shimon78900";
+        const string fromPassword = "pate iojy wgxd qkjx";
         const string subject = "Assignment Cancelation";
         string body = "Your assignment is no longer under your treatment!\nThank you for your service.\nReason: " + a.CompletionStatus.ToString();
 
@@ -314,12 +312,12 @@ internal static class CallManager
             Body = body
         })
         {
-            smtp.Send(message);
+            await smtp.SendMailAsync(message);
         }
     }
 
 
-    internal static void SendCallOpenMail(BO.Call call)
+    internal static async Task SendCallOpenMail(BO.Call call)
     {
         IEnumerable<DO.Volunteer> doVolunteers;
         lock (AdminManager.BlMutex) //stage 7
@@ -336,7 +334,7 @@ internal static class CallManager
             MailAddress? toAddress = null;
             lock (AdminManager.BlMutex)
                 toAddress = new MailAddress(s_dal.Volunteer.Read(Volunteer.Id)!.Email, s_dal.Volunteer.Read(Volunteer.Id)!.FullName);
-            const string fromPassword = "shimon78900";
+            const string fromPassword = "pate iojy wgxd qkjx";
             const string subject = "New Call Open in your area";
             string body = "This call is open in your area!\n" + call.ToString();
 
@@ -355,7 +353,7 @@ internal static class CallManager
                 Body = body
             })
             {
-                smtp.Send(message);
+                await smtp.SendMailAsync(message);
             }
         }
     }

@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace PL
@@ -22,6 +23,29 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int tampUserId;
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow), new PropertyMetadata(1));
+
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+            DependencyProperty.Register("IsSimulatorRunning", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        public int Interval
+        {
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
+        }
+
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
+
+
         public MainWindow(int userId)
         {
             InitializeComponent();
@@ -111,14 +135,22 @@ namespace PL
 
         private void clockObserver()
         {
-            CurrentTime = s_bl.Admin.GetClock();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    CurrentTime = s_bl.Admin.GetClock();
+                });
         }
 
         private void configObserver()
         {
-            TimeSpan timeSpan = s_bl.Admin.GetMaxRange();
-          
-            MaxYearRange = (int)(timeSpan.TotalDays / 365);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    TimeSpan timeSpan = s_bl.Admin.GetMaxRange();
+
+                    MaxYearRange = (int)(timeSpan.TotalDays / 365);
+                });
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -131,6 +163,10 @@ namespace PL
         }
         private void Window_Closed(object sender, EventArgs e)
         {
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StopSimulator();
+            }
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
         }
@@ -188,7 +224,16 @@ namespace PL
 
         private void StartSimulator_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsSimulatorRunning = false;
+            }
+            else
+            {
+                s_bl.Admin.StartSimulator(Interval);
+                IsSimulatorRunning = true;
+            }
         }
     }
 }

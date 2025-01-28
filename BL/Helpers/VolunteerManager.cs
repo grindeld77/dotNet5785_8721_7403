@@ -303,10 +303,10 @@ internal static class VolunteerManager
 
     public static void ValidateVolunteerData(BO.Volunteer volunteer)
     {
-        if (!IsPasswordStrong(volunteer.PasswordHash))
-        {
-            throw new ArgumentException("Password is not strong enough");
-        }
+        //if (!IsPasswordStrong(volunteer.PasswordHash))
+        //{
+        //    throw new ArgumentException("Password is not strong enough");
+        //}
         if (!IsValidEmail(volunteer.Email))
         {
             throw new BO.InvalidEmailException("Invalid email address");
@@ -329,7 +329,7 @@ internal static class VolunteerManager
     private static readonly Random s_rand = new();
     private static int s_simulatorCounter = 0;
 
-    internal static void SimulateCourseRegistrationAndGrade() // stage 7
+    internal static void SimulateVolunteers() // stage 7
     {
         Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
 
@@ -380,14 +380,14 @@ internal static class VolunteerManager
                         if (elapsedTime >= estimatedTime) // מספיק זמן
                         {
                             // סיום הקריאה
-                            AssignmentManager.UpdateCallForVolunteer(doVolunteer.Id, activeAssignment.Id);
+                            AssignmentManager.UpdateCallForVolunteer(doVolunteer.Id, activeAssignment.CallId);
 
                             volunteerId = doVolunteer.Id;
                         }
                         else if (s_rand.NextDouble() < 0.1) // הסתברות של 10% לביטול
                         {
                             volunteerId = doVolunteer.Id;
-                            AssignmentManager.CancelAssignment(volunteerId , activeAssignment.Id);
+                            AssignmentManager.CancelAssignment(volunteerId , activeAssignment.CallId, doVolunteer.Role);
                         }
                     }
                 }

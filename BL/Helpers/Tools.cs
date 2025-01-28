@@ -246,6 +246,7 @@ internal static class Tools
         }
     }
 
+    
     public static BO.CallStatus GetCallStatus(DO.Call call, IEnumerable<DO.Assignment> assignments)
     {
         var now = DateTime.Now;

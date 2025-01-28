@@ -5,15 +5,19 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using PL;
+using System.Windows.Threading;
 namespace PL.Call
 {
     /// <summary>
     /// Interaction logic for SelectCallWindow.xaml
     /// </summary>
+  
     public partial class SelectCallWindow : Window
     {
         private readonly int UserId;
         private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         // Dependency Property for OpenCallList
         public static readonly DependencyProperty OpenCallListProperty =
@@ -72,8 +76,8 @@ namespace PL.Call
             try
             {
                 OpenList = s_bl.Call.GetOpenCallsForVolunteer(UserId,
-                    SelectedCallType == BO.CallType.None ? null : SelectedCallType,
-                    SelectedSort);
+                SelectedCallType == BO.CallType.None ? null : SelectedCallType,
+                SelectedSort);
             }
             catch (Exception ex)
             {
@@ -81,12 +85,22 @@ namespace PL.Call
             }
         }
 
+        private void openCallListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryOpenCallList();
+                });
+        }
+
+
         // Triggered when SelectedCallType changes
         private static void OnSelectedCallTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is SelectCallWindow window)
             {
-                window.queryOpenCallList();
+                window.openCallListObserver();
             }
         }
 
@@ -95,20 +109,20 @@ namespace PL.Call
         {
             if (d is SelectCallWindow window)
             {
-                window.queryOpenCallList();
+                window.openCallListObserver();
             }
         }
 
         // Event handler for when the window is loaded
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Call.AddObserver(queryOpenCallList);
+            s_bl.Call.AddObserver(openCallListObserver);
         }
 
         // Event handler for when the window is closed
         private void Window_Closed(object sender, EventArgs e)
         {
-            s_bl.Call.RemoveObserver(queryOpenCallList);
+            s_bl.Call.RemoveObserver(openCallListObserver);
         }
 
         private void SelectCall_Click(object sender, RoutedEventArgs e)
@@ -119,7 +133,7 @@ namespace PL.Call
                 {
                     s_bl.Call.AssignVolunteerToCall(UserId, selectedCall.Id);
                     MessageBox.Show($"Selected Call ID: {selectedCall.Id}", "Call Selected", MessageBoxButton.OK, MessageBoxImage.Information);
-                    queryOpenCallList();
+                    openCallListObserver();
 
                     if (Application.Current.Windows.OfType<MainVolunteerWindow>().FirstOrDefault() is MainVolunteerWindow volunteerWindow)
                     {

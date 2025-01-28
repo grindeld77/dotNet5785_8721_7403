@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using PL.Call;
 using PL.Volunteer;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -18,6 +19,8 @@ namespace PL
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int id;
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallManagementWindow), new PropertyMetadata(null));
@@ -86,7 +89,7 @@ namespace PL
                     var selectedCall = s_bl.Call.GetCallDetails(selectedCallInList.CallId);
                     var volunteerWindow = new CallWindow(selectedCallInList.CallId);
                     volunteerWindow.Show();
-                    queryCallList();
+                    callListObserver();
                 }
                 catch (Exception ex)
                 {
@@ -97,13 +100,13 @@ namespace PL
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Call.AddObserver(queryCallList);
-            queryCallList();
+            s_bl.Call.AddObserver(callListObserver);
+            callListObserver();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            s_bl.Volunteer.RemoveObserver(queryCallList);
+            s_bl.Volunteer.RemoveObserver(callListObserver);
         }
         private void queryCallList()
         {
@@ -124,13 +127,23 @@ namespace PL
             }
         }
 
+        private void callListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCallList();
+                });
+        }
+
+
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             var callWindow = new CallWindow(-1);
             callWindow.Show();
 
             // Refresh the list after closing the window
-            queryCallList();
+            callListObserver();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -142,8 +155,8 @@ namespace PL
                     if (MessageBox.Show("Are you sure you want to delete the selected call?", "Confirm Deletion",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.DeleteCall(SelectedCall.CallId);
-                        queryCallList();
+                        s_bl.Call.DeleteCall(SelectedCall.CallId); //to do: fix this, this is not the correct way to delete a call
+                        callListObserver();
                     }
                 }
                 catch (Exception ex)
@@ -163,8 +176,9 @@ namespace PL
                     if (MessageBox.Show("Are you sure you want to unassign the selected call?", "Confirm Unassignment",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        s_bl.Call.CancelCallAssignment(id, SelectedCall.CallId);
-                        queryCallList();
+                        
+                        s_bl.Call.CancelCallAssignment(id , SelectedCall.CallId); //to do: fix this, this is not the correct way to unassign a call
+                        callListObserver();
                     }
                 }
                 catch (Exception ex)
