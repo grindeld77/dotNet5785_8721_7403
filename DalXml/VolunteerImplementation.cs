@@ -15,7 +15,7 @@ internal class VolunteerImplementation : IVolunteer
         return new DO.Volunteer()
         {
             Id = vol.ToIntNullable("Id") ?? 0,
-            FullName = (string?)vol.Element("Name") ?? "",
+            FullName = (string?)vol.Element("FullName") ?? "",
             MobilePhone = (string?)vol.Element("MobilePhone") ?? "",
             Email = (string?)vol.Element("Email") ?? "",
             Role = vol.ToEnumNullable<Role>("Role") ?? Role.Volunteer,
@@ -34,7 +34,7 @@ internal class VolunteerImplementation : IVolunteer
             return
             new XElement("Volunteer",
             new XElement("Id", item.Id),
-            new XElement("Name", item.FullName),
+            new XElement("FullName", item.FullName),
             new XElement("MobilePhone", item.MobilePhone),
             new XElement("Email", item.Email),
             new XElement("Role", item.Role),

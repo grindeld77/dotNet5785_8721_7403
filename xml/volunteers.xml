@@ -2,7 +2,7 @@
 <Volunteers>
   <Volunteer>
     <Id>309833002</Id>
-    <Name>Daniel Cohen</Name>
+    <FullName>Daniel Cohen</FullName>
     <MobilePhone>0570639620</MobilePhone>
     <Email>daniel.cohen@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -16,7 +16,7 @@
   </Volunteer>
   <Volunteer>
     <Id>236679734</Id>
-    <Name>Michal Levy</Name>
+    <FullName>Michal Levy</FullName>
     <MobilePhone>0561579823</MobilePhone>
     <Email>michal.levy@gmail.com</Email>
     <Role>Admin</Role>
@@ -30,7 +30,7 @@
   </Volunteer>
   <Volunteer>
     <Id>292067246</Id>
-    <Name>Yossi Mizrahi</Name>
+    <FullName>Yossi Mizrahi</FullName>
     <MobilePhone>0567505187</MobilePhone>
     <Email>yossi.mizrahi@gmail.com</Email>
     <Role>Admin</Role>
@@ -44,7 +44,7 @@
   </Volunteer>
   <Volunteer>
     <Id>261264865</Id>
-    <Name>Sarit Israeli</Name>
+    <FullName>Sarit Israeli</FullName>
     <MobilePhone>0550160517</MobilePhone>
     <Email>sarit.israeli@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -58,7 +58,7 @@
   </Volunteer>
   <Volunteer>
     <Id>360954176</Id>
-    <Name>Tomer Friedman</Name>
+    <FullName>Tomer Friedman</FullName>
     <MobilePhone>0581509995</MobilePhone>
     <Email>tomer.friedman@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -72,7 +72,7 @@
   </Volunteer>
   <Volunteer>
     <Id>221579261</Id>
-    <Name>Naama Avidan</Name>
+    <FullName>Naama Avidan</FullName>
     <MobilePhone>0573429447</MobilePhone>
     <Email>naama.avidan@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -86,7 +86,7 @@
   </Volunteer>
   <Volunteer>
     <Id>295522155</Id>
-    <Name>Ron Goldman</Name>
+    <FullName>Ron Goldman</FullName>
     <MobilePhone>0556342099</MobilePhone>
     <Email>ron.goldman@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -100,7 +100,7 @@
   </Volunteer>
   <Volunteer>
     <Id>287515670</Id>
-    <Name>Elinor Bachar</Name>
+    <FullName>Elinor Bachar</FullName>
     <MobilePhone>0518361157</MobilePhone>
     <Email>elinor.bachar@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -114,7 +114,7 @@
   </Volunteer>
   <Volunteer>
     <Id>320069131</Id>
-    <Name>Moshe Barak</Name>
+    <FullName>Moshe Barak</FullName>
     <MobilePhone>0554611647</MobilePhone>
     <Email>moshe.barak@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -128,7 +128,7 @@
   </Volunteer>
   <Volunteer>
     <Id>293361143</Id>
-    <Name>Tali Katz</Name>
+    <FullName>Tali Katz</FullName>
     <MobilePhone>0571248541</MobilePhone>
     <Email>tali.katz@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -142,7 +142,7 @@
   </Volunteer>
   <Volunteer>
     <Id>201697414</Id>
-    <Name>Dina Rozenberg</Name>
+    <FullName>Dina Rozenberg</FullName>
     <MobilePhone>0522792531</MobilePhone>
     <Email>dina.rozenberg@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -156,7 +156,7 @@
   </Volunteer>
   <Volunteer>
     <Id>296076672</Id>
-    <Name>Liat Sharon</Name>
+    <FullName>Liat Sharon</FullName>
     <MobilePhone>0534055266</MobilePhone>
     <Email>liat.sharon@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -169,22 +169,8 @@
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
   <Volunteer>
-    <Id>278670492</Id>
-    <Name>Avi Hasson</Name>
-    <MobilePhone>0547760055</MobilePhone>
-    <Email>avi.hasson@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>402433835</Password>
-    <CurrentAddress>Yehudit Blvd 10, Tel Aviv</CurrentAddress>
-    <Latitude>32.0625</Latitude>
-    <Longitude>34.7942</Longitude>
-    <MaxCallDistance>56</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>214876187</Id>
-    <Name>Yael Zimmerman</Name>
+    <FullName>Yael Zimmerman</FullName>
     <MobilePhone>0593104036</MobilePhone>
     <Email>yael.zimmerman@gmail.com</Email>
     <Role>Volunteer</Role>
@@ -198,16 +184,30 @@
   </Volunteer>
   <Volunteer>
     <Id>296722200</Id>
-    <Name>Omar Rafael</Name>
-    <MobilePhone>0573797960</MobilePhone>
+    <FullName>Omar Rafael</FullName>
+    <MobilePhone>0573797962</MobilePhone>
     <Email>omar.rafael@gmail.com</Email>
     <Role>Admin</Role>
     <IsActive>true</IsActive>
-    <Password>231662740</Password>
+    <Password>DA8YWBtRiGmiuu8z+GXa9LYZC+IqabOGX4ntQkUrfeE=</Password>
     <CurrentAddress>Horev St 17, Haifa</CurrentAddress>
-    <Latitude>32.7811</Latitude>
-    <Longitude>35.0105</Longitude>
+    <Latitude>32.0657</Latitude>
+    <Longitude>34.7741</Longitude>
     <MaxCallDistance>41</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>278670492</Id>
+    <FullName>Avi Hasson</FullName>
+    <MobilePhone>0547760058</MobilePhone>
+    <Email>avi.hasson@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <IsActive>true</IsActive>
+    <Password>fZLPIVah3SVuoBML/wM90Sj0yzd3i0NGtCdpTORH+0c=</Password>
+    <CurrentAddress>Yehudit Blvd 10, Tel Aviv</CurrentAddress>
+    <Latitude>32.0657</Latitude>
+    <Longitude>34.7741</Longitude>
+    <MaxCallDistance>56</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
 </Volunteers>

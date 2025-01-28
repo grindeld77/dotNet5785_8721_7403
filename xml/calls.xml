@@ -177,17 +177,6 @@
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>16</Id>
-    <Type>FireEmergency</Type>
-    <Description>Fire at an industrial site.</Description>
-    <Address>Ben Ami St 14, Acre</Address>
-    <Latitude>32.9249</Latitude>
-    <Longitude>35.0723</Longitude>
-    <OpenedAt>2025-01-25T20:02:22</OpenedAt>
-    <MaxCompletionTime>2025-01-25T20:34:22</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
     <Id>17</Id>
     <Type>CardiacEmergency</Type>
     <Description>CPR required for a collapsed individual.</Description>
@@ -317,17 +306,6 @@
     <Longitude>34.7979</Longitude>
     <OpenedAt>2025-01-25T19:28:22</OpenedAt>
     <MaxCompletionTime>2025-01-25T20:38:22</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>29</Id>
-    <Type>Poisoning</Type>
-    <Description>Emergency response for a cardiac issue.</Description>
-    <Address>King David St 20, Jerusalem</Address>
-    <Latitude>31.7767</Latitude>
-    <Longitude>35.2273</Longitude>
-    <OpenedAt>2025-01-25T20:12:22</OpenedAt>
-    <MaxCompletionTime>2025-01-25T21:17:22</MaxCompletionTime>
     <Status>Open</Status>
   </Call>
   <Call>
@@ -705,8 +683,19 @@
     <Status>Open</Status>
   </Call>
   <Call>
+    <Id>16</Id>
+    <Type>TerrorAttack</Type>
+    <Description>Fire at an industrial site.</Description>
+    <Address>Ben Ami St 14, Acre</Address>
+    <Latitude>32.9249</Latitude>
+    <Longitude>35.0723</Longitude>
+    <OpenedAt>2025-01-25T20:02:22</OpenedAt>
+    <MaxCompletionTime>2025-01-25T20:34:22</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
     <Id>64</Id>
-    <Type>FirstAid</Type>
+    <Type>TerrorAttack</Type>
     <Description>Burn treatment after an accident.</Description>
     <Address>Haifa St 120, Karmiel</Address>
     <Latitude>32.9187</Latitude>
@@ -714,5 +703,16 @@
     <OpenedAt>2025-01-25T19:23:22</OpenedAt>
     <MaxCompletionTime>2025-01-25T20:25:22</MaxCompletionTime>
     <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>29</Id>
+    <Type>MassCausalities</Type>
+    <Description>Emergency response for a cardiac issue.</Description>
+    <Address>King David St 20, Jerusalem</Address>
+    <Latitude>31.7767</Latitude>
+    <Longitude>35.2273</Longitude>
+    <OpenedAt>2025-01-25T20:12:22</OpenedAt>
+    <MaxCompletionTime>2025-01-25T21:17:22</MaxCompletionTime>
+    <Status>Open</Status>
   </Call>
 </ArrayOfCall>
