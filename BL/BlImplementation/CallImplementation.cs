@@ -74,15 +74,11 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="requesterId"></param>
     /// <param name="assignmentId"></param>
-    void ICall.CancelCallAssignment(int requesterId, int callId)
+    void ICall.CancelCallAssignment(int requesterId, int assignmentId)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
 
-        DO.Role role;
-        lock (AdminManager.BlMutex) //stage 7
-            role = _dal.Volunteer.Read(requesterId).Role;
-
-        AssignmentManager.CancelAssignment(requesterId, callId, role);
+        AssignmentManager.CancelAssignment(requesterId, assignmentId);
     }
 
     /// <summary>
@@ -115,7 +111,6 @@ internal class CallImplementation : ICall
         DO.Call call;
         lock (AdminManager.BlMutex) //stage 7
             call = _dal.Call.Read(a => a.Id == callId);
-
 
         bool any;
         lock (AdminManager.BlMutex) //stage 7

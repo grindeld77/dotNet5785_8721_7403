@@ -32,18 +32,11 @@ internal static class AssignmentManager
             var volunteer = _dal.Volunteer.Read(volunteerId) ??
                 throw new Exception($"Volunteer with ID={volunteerId} does not exist.");
 
-            var volunteerCancelledAssignment = _dal.Assignment.ReadAll()
-                .FirstOrDefault(a => a.CallId == callId && a.VolunteerId == volunteerId && a.CompletionStatus == DO.CompletionStatus.SelfCancel);
-
-            if (volunteerCancelledAssignment != null)
-            {
-                throw new Exception($"Volunteer with ID={volunteerId} has already cancelled this call and cannot reassign it.");
-            }
 
             var existingAssignment = _dal.Assignment.ReadAll()
                 .FirstOrDefault(a => a.CallId == callId &&
                                     a.CompletionStatus == DO.CompletionStatus.AdminCancel &&
-                                     (a.CompletionStatus == DO.CompletionStatus.InTreatment || a.CompletionStatus == DO.CompletionStatus.Handled));
+                                     (a.CompletionStatus == null || a.CompletionStatus == DO.CompletionStatus.Handled));
 
             if (existingAssignment != null)
             {
@@ -51,7 +44,7 @@ internal static class AssignmentManager
             }
 
             var volunteerActiveAssignment = _dal.Assignment.ReadAll()
-                .FirstOrDefault(a => a.VolunteerId == volunteerId && a.CompletionStatus == DO.CompletionStatus.InTreatment);
+                .FirstOrDefault(a => a.VolunteerId == volunteerId && a.CompletionStatus == null);
 
             if (volunteerActiveAssignment != null)
             {
@@ -69,7 +62,7 @@ internal static class AssignmentManager
                 CallId = callId,
                 VolunteerId = volunteerId,
                 EntryTime = AdminManager.Now,
-                CompletionStatus = DO.CompletionStatus.InTreatment
+                CompletionStatus = null
             };
             _dal.Assignment.Create(assignment);
 
@@ -85,79 +78,59 @@ internal static class AssignmentManager
     /// <param name="volunteerId"></param>
     /// <param name="callId"></param>
     /// <exception cref="Exception"></exception>
-    internal static void UpdateCallForVolunteer(int volunteerId, int callId)
+    internal static void UpdateCallForVolunteer(int volunteerId, int assignmentId)
     {
-        List<DO.Assignment> assignments;
+        DO.Assignment assignment;
         DO.Call call;
 
         lock (AdminManager.BlMutex)
         {
-            assignments = _dal.Assignment.ReadAll()
-                .Where(a => a.VolunteerId == volunteerId && a.CallId == callId)
-                .ToList();
+            assignment = _dal.Assignment.Read(assignmentId) ??
+                throw new Exception($"Assignment with ID={assignmentId} does not exist.");
 
-            if (!assignments.Any())
-            {
-                throw new Exception($"No assignment found for Volunteer ID={volunteerId} and Call ID={callId}.");
+
+            if (assignment.CompletionStatus != null)
+            { 
+                throw new Exception($"Assignment with ID={assignmentId} has already been completed or canceled.");
             }
 
-            if (assignments.Count > 1)
-            {
-                throw new Exception($"Multiple assignments found for Volunteer ID={volunteerId} and Call ID={callId}.");
-            }
-
-            var assign = assignments.First();
-            if (assign.CompletionStatus != DO.CompletionStatus.InTreatment)
-            {
-                throw new Exception($"Assignment for Volunteer ID={volunteerId} and Call ID={callId} has already been closed.");
-            }
-
-            var updatedAssignment = assign with
+            var updatedAssignment = assignment with
             {
                 CompletionTime = AdminManager.Now,
                 CompletionStatus = DO.CompletionStatus.Handled
             };
             _dal.Assignment.Update(updatedAssignment);
 
-            call = _dal.Call.Read(callId) ??
-                throw new Exception($"Call with ID={callId} does not exist.");
+            call = _dal.Call.Read(assignment.CallId) ??
+                throw new Exception($"Call with ID={assignment.CallId} does not exist.");
         }
 
         var x = CallManager.ConvertDoCallToBoCall(call);
         x.Status = BO.CallStatus.Closed;
-        CallManager.Observers.NotifyListUpdated();
 
+
+        CallManager.Observers.NotifyListUpdated();
     }
 
-    internal static void CancelAssignment(int requesterId, int callId, DO.Role role)
+    internal static void CancelAssignment(int requesterId, int assignmentId)
     {
-        List<DO.Assignment> assignments;
+        DO.Assignment assignment;
         DO.Call call;
 
         lock (AdminManager.BlMutex)
         {
-            // בדיקת השיוך
-            assignments = _dal.Assignment.ReadAll()
-                .Where(a => a.VolunteerId == requesterId && a.CallId == callId)
-                .ToList();
-
-            if (!assignments.Any())
-            {
-                throw new Exception($"No assignment found for Volunteer ID={requesterId} and Call ID={callId}.");
-            }
-
-            if (assignments.Count > 1)
-            {
-                throw new Exception($"Multiple assignments found for Volunteer ID={requesterId} and Call ID={callId}.");
-            }
+            assignment = _dal.Assignment.Read(assignmentId) ??
+                throw new Exception($"Assignment with ID={assignmentId} does not exist.");
 
             // בדיקת הקריאה
-            call = _dal.Call.Read(callId) ??
-                throw new Exception($"Call with ID={callId} does not exist.");
+            call = _dal.Call.Read(assignment.CallId) ??
+                throw new Exception($"Call with ID={assignment.CallId} does not exist.");
         }
 
-        var assign = assignments.First();
-        
+
+        DO.Role role;
+        lock (AdminManager.BlMutex) //stage 7
+            role = _dal.Volunteer.Read(requesterId).Role;
 
         // קביעת סוג הביטול בהתאם לתפקיד
         DO.CompletionStatus Kind = role switch
@@ -170,7 +143,7 @@ internal static class AssignmentManager
         // שימוש בנעילה לעדכון ב-DAL
         lock (AdminManager.BlMutex)
         {
-            var updatedAssignment = assign with
+            var updatedAssignment = assignment with
             {
                 CompletionStatus = (DO.CompletionStatus)Kind
             };
@@ -180,6 +153,8 @@ internal static class AssignmentManager
         // עדכון סטטוס הקריאה
         var x = CallManager.ConvertDoCallToBoCall(call);
         x.Status = BO.CallStatus.Open;
+
+        CallManager.SendCancelationMail(assignment);
 
         // עדכון צופים מחוץ לנעילה
         CallManager.Observers.NotifyListUpdated(); // שלב 5

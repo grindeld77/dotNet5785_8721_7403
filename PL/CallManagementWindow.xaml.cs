@@ -177,7 +177,7 @@ namespace PL
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         
-                        s_bl.Call.CancelCallAssignment(id , SelectedCall.CallId); //to do: fix this, this is not the correct way to unassign a call
+                        s_bl.Call.CancelCallAssignment(id , (int)SelectedCall.AssignmentId); //to do: fix this, this is not the correct way to unassign a call
                         callListObserver();
                     }
                 }

@@ -527,11 +527,7 @@ public static class Initialization
                             continue;
                         else
                         {
-                            if (i % 2 == 0)
-                                status = CompletionStatus.AdminCancel;
-                            else
-                                status = CompletionStatus.SelfCancel;
-
+                            status = null;
                             EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
                                 ? call.MaxCompletionTime
                                 : StartTime.AddMinutes(s_rand.Next(1, 60));

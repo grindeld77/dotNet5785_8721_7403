@@ -161,7 +161,7 @@ internal static class VolunteerManager
     {
         string idStr = ID.ToString("D9");
         int sum = 0;
-        int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 }; 
+        int[] weights = { 1, 2, 1, 2, 1, 2, 1, 2 };
 
         for (int i = 0; i < idStr.Length - 1; i++)
         {
@@ -286,8 +286,8 @@ internal static class VolunteerManager
     {
         DO.Volunteer? volunteer;
         lock (AdminManager.BlMutex) //stage 7
-             volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Password == Password);
-        return volunteer.Role.ToString(); 
+            volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Password == Password);
+        return volunteer.Role.ToString();
     }
 
 
@@ -295,8 +295,8 @@ internal static class VolunteerManager
     {
         DO.Volunteer? volunteer;
         lock (AdminManager.BlMutex) //stage 7
-           volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == ID);
-        return volunteer.Role.ToString();    
+            volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == ID);
+        return volunteer.Role.ToString();
 
     }
 
@@ -341,84 +341,37 @@ internal static class VolunteerManager
 
         foreach (var doVolunteer in doVolunteerList)
         {
-            int volunteerId = 0;
-
             lock (AdminManager.BlMutex) // stage 7
             {
+                BO.CallInProgress? callInProgress;
+                lock (AdminManager.BlMutex)
+                    callInProgress = VolunteerManager.converterFromDoToBoVolunteer(doVolunteer).CurrentCall;
                 // אם אין למתנדב קריאה בטיפולו
-                if (!CallManager.IsVolunteerBusy(doVolunteer.Id))
+                if (callInProgress == null)
                 {
-                    // בחירה רנדומלית של קריאה לטיפול בהסתברות של 20%
-                    if (s_rand.NextDouble() < 0.2)
+                    IEnumerable<BO.OpenCallInList> openCallsOfVolunteer = CallManager.GetOpenCallsForVolunteer(doVolunteer.Id);
+                    int openCalls = openCallsOfVolunteer.Count();
+                    if (openCalls != 0 && s_rand.Next(0, 5) == 0)
                     {
-                        var openCalls = CallManager.GetOpenCallForVolunteer(doVolunteer.Id);
-                        if (openCalls.Any())
-                        {
-                            int randomIndex = s_rand.Next(0, openCalls.Count());
-                            var selectedCall = openCalls.ElementAt(randomIndex);
-
-                            // הקצאת קריאה למתנדב
-                            AssignmentManager.AssignVolunteerToCall(doVolunteer.Id, selectedCall.Id);
-                            volunteerId = doVolunteer.Id;
-                        }
+                        int callId = openCallsOfVolunteer.Skip(s_rand.Next(0, openCalls)).First().Id;
+                        AssignmentManager.AssignVolunteerToCall(doVolunteer.Id, callId);
                     }
                 }
                 else // אם למתנדב יש קריאה בטיפולו
                 {
-                    var activeAssignment = _dal.Assignment
-                        .ReadAll(a => a.VolunteerId == doVolunteer.Id && a.CompletionTime == null)
-                        .FirstOrDefault();
+                    int VolunteerSpeed = s_rand.Next(5, 50);
+                    var arrivingTime = TimeSpan.FromHours(callInProgress.DistanceFromVolunteer / VolunteerSpeed);
+                    var handleTime = TimeSpan.FromMinutes(s_rand.Next(5, 30));
+                    var totalTime = arrivingTime + handleTime;
 
-                    if (activeAssignment != null)
-                    {
-                        var elapsedTime = DateTime.Now - activeAssignment.EntryTime;
+                    if (callInProgress.StartTime + totalTime >= AdminManager.Now)
+                        AssignmentManager.UpdateCallForVolunteer(doVolunteer.Id, callInProgress.Id);
 
-                        // בדיקת אם עבר "מספיק זמן"
-                        var relatedCall = _dal.Call.Read(activeAssignment.CallId);
-                        var estimatedTime = CalculateEstimatedTime(doVolunteer, relatedCall);
-
-                        if (elapsedTime >= estimatedTime) // מספיק זמן
-                        {
-                            // סיום הקריאה
-                            AssignmentManager.UpdateCallForVolunteer(doVolunteer.Id, activeAssignment.CallId);
-
-                            volunteerId = doVolunteer.Id;
-                        }
-                        else if (s_rand.NextDouble() < 0.1) // הסתברות של 10% לביטול
-                        {
-                            volunteerId = doVolunteer.Id;
-                            AssignmentManager.CancelAssignment(volunteerId , activeAssignment.CallId, doVolunteer.Role);
-                        }
-                    }
+                    else if (s_rand.Next(0, 10) == 0)
+                        AssignmentManager.CancelAssignment(doVolunteer.Id, callInProgress.CallId);
                 }
-            } // lock
-
-            if (volunteerId != 0)
-                volunteersToUpdate.AddLast(volunteerId);
+            }
         }
-
-        foreach (int id in volunteersToUpdate)
-            Observers.NotifyItemUpdated(id);
-    }
-
-    /// <summary>
-    /// מחשב את הזמן המוערך לטיפול בקריאה, בהתבסס על מרחק וזמן רנדומלי נוסף
-    /// </summary>
-    /// <param name="volunteer"></param>
-    /// <param name="call"></param>
-    /// <returns></returns>
-    private static TimeSpan CalculateEstimatedTime(DO.Volunteer volunteer, DO.Call call)
-    {
-        // חישוב מרחק (אפשר להוסיף כאן חישוב מרחק גיאוגרפי אם יש פונקציה קיימת)
-        double distance = VolunteerManager.CalculateDistance(
-            (double)volunteer.Latitude, (double)volunteer.Longitude,
-            (double)call.Latitude, (double)call.Longitude
-        );
-
-        // תוספת זמן רנדומלית בין 10 ל-30 דקות
-        double randomMinutes = s_rand.Next(10, 30);
-
-        // זמן מוערך: זמן מבוסס מרחק + זמן רנדומלי
-        return TimeSpan.FromMinutes(distance / 10 + randomMinutes); // לדוגמה: 10 קמ"ש
     }
 }
+

@@ -169,7 +169,7 @@ internal static class CallManager
     internal static void PeriodicCallUpdates(DateTime oldClock, DateTime newClock)
     {
         // Set thread name for easier debugging
-        Thread.CurrentThread.Name = $"PeriodicCallUpdates";
+        // Thread.CurrentThread.Name = $"PeriodicCallUpdates"; ??? to review
 
         // Local list to store IDs for notifications outside the lock
         List<int> expiredCallIds = new();
@@ -356,6 +356,40 @@ internal static class CallManager
                 await smtp.SendMailAsync(message);
             }
         }
+    }
+
+    internal static IEnumerable<OpenCallInList> GetOpenCallsForVolunteer(int volunteerId)
+    {
+        DO.Volunteer volunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            volunteer = s_dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        IEnumerable<DO.Call> allCalls;
+        lock (AdminManager.BlMutex) //stage 7
+            allCalls = s_dal.Call.ReadAll();
+
+        IEnumerable<Assignment> allAssignments;
+        lock (AdminManager.BlMutex) //stage 7
+            allAssignments = s_dal.Assignment.ReadAll();
+
+        double lonVol = (double)volunteer.Longitude;
+        double latVol = (double)volunteer.Latitude;
+
+        var openCallsInList = from call in allCalls
+                              let boCall = CallManager.ConvertDoCallToBoCall(call)
+                              where (boCall.Status == BO.CallStatus.Open || boCall.Status == BO.CallStatus.OpenAtRisk)
+                              select new BO.OpenCallInList
+                              {
+                                  Id = call.Id,
+                                  Type = (BO.CallType)call.Type,
+                                  FullAddress = boCall.FullAddress,
+                                  OpenTime = call.OpenedAt,
+                                  MaxEndTime = call.MaxCompletionTime,// ? AdminManager.Now.Add(call.MaxCompletionTime.Value - call.OpenedAt) : (DateTime?)null,
+                                  DistanceFromVolunteer = volunteer?.CurrentAddress != null ?
+                                  VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude) : 0,
+                                  Description = boCall.Description
+                              };
+        openCallsInList = openCallsInList.Where(call => call.DistanceFromVolunteer <= volunteer.MaxCallDistance);
+        return openCallsInList;
     }
 }
 

@@ -683,13 +683,14 @@ Please select one of the following fields to filter by:
                             {
                                 Console.WriteLine("Enter your ID: ");
                                 int id = ConvertStringToNumber();
-                                Console.Write("Enter the Call ID to cancel: ");
-                                if (!int.TryParse(Console.ReadLine(), out int callId))
+                                Console.Write("Enter the assignment ID to cancel: ");
+                                if (!int.TryParse(Console.ReadLine(), out int assignmentId))
                                 {
                                     Console.WriteLine("Invalid input for Call ID. Please enter a valid integer.");
                                     break;
                                 }
-                                s_bl.Call.CancelCallAssignment(id, callId);
+
+                                s_bl.Call.CancelCallAssignment(id, assignmentId);
                             }
                             break;
                         case callMenu.AssignCall:

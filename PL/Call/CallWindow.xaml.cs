@@ -15,6 +15,15 @@ namespace PL.Call
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public static readonly DependencyProperty IsAddModeProperty =
+             DependencyProperty.Register("IsAddMode", typeof(bool), typeof(CallWindow));
+
+        public bool IsAddMode
+        {
+            get => (bool)GetValue(IsAddModeProperty);
+            set => SetValue(IsAddModeProperty, value);
+        }
+
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register("ButtonText", typeof(string), typeof(CallWindow), new PropertyMetadata(""));
 
@@ -62,8 +71,9 @@ namespace PL.Call
                     OpenTime = s_bl.Admin.GetClock(),
                     MaxEndTime = s_bl.Admin.GetClock().AddHours(1)
                 };
-                IsDeleteButtonVisible = Visibility.Collapsed;
+                IsAddMode = true;
 
+                IsDeleteButtonVisible = Visibility.Collapsed;
             }
             else
             {
@@ -111,25 +121,35 @@ namespace PL.Call
                 _observerOperation = Dispatcher.BeginInvoke(() =>
                 {
                     int id = CurrentCall!.Id;
+
                     CurrentCall = null;
                     CurrentCall = s_bl.Call.GetCallDetails(id);
                 });
         }
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentCall!.Id != -1) 
+            if (!IsAddMode) 
             {
                 s_bl.Call.AddObserver(CurrentCall!.Id, callObserver);
+            }
+            else
+            {
+                CurrentCall = null;
             }
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (CurrentCall!.Id != 0)
+            if (CurrentCall == null)
+            {
+                s_bl.Call.RemoveObserver(callObserver);
+            }
+            else
             {
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, callObserver);
             }
-
         }
 
 

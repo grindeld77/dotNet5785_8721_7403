@@ -8,10 +8,11 @@
         Title="Call Management" 
         Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Height="640" Width="700">
+        Height="640" Width="750">
 
     <Window.Resources>
         <local:CallStatusToIsActiveConverter x:Key="CallStatusToIsActiveConverter" />
+        <local:RemainingTimeToProgressConverter x:Key="RemainingTimeConverter"/>
 
         <!-- Style definitions remain unchanged -->
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
@@ -98,12 +99,44 @@
 
         <!-- Calls ListView -->
         <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10" Style="{StaticResource StyledListView}"
-                  MouseDoubleClick="ListView_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">
+          MouseDoubleClick="ListView_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding CallId}" Width="100" />
                     <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="120" />
-                    <GridViewColumn Header="Remaining Time" DisplayMemberBinding="{Binding RemainingTime}" Width="150" />
+
+                    <!-- Remaining Time Column with ProgressBar -->
+                    <GridViewColumn Header="Remaining Time" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding RemainingTime}" HorizontalAlignment="Center"/>
+                                    <ProgressBar Value="{Binding RemainingTime, Converter={StaticResource RemainingTimeConverter}}" 
+                             Minimum="0" Maximum="100" Height="15">
+                                        <ProgressBar.Style>
+                                            <Style TargetType="ProgressBar">
+                                                <Style.Triggers>
+                                                    <!-- אם הזמן שנותר קטן מ-20% -> אדום -->
+                                                    <DataTrigger Binding="{Binding RemainingTime, Converter={StaticResource RemainingTimeConverter}}" Value="20">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </DataTrigger>
+                                                    <!-- אם הזמן בין 20%-50% -> כתום -->
+                                                    <DataTrigger Binding="{Binding RemainingTime, Converter={StaticResource RemainingTimeConverter}}" Value="50">
+                                                        <Setter Property="Foreground" Value="Orange"/>
+                                                    </DataTrigger>
+                                                    <!-- אחרת (מעל 50%) -> ירוק -->
+                                                    <DataTrigger Binding="{Binding RemainingTime, Converter={StaticResource RemainingTimeConverter}}" Value="100">
+                                                        <Setter Property="Foreground" Value="Green"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ProgressBar.Style>
+                                    </ProgressBar>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
                     <GridViewColumn Header="Last Volunteer" DisplayMemberBinding="{Binding LastVolunteer}" Width="150" />
                     <GridViewColumn Header="Total Assignments" DisplayMemberBinding="{Binding TotalAssignments}" Width="150" />
                 </GridView>

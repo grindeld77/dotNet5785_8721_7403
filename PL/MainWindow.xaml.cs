@@ -189,6 +189,7 @@ namespace PL
                     }
 
                     s_bl.Admin.InitializeDB();
+                    UpdateCallCounts(); // Ensure call counts are updated on load
                 }
                 finally
                 {
@@ -209,6 +210,7 @@ namespace PL
                             window.Close();
                     }
                     s_bl.Admin.ResetDB();
+                    UpdateCallCounts(); // Ensure call counts are updated on load
                 }
                 finally
                 {
