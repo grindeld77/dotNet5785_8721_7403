@@ -1,7 +1,9 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace PL
 {
@@ -77,6 +79,31 @@ namespace PL
                 return Math.Max(0, Math.Min(100, progress)); // החזרת ערך תקין בין 0 ל-100
             }
             return 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class CallStatusToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is CallStatus status)
+            {
+                return status switch
+                {
+                    CallStatus.Open => Brushes.LightGreen,          // פתוח - ירוק בהיר
+                    CallStatus.InProgress => Brushes.LightBlue,     // בתהליך - כחול בהיר
+                    CallStatus.Closed => Brushes.Gray,             // סגור - אפור
+                    CallStatus.Expired => Brushes.Red,             // פג תוקף - אדום
+                    CallStatus.OpenAtRisk => Brushes.Orange,       // פתוח בסיכון - כתום
+                    CallStatus.InProgressAtRisk => Brushes.DarkOrange, // בתהליך בסיכון - כתום כהה
+                    _ => Brushes.White
+                };  
+            }
+            return Brushes.White;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

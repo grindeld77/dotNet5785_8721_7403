@@ -7,42 +7,20 @@
     <Address>Allenby St 35, Tel Aviv</Address>
     <Latitude>32.0673</Latitude>
     <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-30T14:34:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:20:39</MaxCompletionTime>
+    <OpenedAt>2025-01-30T18:24:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T19:05:11</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>6</Id>
-    <Type>CardiacEmergency</Type>
-    <Description>Cardiac arrest requiring immediate attention.</Description>
-    <Address>HaGalil St 90, Tiberias</Address>
-    <Latitude>32.7889</Latitude>
-    <Longitude>35.5373</Longitude>
-    <OpenedAt>2025-01-30T14:43:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:12:39</MaxCompletionTime>
-    <Status>Closed</Status>
-  </Call>
-  <Call>
-    <Id>8</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Severe allergic reaction to food or medication.</Description>
-    <Address>Hagalim Blvd 25, Caesarea</Address>
-    <Latitude>32.5115</Latitude>
-    <Longitude>34.9039</Longitude>
-    <OpenedAt>2025-01-30T14:45:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:21:39</MaxCompletionTime>
-    <Status>Closed</Status>
-  </Call>
-  <Call>
-    <Id>9</Id>
-    <Type>MassCausalities</Type>
-    <Description>Explosion causing multiple casualties.</Description>
-    <Address>Palmach St 10, Nahariya</Address>
-    <Latitude>33.0081</Latitude>
-    <Longitude>35.0952</Longitude>
-    <OpenedAt>2025-01-30T14:33:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:57:39</MaxCompletionTime>
-    <Status>Open</Status>
+    <Id>7</Id>
+    <Type>Poisoning</Type>
+    <Description>Chemical poisoning incident.</Description>
+    <Address>Sokolov St 50, Ramat Gan</Address>
+    <Latitude>32.0836</Latitude>
+    <Longitude>34.8248</Longitude>
+    <OpenedAt>2025-01-30T18:16:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T18:44:11</MaxCompletionTime>
+    <Status>Expired</Status>
   </Call>
   <Call>
     <Id>10</Id>
@@ -51,163 +29,42 @@
     <Address>Ben Yehuda St 28, Tel Aviv</Address>
     <Latitude>32.0795</Latitude>
     <Longitude>34.7689</Longitude>
-    <OpenedAt>2025-01-30T14:41:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:59:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>13</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Multi-vehicle collision on a highway.</Description>
-    <Address>Hechalutz St 8, Kiryat Shmona</Address>
-    <Latitude>33.2085</Latitude>
-    <Longitude>35.5721</Longitude>
-    <OpenedAt>2025-01-30T15:04:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:10:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>19</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Anaphylactic shock due to insect sting.</Description>
-    <Address>Kibbutz Galuyot St 32, Haifa</Address>
-    <Latitude>32.8197</Latitude>
-    <Longitude>34.9983</Longitude>
-    <OpenedAt>2025-01-30T14:35:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:06:39</MaxCompletionTime>
-    <Status>Expired</Status>
-  </Call>
-  <Call>
-    <Id>22</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Medical distress requiring urgent response.</Description>
-    <Address>Mevo HaShaked 12, Kfar Saba</Address>
-    <Latitude>32.1748</Latitude>
-    <Longitude>34.9031</Longitude>
-    <OpenedAt>2025-01-30T14:51:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:04:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>23</Id>
-    <Type>PatientTransport</Type>
-    <Description>Rescue operation in a dangerous environment.</Description>
-    <Address>Neve Zohar 1, Dead Sea</Address>
-    <Latitude>31.1357</Latitude>
-    <Longitude>35.3671</Longitude>
-    <OpenedAt>2025-01-30T15:07:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:03:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>26</Id>
-    <Type>Rescue</Type>
-    <Description>Medical emergency during a public event.</Description>
-    <Address>Meir Dizengoff St 88, Tel Aviv</Address>
-    <Latitude>32.0753</Latitude>
-    <Longitude>34.7737</Longitude>
-    <OpenedAt>2025-01-30T14:28:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T14:57:39</MaxCompletionTime>
+    <OpenedAt>2025-01-30T18:27:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T19:01:11</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>28</Id>
-    <Type>CardiacEmergency</Type>
-    <Description>First aid for minor injuries at a sports event.</Description>
-    <Address>Gordon St 3, Rishon LeZion</Address>
-    <Latitude>31.9743</Latitude>
-    <Longitude>34.7979</Longitude>
-    <OpenedAt>2025-01-30T14:37:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:09:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>30</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Chemical exposure causing severe symptoms.</Description>
-    <Address>Tchernichovsky St 4, Netanya</Address>
-    <Latitude>32.3274</Latitude>
-    <Longitude>34.8498</Longitude>
-    <OpenedAt>2025-01-30T14:48:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:16:39</MaxCompletionTime>
+    <Id>12</Id>
+    <Type>PatientTransport</Type>
+    <Description>Routine patient transport.</Description>
+    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
+    <Latitude>31.6648</Latitude>
+    <Longitude>34.5784</Longitude>
+    <OpenedAt>2025-01-30T18:24:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T18:58:11</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>33</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Burn injuries from a domestic incident.</Description>
-    <Address>Hatsedef St 12, Herzliya</Address>
-    <Latitude>32.1591</Latitude>
-    <Longitude>34.8417</Longitude>
-    <OpenedAt>2025-01-30T15:09:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:54:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>34</Id>
-    <Type>PatientTransport</Type>
-    <Description>Severe trauma in a public area.</Description>
-    <Address>Shlomo Hamelech St 5, Ramat HaSharon</Address>
-    <Latitude>32.1457</Latitude>
-    <Longitude>34.8357</Longitude>
-    <OpenedAt>2025-01-30T15:03:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:07:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>35</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Flood rescue operation.</Description>
-    <Address>Rabin Blvd 23, Be'er Yaakov</Address>
-    <Latitude>31.9353</Latitude>
-    <Longitude>34.8345</Longitude>
-    <OpenedAt>2025-01-30T14:46:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:14:39</MaxCompletionTime>
+    <Id>25</Id>
+    <Type>FirstAid</Type>
+    <Description>Structural collapse requiring emergency response.</Description>
+    <Address>Hanasi St 100, Zichron Yaakov</Address>
+    <Latitude>32.5734</Latitude>
+    <Longitude>35.0067</Longitude>
+    <OpenedAt>2025-01-30T18:09:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T18:36:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>37</Id>
-    <Type>Rescue</Type>
-    <Description>Massive fire requiring immediate response.</Description>
-    <Address>Menachem Begin Blvd 35, Ashdod</Address>
-    <Latitude>31.8017</Latitude>
-    <Longitude>34.6672</Longitude>
-    <OpenedAt>2025-01-30T15:18:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:04:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>38</Id>
-    <Type>FireEmergency</Type>
-    <Description>Heart attack in a crowded place.</Description>
-    <Address>The German Colony, Haifa</Address>
-    <Latitude>32.8184</Latitude>
-    <Longitude>35.0047</Longitude>
-    <OpenedAt>2025-01-30T14:49:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:59:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>39</Id>
-    <Type>CardiacEmergency</Type>
-    <Description>Poisoning from accidental ingestion.</Description>
-    <Address>HaYarkon St 105, Tel Aviv</Address>
-    <Latitude>32.0892</Latitude>
-    <Longitude>34.7712</Longitude>
-    <OpenedAt>2025-01-30T14:35:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:13:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>41</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Casualties reported after a public incident.</Description>
-    <Address>Lev Ha'ir 9, Sderot</Address>
-    <Latitude>31.5183</Latitude>
-    <Longitude>34.6004</Longitude>
-    <OpenedAt>2025-01-30T14:28:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:21:39</MaxCompletionTime>
-    <Status>Expired</Status>
+    <Id>32</Id>
+    <Type>TerrorAttack</Type>
+    <Description>Fire emergency requiring evacuation.</Description>
+    <Address>HaNassi St 14, Nesher</Address>
+    <Latitude>32.7441</Latitude>
+    <Longitude>35.0453</Longitude>
+    <OpenedAt>2025-01-30T18:24:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T18:58:11</MaxCompletionTime>
+    <Status>Closed</Status>
   </Call>
   <Call>
     <Id>43</Id>
@@ -216,8 +73,8 @@
     <Address>Hertzl St 98, Hadera</Address>
     <Latitude>32.4383</Latitude>
     <Longitude>34.9202</Longitude>
-    <OpenedAt>2025-01-30T14:44:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:13:39</MaxCompletionTime>
+    <OpenedAt>2025-01-30T18:30:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T18:58:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
@@ -227,8 +84,8 @@
     <Address>Einstein St 40, Haifa</Address>
     <Latitude>32.7755</Latitude>
     <Longitude>35.0223</Longitude>
-    <OpenedAt>2025-01-27T13:44:39</OpenedAt>
-    <MaxCompletionTime>2025-01-27T14:56:39</MaxCompletionTime>
+    <OpenedAt>2025-01-29T17:40:11</OpenedAt>
+    <MaxCompletionTime>2025-01-29T18:56:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
@@ -238,8 +95,8 @@
     <Address>Mivtza Sinai St 5, Eilat</Address>
     <Latitude>29.5534</Latitude>
     <Longitude>34.9523</Longitude>
-    <OpenedAt>2025-01-23T14:04:39</OpenedAt>
-    <MaxCompletionTime>2025-01-23T14:51:39</MaxCompletionTime>
+    <OpenedAt>2025-01-28T17:48:11</OpenedAt>
+    <MaxCompletionTime>2025-01-28T18:21:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
@@ -249,8 +106,8 @@
     <Address>HaZait St 30, Kiryat Malakhi</Address>
     <Latitude>31.7313</Latitude>
     <Longitude>34.7467</Longitude>
-    <OpenedAt>2025-01-28T14:05:39</OpenedAt>
-    <MaxCompletionTime>2025-01-28T14:38:39</MaxCompletionTime>
+    <OpenedAt>2025-01-26T17:37:11</OpenedAt>
+    <MaxCompletionTime>2025-01-26T18:08:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
@@ -260,8 +117,8 @@
     <Address>Begin Blvd 12, Ashkelon</Address>
     <Latitude>31.6852</Latitude>
     <Longitude>34.5789</Longitude>
-    <OpenedAt>2025-01-22T14:04:39</OpenedAt>
-    <MaxCompletionTime>2025-01-22T15:15:39</MaxCompletionTime>
+    <OpenedAt>2025-01-26T18:06:11</OpenedAt>
+    <MaxCompletionTime>2025-01-26T18:57:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
@@ -271,84 +128,18 @@
     <Address>HaRav Kook St 25, Safed</Address>
     <Latitude>32.9653</Latitude>
     <Longitude>35.4972</Longitude>
-    <OpenedAt>2025-01-27T14:15:39</OpenedAt>
-    <MaxCompletionTime>2025-01-27T15:12:39</MaxCompletionTime>
+    <OpenedAt>2025-01-22T18:03:11</OpenedAt>
+    <MaxCompletionTime>2025-01-22T18:56:11</MaxCompletionTime>
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>54</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue operation for a trapped individual.</Description>
-    <Address>Emek Refaim St 34, Jerusalem</Address>
-    <Latitude>31.7614</Latitude>
-    <Longitude>35.2219</Longitude>
-    <OpenedAt>2025-01-30T14:59:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:05:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>58</Id>
-    <Type>AllergicReaction</Type>
-    <Description>Severe allergic reaction to food or medication.</Description>
-    <Address>Hagalim Blvd 25, Caesarea</Address>
-    <Latitude>32.5115</Latitude>
-    <Longitude>34.9039</Longitude>
-    <OpenedAt>2025-01-30T15:05:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:11:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>62</Id>
-    <Type>PatientTransport</Type>
-    <Description>Routine patient transport.</Description>
-    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
-    <Latitude>31.6648</Latitude>
-    <Longitude>34.5784</Longitude>
-    <OpenedAt>2025-01-30T15:08:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T15:56:39</MaxCompletionTime>
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>64</Id>
-    <Type>FirstAid</Type>
-    <Description>Burn treatment after an accident.</Description>
-    <Address>Haifa St 120, Karmiel</Address>
-    <Latitude>32.9187</Latitude>
-    <Longitude>35.2938</Longitude>
-    <OpenedAt>2025-01-30T14:34:39</OpenedAt>
-    <MaxCompletionTime>2025-01-30T16:06:39</MaxCompletionTime>
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>3</Id>
-    <Type>FirstAid</Type>
-    <Description>First aid for an injured person.</Description>
-    <Address>Hashalom St 12, Herzliya</Address>
-    <Latitude>32.1676</Latitude>
-    <Longitude>34.8346</Longitude>
-    <OpenedAt>2025-01-30T14:38:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>5</Id>
-    <Type>FireEmergency</Type>
-    <Description>Fire in a residential building.</Description>
-    <Address>Balfour St 45, Bat Yam</Address>
-    <Latitude>32.0212</Latitude>
-    <Longitude>34.7515</Longitude>
-    <OpenedAt>2025-01-30T14:59:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>16</Id>
-    <Type>FireEmergency</Type>
-    <Description>Fire at an industrial site.</Description>
-    <Address>Ben Ami St 14, Acre</Address>
-    <Latitude>32.9249</Latitude>
-    <Longitude>35.0723</Longitude>
-    <OpenedAt>2025-01-30T14:44:39</OpenedAt>
+    <Id>6</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>Cardiac arrest requiring immediate attention.</Description>
+    <Address>HaGalil St 90, Tiberias</Address>
+    <Latitude>32.7889</Latitude>
+    <Longitude>35.5373</Longitude>
+    <OpenedAt>2025-01-30T18:31:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
@@ -359,51 +150,40 @@
     <Address>Hertzl St 15, Rishon LeZion</Address>
     <Latitude>31.9645</Latitude>
     <Longitude>34.8006</Longitude>
-    <OpenedAt>2025-01-30T15:04:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:11:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
   <Call>
-    <Id>25</Id>
-    <Type>FirstAid</Type>
-    <Description>Structural collapse requiring emergency response.</Description>
-    <Address>Hanasi St 100, Zichron Yaakov</Address>
-    <Latitude>32.5734</Latitude>
-    <Longitude>35.0067</Longitude>
-    <OpenedAt>2025-01-30T14:31:39</OpenedAt>
+    <Id>24</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Transport to a specialized medical facility.</Description>
+    <Address>Yitzhak Rabin Blvd 50, Petah Tikva</Address>
+    <Latitude>32.0973</Latitude>
+    <Longitude>34.8774</Longitude>
+    <OpenedAt>2025-01-30T18:21:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
   <Call>
-    <Id>31</Id>
-    <Type>MassCausalities</Type>
-    <Description>Injuries from a large-scale accident.</Description>
-    <Address>Arlozorov St 56, Tel Aviv</Address>
-    <Latitude>32.0847</Latitude>
-    <Longitude>34.7829</Longitude>
-    <OpenedAt>2025-01-30T14:44:39</OpenedAt>
+    <Id>27</Id>
+    <Type>FireEmergency</Type>
+    <Description>Traffic accident with critical injuries.</Description>
+    <Address>Eilat St 10, Hadera</Address>
+    <Latitude>32.4396</Latitude>
+    <Longitude>34.9203</Longitude>
+    <OpenedAt>2025-01-30T18:36:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
   <Call>
-    <Id>40</Id>
-    <Type>Poisoning</Type>
-    <Description>Severe swelling and difficulty breathing.</Description>
-    <Address>Hapoel St 13, Afula</Address>
-    <Latitude>32.6123</Latitude>
-    <Longitude>35.2902</Longitude>
-    <OpenedAt>2025-01-30T14:36:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>56</Id>
-    <Type>CardiacEmergency</Type>
-    <Description>Cardiac arrest requiring immediate attention.</Description>
-    <Address>HaGalil St 90, Tiberias</Address>
-    <Latitude>32.7889</Latitude>
-    <Longitude>35.5373</Longitude>
-    <OpenedAt>2025-01-30T14:50:39</OpenedAt>
+    <Id>54</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue operation for a trapped individual.</Description>
+    <Address>Emek Refaim St 34, Jerusalem</Address>
+    <Latitude>31.7614</Latitude>
+    <Longitude>35.2219</Longitude>
+    <OpenedAt>2025-01-30T18:16:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
@@ -414,183 +194,29 @@
     <Address>Ben Yehuda St 28, Tel Aviv</Address>
     <Latitude>32.0795</Latitude>
     <Longitude>34.7689</Longitude>
-    <OpenedAt>2025-01-30T14:48:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:11:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>OpenAtRisk</Status>
   </Call>
   <Call>
-    <Id>4</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue operation for a trapped individual.</Description>
-    <Address>Emek Refaim St 34, Jerusalem</Address>
-    <Latitude>31.7614</Latitude>
-    <Longitude>35.2219</Longitude>
-    <OpenedAt>2025-01-30T14:48:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>11</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Severe dehydration reported.</Description>
-    <Address>Ayalon St 6, Modi'in</Address>
-    <Latitude>31.9015</Latitude>
-    <Longitude>35.0051</Longitude>
-    <OpenedAt>2025-01-30T14:37:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>51</Id>
-    <Type>PatientTransport</Type>
-    <Description>Elderly transport to hospital.</Description>
-    <Address>Eli Cohen St 18, Beersheba</Address>
-    <Latitude>31.2417</Latitude>
-    <Longitude>34.7976</Longitude>
-    <OpenedAt>2025-01-30T14:59:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>52</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Car accident with multiple injuries.</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-01-30T14:53:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>61</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Severe dehydration reported.</Description>
-    <Address>Ayalon St 6, Modi'in</Address>
-    <Latitude>31.9015</Latitude>
-    <Longitude>35.0051</Longitude>
-    <OpenedAt>2025-01-30T15:11:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>63</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Multi-vehicle collision on a highway.</Description>
-    <Address>Hechalutz St 8, Kiryat Shmona</Address>
-    <Latitude>33.2085</Latitude>
-    <Longitude>35.5721</Longitude>
-    <OpenedAt>2025-01-30T15:05:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>OpenAtRisk</Status>
-  </Call>
-  <Call>
-    <Id>0</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Heart attack reported.</Description>
-    <Address>Weizmann St 2, Rehovot</Address>
-    <Latitude>31.8938</Latitude>
-    <Longitude>34.8113</Longitude>
-    <OpenedAt>2025-01-30T14:37:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>1</Id>
-    <Type>PatientTransport</Type>
-    <Description>Elderly transport to hospital.</Description>
-    <Address>Eli Cohen St 18, Beersheba</Address>
-    <Latitude>31.2417</Latitude>
-    <Longitude>34.7976</Longitude>
-    <OpenedAt>2025-01-30T14:34:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>15</Id>
-    <Type>Rescue</Type>
-    <Description>Rescue from a collapsed structure.</Description>
-    <Address>Shenkin St 4, Tel Aviv</Address>
-    <Latitude>32.0683</Latitude>
-    <Longitude>34.7735</Longitude>
-    <OpenedAt>2025-01-30T14:28:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>21</Id>
-    <Type>TerrorAttack</Type>
-    <Description>Armed assault causing injuries.</Description>
-    <Address>Mishol Hagefen 9, Givatayim</Address>
-    <Latitude>32.0705</Latitude>
-    <Longitude>34.8071</Longitude>
-    <OpenedAt>2025-01-30T15:01:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>24</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Transport to a specialized medical facility.</Description>
-    <Address>Yitzhak Rabin Blvd 50, Petah Tikva</Address>
-    <Latitude>32.0973</Latitude>
-    <Longitude>34.8774</Longitude>
-    <OpenedAt>2025-01-30T15:11:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>27</Id>
-    <Type>FireEmergency</Type>
-    <Description>Traffic accident with critical injuries.</Description>
-    <Address>Eilat St 10, Hadera</Address>
-    <Latitude>32.4396</Latitude>
-    <Longitude>34.9203</Longitude>
-    <OpenedAt>2025-01-30T15:07:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>36</Id>
-    <Type>FirstAid</Type>
-    <Description>Evacuation due to a hazardous situation.</Description>
-    <Address>Ha'Aliya St 70, Lod</Address>
-    <Latitude>31.9517</Latitude>
-    <Longitude>34.8943</Longitude>
-    <OpenedAt>2025-01-30T14:43:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>53</Id>
-    <Type>FirstAid</Type>
-    <Description>First aid for an injured person.</Description>
-    <Address>Hashalom St 12, Herzliya</Address>
-    <Latitude>32.1676</Latitude>
-    <Longitude>34.8346</Longitude>
-    <OpenedAt>2025-01-30T14:59:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>55</Id>
-    <Type>FireEmergency</Type>
-    <Description>Fire in a residential building.</Description>
-    <Address>Balfour St 45, Bat Yam</Address>
-    <Latitude>32.0212</Latitude>
-    <Longitude>34.7515</Longitude>
-    <OpenedAt>2025-01-30T14:38:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>7</Id>
+    <Id>18</Id>
     <Type>Poisoning</Type>
-    <Description>Chemical poisoning incident.</Description>
-    <Address>Sokolov St 50, Ramat Gan</Address>
-    <Latitude>32.0836</Latitude>
-    <Longitude>34.8248</Longitude>
-    <OpenedAt>2025-01-30T15:15:39</OpenedAt>
+    <Description>Worker exposed to hazardous materials.</Description>
+    <Address>Almog St 7, Eilat</Address>
+    <Latitude>29.5581</Latitude>
+    <Longitude>34.9529</Longitude>
+    <OpenedAt>2025-01-30T18:44:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>19</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Anaphylactic shock due to insect sting.</Description>
+    <Address>Kibbutz Galuyot St 32, Haifa</Address>
+    <Latitude>32.8197</Latitude>
+    <Longitude>34.9983</Longitude>
+    <OpenedAt>2025-01-30T18:51:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
@@ -601,29 +227,29 @@
     <Address>King David St 20, Jerusalem</Address>
     <Latitude>31.7767</Latitude>
     <Longitude>35.2273</Longitude>
-    <OpenedAt>2025-01-30T14:58:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:10:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>50</Id>
-    <Type>MedicalEmergency</Type>
-    <Description>Heart attack reported.</Description>
-    <Address>Weizmann St 2, Rehovot</Address>
-    <Latitude>31.8938</Latitude>
-    <Longitude>34.8113</Longitude>
-    <OpenedAt>2025-01-30T14:43:39</OpenedAt>
+    <Id>36</Id>
+    <Type>FirstAid</Type>
+    <Description>Evacuation due to a hazardous situation.</Description>
+    <Address>Ha'Aliya St 70, Lod</Address>
+    <Latitude>31.9517</Latitude>
+    <Longitude>34.8943</Longitude>
+    <OpenedAt>2025-01-30T18:10:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>17</Id>
+    <Id>39</Id>
     <Type>CardiacEmergency</Type>
-    <Description>CPR required for a collapsed individual.</Description>
-    <Address>Herzog St 22, Holon</Address>
-    <Latitude>32.0135</Latitude>
-    <Longitude>34.7713</Longitude>
-    <OpenedAt>2025-01-30T14:44:39</OpenedAt>
+    <Description>Poisoning from accidental ingestion.</Description>
+    <Address>HaYarkon St 105, Tel Aviv</Address>
+    <Latitude>32.0892</Latitude>
+    <Longitude>34.7712</Longitude>
+    <OpenedAt>2025-01-30T18:33:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
@@ -634,29 +260,18 @@
     <Address>Yigal Alon Blvd 76, Tel Aviv</Address>
     <Latitude>32.0622</Latitude>
     <Longitude>34.7889</Longitude>
-    <OpenedAt>2025-01-30T15:00:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:35:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>12</Id>
-    <Type>PatientTransport</Type>
-    <Description>Routine patient transport.</Description>
-    <Address>David Ben Gurion Blvd 3, Ashkelon</Address>
-    <Latitude>31.6648</Latitude>
-    <Longitude>34.5784</Longitude>
-    <OpenedAt>2025-01-30T15:03:39</OpenedAt>
-    <MaxCompletionTime xsi:nil="true" />
-    <Status>Open</Status>
-  </Call>
-  <Call>
-    <Id>42</Id>
-    <Type>MassCausalities</Type>
-    <Description>Explosion-related injuries.</Description>
-    <Address>Neve Tzedek, Tel Aviv</Address>
-    <Latitude>32.0615</Latitude>
-    <Longitude>34.7711</Longitude>
-    <OpenedAt>2025-01-30T15:16:39</OpenedAt>
+    <Id>55</Id>
+    <Type>FireEmergency</Type>
+    <Description>Fire in a residential building.</Description>
+    <Address>Balfour St 45, Bat Yam</Address>
+    <Latitude>32.0212</Latitude>
+    <Longitude>34.7515</Longitude>
+    <OpenedAt>2025-01-30T18:13:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
@@ -667,7 +282,150 @@
     <Address>Palmach St 10, Nahariya</Address>
     <Latitude>33.0081</Latitude>
     <Longitude>35.0952</Longitude>
-    <OpenedAt>2025-01-30T15:08:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:12:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>11</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Severe dehydration reported.</Description>
+    <Address>Ayalon St 6, Modi'in</Address>
+    <Latitude>31.9015</Latitude>
+    <Longitude>35.0051</Longitude>
+    <OpenedAt>2025-01-30T18:12:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>21</Id>
+    <Type>TerrorAttack</Type>
+    <Description>Armed assault causing injuries.</Description>
+    <Address>Mishol Hagefen 9, Givatayim</Address>
+    <Latitude>32.0705</Latitude>
+    <Longitude>34.8071</Longitude>
+    <OpenedAt>2025-01-30T18:44:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>30</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Chemical exposure causing severe symptoms.</Description>
+    <Address>Tchernichovsky St 4, Netanya</Address>
+    <Latitude>32.3274</Latitude>
+    <Longitude>34.8498</Longitude>
+    <OpenedAt>2025-01-30T18:34:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>31</Id>
+    <Type>MassCausalities</Type>
+    <Description>Injuries from a large-scale accident.</Description>
+    <Address>Arlozorov St 56, Tel Aviv</Address>
+    <Latitude>32.0847</Latitude>
+    <Longitude>34.7829</Longitude>
+    <OpenedAt>2025-01-30T18:14:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>34</Id>
+    <Type>PatientTransport</Type>
+    <Description>Severe trauma in a public area.</Description>
+    <Address>Shlomo Hamelech St 5, Ramat HaSharon</Address>
+    <Latitude>32.1457</Latitude>
+    <Longitude>34.8357</Longitude>
+    <OpenedAt>2025-01-30T18:33:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>38</Id>
+    <Type>FireEmergency</Type>
+    <Description>Heart attack in a crowded place.</Description>
+    <Address>The German Colony, Haifa</Address>
+    <Latitude>32.8184</Latitude>
+    <Longitude>35.0047</Longitude>
+    <OpenedAt>2025-01-30T18:15:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>40</Id>
+    <Type>Poisoning</Type>
+    <Description>Severe swelling and difficulty breathing.</Description>
+    <Address>Hapoel St 13, Afula</Address>
+    <Latitude>32.6123</Latitude>
+    <Longitude>35.2902</Longitude>
+    <OpenedAt>2025-01-30T18:16:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>51</Id>
+    <Type>PatientTransport</Type>
+    <Description>Elderly transport to hospital.</Description>
+    <Address>Eli Cohen St 18, Beersheba</Address>
+    <Latitude>31.2417</Latitude>
+    <Longitude>34.7976</Longitude>
+    <OpenedAt>2025-01-30T18:41:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>52</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident with multiple injuries.</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-01-30T18:52:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>56</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>Cardiac arrest requiring immediate attention.</Description>
+    <Address>HaGalil St 90, Tiberias</Address>
+    <Latitude>32.7889</Latitude>
+    <Longitude>35.5373</Longitude>
+    <OpenedAt>2025-01-30T18:19:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>58</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Severe allergic reaction to food or medication.</Description>
+    <Address>Hagalim Blvd 25, Caesarea</Address>
+    <Latitude>32.5115</Latitude>
+    <Longitude>34.9039</Longitude>
+    <OpenedAt>2025-01-30T18:54:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>1</Id>
+    <Type>PatientTransport</Type>
+    <Description>Elderly transport to hospital.</Description>
+    <Address>Eli Cohen St 18, Beersheba</Address>
+    <Latitude>31.2417</Latitude>
+    <Longitude>34.7976</Longitude>
+    <OpenedAt>2025-01-30T18:38:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>8</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Severe allergic reaction to food or medication.</Description>
+    <Address>Hagalim Blvd 25, Caesarea</Address>
+    <Latitude>32.5115</Latitude>
+    <Longitude>34.9039</Longitude>
+    <OpenedAt>2025-01-30T18:20:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
@@ -678,29 +436,150 @@
     <Address>Haifa St 120, Karmiel</Address>
     <Latitude>32.9187</Latitude>
     <Longitude>35.2938</Longitude>
-    <OpenedAt>2025-01-30T15:13:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:18:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>18</Id>
-    <Type>Poisoning</Type>
-    <Description>Worker exposed to hazardous materials.</Description>
-    <Address>Almog St 7, Eilat</Address>
-    <Latitude>29.5581</Latitude>
-    <Longitude>34.9529</Longitude>
-    <OpenedAt>2025-01-30T15:13:39</OpenedAt>
+    <Id>17</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>CPR required for a collapsed individual.</Description>
+    <Address>Herzog St 22, Holon</Address>
+    <Latitude>32.0135</Latitude>
+    <Longitude>34.7713</Longitude>
+    <OpenedAt>2025-01-30T18:59:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
   <Call>
-    <Id>32</Id>
-    <Type>TerrorAttack</Type>
-    <Description>Fire emergency requiring evacuation.</Description>
-    <Address>HaNassi St 14, Nesher</Address>
-    <Latitude>32.7441</Latitude>
-    <Longitude>35.0453</Longitude>
-    <OpenedAt>2025-01-30T15:00:39</OpenedAt>
+    <Id>28</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>First aid for minor injuries at a sports event.</Description>
+    <Address>Gordon St 3, Rishon LeZion</Address>
+    <Latitude>31.9743</Latitude>
+    <Longitude>34.7979</Longitude>
+    <OpenedAt>2025-01-30T18:12:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>50</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Heart attack reported.</Description>
+    <Address>Weizmann St 2, Rehovot</Address>
+    <Latitude>31.8938</Latitude>
+    <Longitude>34.8113</Longitude>
+    <OpenedAt>2025-01-30T18:22:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>OpenAtRisk</Status>
+  </Call>
+  <Call>
+    <Id>53</Id>
+    <Type>FirstAid</Type>
+    <Description>First aid for an injured person.</Description>
+    <Address>Hashalom St 12, Herzliya</Address>
+    <Latitude>32.1676</Latitude>
+    <Longitude>34.8346</Longitude>
+    <OpenedAt>2025-01-30T18:46:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>61</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Severe dehydration reported.</Description>
+    <Address>Ayalon St 6, Modi'in</Address>
+    <Latitude>31.9015</Latitude>
+    <Longitude>35.0051</Longitude>
+    <OpenedAt>2025-01-30T18:59:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>3</Id>
+    <Type>FirstAid</Type>
+    <Description>First aid for an injured person.</Description>
+    <Address>Hashalom St 12, Herzliya</Address>
+    <Latitude>32.1676</Latitude>
+    <Longitude>34.8346</Longitude>
+    <OpenedAt>2025-01-30T18:54:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>4</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue operation for a trapped individual.</Description>
+    <Address>Emek Refaim St 34, Jerusalem</Address>
+    <Latitude>31.7614</Latitude>
+    <Longitude>35.2219</Longitude>
+    <OpenedAt>2025-01-30T18:35:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>5</Id>
+    <Type>FireEmergency</Type>
+    <Description>Fire in a residential building.</Description>
+    <Address>Balfour St 45, Bat Yam</Address>
+    <Latitude>32.0212</Latitude>
+    <Longitude>34.7515</Longitude>
+    <OpenedAt>2025-01-30T18:26:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>13</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Multi-vehicle collision on a highway.</Description>
+    <Address>Hechalutz St 8, Kiryat Shmona</Address>
+    <Latitude>33.2085</Latitude>
+    <Longitude>35.5721</Longitude>
+    <OpenedAt>2025-01-30T18:45:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>15</Id>
+    <Type>Rescue</Type>
+    <Description>Rescue from a collapsed structure.</Description>
+    <Address>Shenkin St 4, Tel Aviv</Address>
+    <Latitude>32.0683</Latitude>
+    <Longitude>34.7735</Longitude>
+    <OpenedAt>2025-01-30T18:58:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>22</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Medical distress requiring urgent response.</Description>
+    <Address>Mevo HaShaked 12, Kfar Saba</Address>
+    <Latitude>32.1748</Latitude>
+    <Longitude>34.9031</Longitude>
+    <OpenedAt>2025-01-30T18:24:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>33</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Burn injuries from a domestic incident.</Description>
+    <Address>Hatsedef St 12, Herzliya</Address>
+    <Latitude>32.1591</Latitude>
+    <Longitude>34.8417</Longitude>
+    <OpenedAt>2025-01-30T18:30:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>37</Id>
+    <Type>Rescue</Type>
+    <Description>Massive fire requiring immediate response.</Description>
+    <Address>Menachem Begin Blvd 35, Ashdod</Address>
+    <Latitude>31.8017</Latitude>
+    <Longitude>34.6672</Longitude>
+    <OpenedAt>2025-01-30T18:31:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
@@ -711,7 +590,95 @@
     <Address>Sokolov St 50, Ramat Gan</Address>
     <Latitude>32.0836</Latitude>
     <Longitude>34.8248</Longitude>
-    <OpenedAt>2025-01-30T15:18:39</OpenedAt>
+    <OpenedAt>2025-01-30T18:41:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>16</Id>
+    <Type>FireEmergency</Type>
+    <Description>Fire at an industrial site.</Description>
+    <Address>Ben Ami St 14, Acre</Address>
+    <Latitude>32.9249</Latitude>
+    <Longitude>35.0723</Longitude>
+    <OpenedAt>2025-01-30T18:40:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>23</Id>
+    <Type>PatientTransport</Type>
+    <Description>Rescue operation in a dangerous environment.</Description>
+    <Address>Neve Zohar 1, Dead Sea</Address>
+    <Latitude>31.1357</Latitude>
+    <Longitude>35.3671</Longitude>
+    <OpenedAt>2025-01-30T18:59:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>26</Id>
+    <Type>Rescue</Type>
+    <Description>Medical emergency during a public event.</Description>
+    <Address>Meir Dizengoff St 88, Tel Aviv</Address>
+    <Latitude>32.0753</Latitude>
+    <Longitude>34.7737</Longitude>
+    <OpenedAt>2025-01-30T18:54:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>35</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Flood rescue operation.</Description>
+    <Address>Rabin Blvd 23, Be'er Yaakov</Address>
+    <Latitude>31.9353</Latitude>
+    <Longitude>34.8345</Longitude>
+    <OpenedAt>2025-01-30T18:49:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>42</Id>
+    <Type>MassCausalities</Type>
+    <Description>Explosion-related injuries.</Description>
+    <Address>Neve Tzedek, Tel Aviv</Address>
+    <Latitude>32.0615</Latitude>
+    <Longitude>34.7711</Longitude>
+    <OpenedAt>2025-01-30T18:58:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>0</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>Heart attack reported.</Description>
+    <Address>Weizmann St 2, Rehovot</Address>
+    <Latitude>31.8938</Latitude>
+    <Longitude>34.8113</Longitude>
+    <OpenedAt>2025-01-30T19:01:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>41</Id>
+    <Type>AllergicReaction</Type>
+    <Description>Casualties reported after a public incident.</Description>
+    <Address>Lev Ha'ir 9, Sderot</Address>
+    <Latitude>31.5183</Latitude>
+    <Longitude>34.6004</Longitude>
+    <OpenedAt>2025-01-30T19:03:11</OpenedAt>
+    <MaxCompletionTime xsi:nil="true" />
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>9</Id>
+    <Type>MassCausalities</Type>
+    <Description>Explosion causing multiple casualties.</Description>
+    <Address>Palmach St 10, Nahariya</Address>
+    <Latitude>33.0081</Latitude>
+    <Longitude>35.0952</Longitude>
+    <OpenedAt>2025-01-30T19:02:11</OpenedAt>
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>

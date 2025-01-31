@@ -13,6 +13,7 @@
     <Window.Resources>
         <local:CallStatusToIsActiveConverter x:Key="CallStatusToIsActiveConverter" />
         <local:RemainingTimeToProgressConverter x:Key="RemainingTimeConverter"/>
+        <local:CallStatusToColorConverter x:Key="CallStatusToColorConverter" />
 
         <!-- Style definitions remain unchanged -->
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
@@ -100,11 +101,20 @@
         <!-- Calls ListView -->
         <ListView ItemsSource="{Binding CallList}" Grid.Row="1" Margin="10" Style="{StaticResource StyledListView}"
           MouseDoubleClick="ListView_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">
+            
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding CallId}" Width="100" />
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="120" />
-
+                    <GridViewColumn Header="Status" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Status, Converter={StaticResource CallStatusToColorConverter}}" Padding="5" CornerRadius="3">
+                                    <TextBlock Text="{Binding Status}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                </Border>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
                     <!-- Remaining Time Column with ProgressBar -->
                     <GridViewColumn Header="Remaining Time" Width="200">
                         <GridViewColumn.CellTemplate>

@@ -230,11 +230,13 @@ namespace PL
             {
                 s_bl.Admin.StopSimulator();
                 IsSimulatorRunning = false;
+                UpdateCallCounts();
             }
             else
             {
                 s_bl.Admin.StartSimulator(Interval);
                 IsSimulatorRunning = true;
+                UpdateCallCounts();
             }
         }
     }

@@ -65,7 +65,7 @@ namespace PL.Volunteer
                 }
                 else
                 {
-                    VolunteerList = s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);
+                    VolunteerList = s_bl?.Volunteer.GetVolunteers(null, VolunteerFieldVolunteerInList.CurrentCallType, SelectedCallType);           
                 }
             }
             catch (Exception ex)
