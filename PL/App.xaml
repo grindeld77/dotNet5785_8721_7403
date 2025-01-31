@@ -11,6 +11,7 @@
         <local:CallCollectionSort x:Key="CallCollectionSortKey" />
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <local:SimulatorButtonContentConverter x:Key="SimulatorButtonContentConverter"/>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
         <ResourceDictionary x:Key="Theme">
             <ResourceDictionary.MergedDictionaries>

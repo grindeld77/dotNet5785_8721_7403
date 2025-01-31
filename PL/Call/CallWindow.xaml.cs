@@ -67,7 +67,7 @@ namespace PL.Call
             {
                 ButtonText = "Add";
                 CurrentCall = new BO.Call()
-                { 
+                {
                     OpenTime = s_bl.Admin.GetClock(),
                     MaxEndTime = s_bl.Admin.GetClock().AddHours(1)
                 };
@@ -130,13 +130,18 @@ namespace PL.Call
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!IsAddMode) 
+            if (!IsAddMode)
             {
                 s_bl.Call.AddObserver(CurrentCall!.Id, callObserver);
             }
             else
             {
-                CurrentCall = null;
+                CurrentCall = new BO.Call()
+                {
+                    OpenTime = s_bl.Admin.GetClock(),
+                    MaxEndTime = s_bl.Admin.GetClock().AddHours(1),
+                    Status = BO.CallStatus.Open
+                };
             }
         }
 

@@ -145,7 +145,8 @@ internal static class AssignmentManager
         {
             var updatedAssignment = assignment with
             {
-                CompletionStatus = (DO.CompletionStatus)Kind
+                CompletionStatus = (DO.CompletionStatus)Kind,
+                CompletionTime = AdminManager.Now
             };
             _dal.Assignment.Update(updatedAssignment);
         }
@@ -154,7 +155,7 @@ internal static class AssignmentManager
         var x = CallManager.ConvertDoCallToBoCall(call);
         x.Status = BO.CallStatus.Open;
 
-        CallManager.SendCancelationMail(assignment);
+        Task task = CallManager.SendCancelationMail(assignment);
 
         // עדכון צופים מחוץ לנעילה
         CallManager.Observers.NotifyListUpdated(); // שלב 5

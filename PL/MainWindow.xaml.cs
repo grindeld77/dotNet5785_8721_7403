@@ -222,6 +222,7 @@ namespace PL
         private void btnManageCalls_Click(object sender, RoutedEventArgs e)
         {
             new CallManagementWindow(tampUserId).Show();
+            UpdateCallCounts();
         }
 
         private void StartSimulator_Click(object sender, RoutedEventArgs e)

@@ -682,4 +682,26 @@
     <MaxCompletionTime xsi:nil="true" />
     <Status>Open</Status>
   </Call>
+  <Call>
+    <Id>63</Id>
+    <Type>TrafficAccident</Type>
+    <Description>jrwj</Description>
+    <Address>Horev 1, Haifa</Address>
+    <Latitude>32.7803661</Latitude>
+    <Longitude>34.9916436</Longitude>
+    <OpenedAt>2025-01-30T22:20:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T23:20:11</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>64</Id>
+    <Type>MedicalEmergency</Type>
+    <Description>bfasrbffafn</Description>
+    <Address>Horev 5, Haifa</Address>
+    <Latitude>32.7812512</Latitude>
+    <Longitude>34.9908165</Longitude>
+    <OpenedAt>2025-01-30T22:20:11</OpenedAt>
+    <MaxCompletionTime>2025-01-30T23:20:11</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
 </ArrayOfCall>
