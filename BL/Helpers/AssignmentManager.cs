@@ -68,6 +68,7 @@ internal static class AssignmentManager
 
             var x = CallManager.ConvertDoCallToBoCall(call);
             x.Status = BO.CallStatus.InProgress;
+            CallManager.UpdateCall(x);
         }
         CallManager.Observers.NotifyListUpdated();
     }
@@ -107,6 +108,7 @@ internal static class AssignmentManager
 
         var x = CallManager.ConvertDoCallToBoCall(call);
         x.Status = BO.CallStatus.Closed;
+        CallManager.UpdateCall(x);
 
 
         CallManager.Observers.NotifyListUpdated();
@@ -154,6 +156,7 @@ internal static class AssignmentManager
         // עדכון סטטוס הקריאה
         var x = CallManager.ConvertDoCallToBoCall(call);
         x.Status = BO.CallStatus.Open;
+        CallManager.UpdateCall(x);
 
         Task task = CallManager.SendCancelationMail(assignment);
 

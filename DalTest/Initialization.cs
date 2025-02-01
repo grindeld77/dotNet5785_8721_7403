@@ -7,6 +7,7 @@ using System.Security.AccessControl;
 using System;
 using System.Collections;
 using Dal;
+using System.Security.Cryptography;
 
 public static class Initialization
 {
@@ -111,7 +112,7 @@ public static class Initialization
 
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@ail.com";
-            string password = s_rand.Next(1000000, 999999999).ToString();
+            string password = GenerateRandomPassword(6, 10);
             Volunteer volunteerToAdd;
 
             if (i == 1 || i == 2)
@@ -406,7 +407,7 @@ public static class Initialization
         for (int i = 0; i < 45; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); 
+            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60));
             DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100));
             CallStatus callStatus = CallStatus.Open;
 
@@ -423,11 +424,11 @@ public static class Initialization
             {
                 if (difference.TotalMinutes < 15)
                 {
-                        callStatus = CallStatus.OpenAtRisk;
+                    callStatus = CallStatus.OpenAtRisk;
                 }
                 else
                 {
-                        callStatus = CallStatus.Open;
+                    callStatus = CallStatus.Open;
                 }
             }
 
@@ -448,8 +449,8 @@ public static class Initialization
         for (int i = 45; i < 50; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddDays(-s_rand.Next(1, 10)).AddMinutes(-s_rand.Next(60, 120)); 
-            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); 
+            DateTime openTime = currentTime.AddDays(-s_rand.Next(1, 10)).AddMinutes(-s_rand.Next(60, 120));
+            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100));
             TimeSpan difference = maxTime - currentTime;
             if (difference.TotalSeconds > 0)
                 maxTime = currentTime;
@@ -471,8 +472,8 @@ public static class Initialization
         for (int i = 0; i < 15; i++)
         {
             DateTime currentTime = s_dal!.Config.Clock;
-            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60)); 
-            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100)); 
+            DateTime openTime = currentTime.AddMinutes(-s_rand.Next(5, 60));
+            DateTime maxTime = openTime.AddMinutes(s_rand.Next(25, 100));
             CallStatus callStatus = CallStatus.Open;
             TimeSpan difference = maxTime - currentTime;
 
@@ -498,112 +499,190 @@ public static class Initialization
             s_dal!.Call.Create(callToAdd);
         }
     }
-    private static void createAssignments()
+    //private static void createAssignments()
+    //{
+    //    IEnumerable<Volunteer> volunteersList = s_dal!.Volunteer.ReadAll();
+    //    IEnumerable<Call> callsList = s_dal!.Call.ReadAll();
+
+    //    DateTime currentTime = DateTime.Now; // Get the current system time
+    //    int i = 0;
+    //    foreach (var call in callsList) // Iterate over all calls
+    //    {
+
+
+    //        // Select a random volunteer from the list
+    //        int index = s_rand.Next(0, volunteersList.Count());
+    //        Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
+
+    //        // Set StartTime to be between the call's opening time and the current time
+    //        DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, Math.Max(1, (int)(currentTime - call.OpenedAt).TotalMinutes)) % 36);
+    //        DateTime? EndTime = null;
+    //        CompletionStatus? status;
+
+
+    //        switch (call.Status)
+    //        {
+    //            case CallStatus.Open:
+    //                {
+    //                    if (i % 5 == 0)
+    //                        continue;
+    //                    else
+    //                    {
+    //                        status = null;
+    //                        EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
+    //                            ? call.MaxCompletionTime
+    //                            : StartTime.AddMinutes(s_rand.Next(1, 60));
+    //                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
+    //                        s_dal!.Assignment.Create(assignmentToAdd);
+    //                    }
+    //                }
+    //                break;
+    //            case CallStatus.Expired:
+    //                {
+    //                    if (i % 5 == 0)
+    //                        continue;
+    //                    else
+    //                    {
+    //                        status = CompletionStatus.Expired;
+    //                        if (call.MaxCompletionTime.HasValue)
+    //                        {
+    //                            EndTime = call.MaxCompletionTime.Value.AddMinutes(-s_rand.Next(1, 60));
+    //                        }
+    //                        else
+    //                        {
+    //                            EndTime = currentTime.AddMinutes(-s_rand.Next(1, 180)); // Ensure it's in the past
+    //                        }
+    //                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
+    //                        s_dal!.Assignment.Create(assignmentToAdd);
+    //                    }
+    //                }
+    //                break;
+    //            case CallStatus.InProgressAtRisk:
+    //            case CallStatus.InProgress:
+    //                {
+    //                    status = null;
+    //                    EndTime = null; // Still ongoing
+    //                    Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
+    //                    s_dal!.Assignment.Create(assignmentToAdd);
+    //                }
+    //                break;
+    //            case CallStatus.Closed:
+    //                {
+    //                    status = CompletionStatus.Handled;
+    //                    // חישוב הזמן המקסימלי האפשרי ל-EndTime
+    //                    DateTime maxEndTime = (DateTime)((currentTime < call.MaxCompletionTime) ? currentTime : call.MaxCompletionTime);
+
+    //                    // יצירת EndTime בתחום בין StartTime לבין maxEndTime
+
+    //                    if (StartTime < maxEndTime)
+    //                    {
+    //                        TimeSpan maxDuration = maxEndTime - StartTime; // טווח מרבי
+    //                        EndTime = StartTime.AddMinutes(s_rand.Next(1, (int)maxDuration.TotalMinutes + 1));
+    //                    }
+    //                    else
+    //                    {
+    //                        // אם StartTime גדול או שווה ל-maxEndTime, קובעים ש-EndTime יהיה שווה ל-maxEndTime
+    //                        EndTime = maxEndTime;
+    //                    }
+    //                    Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
+    //                    s_dal!.Assignment.Create(assignmentToAdd);
+    //                }
+    //                break;
+
+    //            case CallStatus.OpenAtRisk:
+    //                break;
+
+    //        }
+
+    //        i++;
+    //    }
+    //}
+    public static void createAssignment()
     {
-        IEnumerable<Volunteer> volunteersList = s_dal!.Volunteer.ReadAll();
-        IEnumerable<Call> callsList = s_dal!.Call.ReadAll();
+        var allCalls = s_dal!.Call.ReadAll();
+        var allVolunteers = s_dal!.Volunteer.ReadAll();
 
-        DateTime currentTime = DateTime.Now; // Get the current system time
-        int i = 0;
-        foreach (var call in callsList) // Iterate over all calls
+        var assignedCalls = new HashSet<int>();
+        var availableVolunteers = allVolunteers.ToList();
+
+        foreach (var call in allCalls)
         {
-            
+            // דילוג על קריאות בהסתברות של 50%
+            if (s_rand.Next(0, 2) == 0) // דילוג על חצי מהקריאות
+                continue;
 
-            // Select a random volunteer from the list
-            int index = s_rand.Next(0, volunteersList.Count());
-            Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
+            // בחירת מתנדב אקראי
+            int volunteerIndex = s_rand.Next(availableVolunteers.Count);
+            var selectedVolunteer = availableVolunteers[volunteerIndex];
 
-            // Set StartTime to be between the call's opening time and the current time
-            DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, Math.Max(1, (int)(currentTime - call.OpenedAt).TotalMinutes)) % 36);
-            DateTime? EndTime = null;
-            CompletionStatus? status;
+            // יצירת תאריך התחלת טיפול
+            DateTime treatmentStartTime = call.OpenedAt.AddHours(s_rand.Next(1, 12)); // עד 12 שעות אחרי תחילת הקריאה
 
-
-            switch (call.Status)
+            // הגבלת זמן תחילת הטיפול למקסימום המוגדר בקריאה
+            if (call.MaxCompletionTime.HasValue && treatmentStartTime > call.MaxCompletionTime.Value)
             {
-                case CallStatus.Open:
-                    {
-                        if (i % 5 == 0)
-                            continue;
-                        else
-                        {
-                            status = null;
-                            EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
-                                ? call.MaxCompletionTime
-                                : StartTime.AddMinutes(s_rand.Next(1, 60));
-                            Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-                            s_dal!.Assignment.Create(assignmentToAdd);
-                        }
-                    }
-                    break;
-                case CallStatus.Expired:
-                    {
-                        if (i % 5 == 0)
-                            continue;
-                        else
-                        {
-                            status = CompletionStatus.Expired;
-                            if (call.MaxCompletionTime.HasValue)
-                            {
-                                EndTime = call.MaxCompletionTime.Value.AddMinutes(-s_rand.Next(1, 60));
-                            }
-                            else
-                            {
-                                EndTime = currentTime.AddMinutes(-s_rand.Next(1, 180)); // Ensure it's in the past
-                            }
-                            Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-                            s_dal!.Assignment.Create(assignmentToAdd);
-                        }
-                    }
-                    break;
-                case CallStatus.InProgressAtRisk:
-                case CallStatus.InProgress:
-                    {
-                        status = null;
-                        EndTime = null; // Still ongoing
-                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-                        s_dal!.Assignment.Create(assignmentToAdd);
-                    }
-                    break;
-                case CallStatus.Closed:
-                    {
-                        status = CompletionStatus.Handled;
-                        // חישוב הזמן המקסימלי האפשרי ל-EndTime
-                        DateTime maxEndTime = (DateTime)((currentTime < call.MaxCompletionTime) ? currentTime : call.MaxCompletionTime);
-
-                        // יצירת EndTime בתחום בין StartTime לבין maxEndTime
-
-                        if (StartTime < maxEndTime)
-                        {
-                            TimeSpan maxDuration = maxEndTime - StartTime; // טווח מרבי
-                            EndTime = StartTime.AddMinutes(s_rand.Next(1, (int)maxDuration.TotalMinutes + 1));
-                        }
-                        else
-                        {
-                            // אם StartTime גדול או שווה ל-maxEndTime, קובעים ש-EndTime יהיה שווה ל-maxEndTime
-                            EndTime = maxEndTime;
-                        }
-                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-                        s_dal!.Assignment.Create(assignmentToAdd);
-                    }
-                    break;
-
-                case CallStatus.OpenAtRisk:
-                    break;
-
+                treatmentStartTime = call.MaxCompletionTime.Value;
             }
 
-            i++;
+            DateTime? treatmentEndTime = null;
+            CompletionStatus? assignKind;
+            if (s_rand.Next(0, 2) == 0) // הסתברות של 50% שהמשימה תסתיים
+            {
+                treatmentEndTime = treatmentStartTime.AddHours(s_rand.Next(1, 6)); // זמן סיום בין 1 ל-6 שעות
+                if (call.MaxCompletionTime.HasValue && treatmentEndTime > call.MaxCompletionTime.Value)
+                {
+                    treatmentEndTime = call.MaxCompletionTime.Value; // ודא שזמן הסיום לא עובר את זמן הסיום של הקריאה
+                }
+                assignKind = CompletionStatus.Handled; // המשימה הושלמה
+            }
+            else
+            {
+                if (s_rand.Next(0, 2) == 0) // הסתברות של 50% להיות "בטיפול"
+                {
+                    // בטיפול: אין זמן סיום, וזמן התחלת הטיפול הוא לפני עכשיו
+                    if (treatmentStartTime <= DateTime.Now)
+                    {
+                        assignKind = null; // מוגדר כ"בטיפול"
+                    }
+                    else
+                    {
+                        // אם לא מתאים להיות בטיפול, מסמן כבוטל
+                        assignKind = (CompletionStatus)s_rand.Next((int)CompletionStatus.SelfCancel, (int)CompletionStatus.Expired + 1);
+                    }
+                }
+                else
+                {
+                    // בחירה בין ביטול על ידי מתנדב או מנהל
+                    assignKind = (CompletionStatus)s_rand.Next((int)CompletionStatus.SelfCancel, (int)CompletionStatus.Expired + 1);
+                }
+            }
+
+            // יצירת ההשמה
+            s_dal!.Assignment.Create(new Assignment(
+            0, // מזהה אוטומטי
+            call.Id,
+                selectedVolunteer.Id,
+                treatmentStartTime,
+                treatmentEndTime,
+                assignKind
+            ));
         }
     }
+    // Helper method to generate a random alphanumeric password
+    private static string GenerateRandomPassword(int minLength, int maxLength)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            int length = s_rand.Next(minLength, maxLength + 1);
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[s_rand.Next(s.Length)]).ToArray());
+        }
 
-    public static void Do()//stage 4
-    {
-        s_dal = DalApi.Factory.Get; //stage 4
-        s_dal.ResetDB();
-        Console.WriteLine("Reset Configuration values and List values...");
-        createVolunteers();
-        createCalls();
-        createAssignments();
-    }
+        public static void Do()//stage 4
+        {
+            s_dal = DalApi.Factory.Get; //stage 4
+            s_dal.ResetDB();
+            Console.WriteLine("Reset Configuration values and List values...");
+            createVolunteers();
+            createCalls();
+            createAssignment();
+        }
 }
