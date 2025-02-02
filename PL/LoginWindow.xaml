@@ -43,7 +43,7 @@
         <Style TargetType="TextBox" x:Key="StyledTextBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="12"/>
-            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Margin" Value="100,5,10,5"/>
             <Setter Property="Height" Value="45"/>
             <Setter Property="BorderBrush" Value="#D32F2F"/>
             <Setter Property="BorderThickness" Value="2"/>
@@ -55,7 +55,7 @@
         <Style TargetType="PasswordBox" x:Key="StyledPasswordBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="12"/>
-            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Margin" Value="100,5,10,5"/>
             <Setter Property="Height" Value="45"/>
             <Setter Property="BorderBrush" Value="#D32F2F"/>
             <Setter Property="BorderThickness" Value="2"/>
@@ -67,7 +67,7 @@
         <Style TargetType="CheckBox" x:Key="StyledCheckBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="10,10"/>
+            <Setter Property="Margin" Value="100,10"/>
         </Style>
     </Window.Resources>
 
@@ -88,15 +88,13 @@
 
         <TextBlock Grid.Row="0" FontSize="24" FontWeight="Bold" Text="MDA Volunteer System" HorizontalAlignment="Center" Margin="0,10,0,10" Foreground="#D32F2F"/>
 
-        <!--<Button Content="Switch Theme" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Click="SwitchTheme_Click"  Style="{StaticResource RoundedButtonStyle}" Width="117" Height="26"/>-->
-
         <Label Content="User ID:" Grid.Row="1" HorizontalAlignment="Left" Margin="18,10,0,0" FontSize="16" FontWeight="Bold"/>
         <TextBox x:Name="UserIdTextBox" Style="{StaticResource StyledTextBox}" Grid.Row="1" Margin="100,5,10,5" Height="50"/>
 
         <Label Content="Password:" Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" FontSize="16" FontWeight="Bold"/>
-        <PasswordBox x:Name="PasswordBox" Style="{StaticResource StyledPasswordBox}" Grid.Row="2" Margin="95,5,15,5" Height="50"/>
+        <PasswordBox x:Name="PasswordBox" Style="{StaticResource StyledPasswordBox}" Grid.Row="2" Margin="100,5,10,5" Height="50"/>
 
-        <TextBox x:Name="PasswordTextBox" Style="{StaticResource StyledTextBox}" Grid.Row="2" Text="{Binding PasswordBox.Password}" Visibility="Collapsed" Margin="100,5,10,5" />
+        <TextBox x:Name="PasswordTextBox" Style="{StaticResource StyledTextBox}" Grid.Row="2" Text="{Binding PasswordBox.Password}" Visibility="Collapsed" Margin="100,5,10,5" Height="50"/>
 
         <CheckBox Content="Show Password" Grid.Row="3" HorizontalAlignment="Left" Margin="100,21,0,0" Style="{StaticResource StyledCheckBox}"
               Checked="ShowPassword_Checked" Unchecked="ShowPassword_Unchecked" Width="262"/>
