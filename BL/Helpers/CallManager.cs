@@ -95,30 +95,23 @@ internal static class CallManager
     /// <returns></returns>
     internal static IEnumerable<ClosedCallInList> GetAllClosedCalls(int volunteerId)
     {
-        IEnumerable<ClosedCallInList> list;
+        IEnumerable<DO.Assignment> list = s_dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
         lock (AdminManager.BlMutex) //stage 7
         {
-
-
-            list = (from call in s_dal.Call.ReadAll()
-                    join assignment in s_dal.Assignment.ReadAll(x => x.VolunteerId == volunteerId) on call.Id equals assignment.CallId
-                    where assignment.CompletionStatus == DO.CompletionStatus.Handled
-
+            return from a in list
+                   let c = s_dal.Call.Read(a.VolunteerId)
+                   where a.CompletionStatus != null
                     select new BO.ClosedCallInList
                     {
-                        Id = call.Id,
-                        Type = (BO.CallType)call.Type,
-                        FullAddress = call.Address,
-                        OpenTime = call.OpenedAt,
-                        AssignedTime = assignment.EntryTime,
-                        ClosedTime = assignment.CompletionTime,
-                        Status = (BO.CompletionStatus?)assignment.CompletionStatus
-                    });
+                        Id = c.Id,
+                        Type = (BO.CallType)c.Type,
+                        FullAddress = c.Address,
+                        OpenTime = c.OpenedAt,
+                        AssignedTime = a.EntryTime,
+                        ClosedTime = a.CompletionTime,
+                        Status = (BO.CompletionStatus?)a.CompletionStatus
+                    };
         }
-        // Notify the observers about the updated list of closed calls.
-        Observers.NotifyListUpdated(); // Notify that the list of closed calls was updated.
-
-        return list;
     }
     /// <summary>
     /// Converts a DO.Call object to a BO.CallInList object.
@@ -179,7 +172,7 @@ internal static class CallManager
         lock (AdminManager.BlMutex) // Lock for data retrieval
         {
             activeCalls = s_dal.Call.ReadAll()
-                                   .Where(call => call.MaxCompletionTime > oldClock && call.MaxCompletionTime <= newClock)
+                                   .Where(call => call.MaxCompletionTime > newClock && call.MaxCompletionTime <= newClock)
                                    .ToList();
         }
 
@@ -256,8 +249,8 @@ internal static class CallManager
         if (call.OpenTime >= call.MaxEndTime)
             throw new ArgumentException("Open time must be earlier than the maximum finish time.");
 
-        //if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
-        //   throw new ArgumentException("Address is not valid.");
+        if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
+          throw new ArgumentException("Address is not valid.");
 
         // Convert BO.Call to DO.Call
         var doCall = new DO.Call
@@ -390,6 +383,16 @@ internal static class CallManager
                               };
         openCallsInList = openCallsInList.Where(call => call.DistanceFromVolunteer <= volunteer.MaxCallDistance);
         return openCallsInList;
+    }
+
+    internal static async Task AddressCalc(DO.Call call)
+    {
+        (double latitude, double longitude) = await Tools.GeocodingHelper.GetCoordinates(call.Address);
+
+        DO.Call newcall = new DO.Call();
+
+        newcall = call with { Latitude = latitude, Longitude = longitude };
+
     }
 }
 

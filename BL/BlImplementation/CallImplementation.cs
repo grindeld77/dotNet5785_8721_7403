@@ -29,16 +29,16 @@ internal class CallImplementation : ICall
             if (boCall.OpenTime >= boCall.MaxEndTime)
                 throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
-            (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
+            //(boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
 
             var call = new DO.Call
             {
                 Id = boCall.Id,
                 Status = (DO.CallStatus)boCall.Status,
                 Type = (DO.CallType)boCall.Type,
-                Address = boCall.FullAddress,
-                Latitude = (double)boCall.Latitude,
-                Longitude = (double)boCall.Longitude,
+                Address = "",
+                Latitude = 0,
+                Longitude = 0,
                 OpenedAt = boCall.OpenTime,
                 MaxCompletionTime = boCall.MaxEndTime,
                 Description = boCall.Description
@@ -46,8 +46,12 @@ internal class CallImplementation : ICall
 
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Call.Create(call);
-            CallManager.SendCallOpenMail(boCall);
+
             CallManager.Observers.NotifyListUpdated(); //stage 5
+
+            DO.Call created = _dal.Call.Read(c => c.OpenedAt == call.OpenedAt && c.Type == call.Type && c.Description == call.Description && c.MaxCompletionTime == call.MaxCompletionTime);
+
+            _ = CallManager.AddressCalc(created with { Address = boCall.FullAddress });
         }
         catch (Exception)
         {

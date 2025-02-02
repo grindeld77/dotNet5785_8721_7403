@@ -196,12 +196,8 @@ internal class VolunteerImplementation : IVolunteer
                 IsActive = doVolunteere.IsActive,
                 Password = doVolunteere.Password, // אחרת שמירת הסיסמה הקיימת
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0
-                    ? doVolunteere.Latitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0
-                    ? doVolunteere.Longitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                Latitude = 0,
+                Longitude = 0,
                 MaxCallDistance = volunteer.MaxDistanceForCall ?? doVolunteere.MaxCallDistance,
                 DistancePreference = doVolunteere.DistancePreference,
             };
@@ -214,6 +210,8 @@ internal class VolunteerImplementation : IVolunteer
             VolunteerManager.Observers.NotifyItemUpdated(doVolunteere.Id);
             VolunteerManager.Observers.NotifyListUpdated();
             CallManager.Observers.NotifyListUpdated();
+
+            _ = VolunteerManager.AddressCalc(doVolunteerNew with { CurrentAddress = volunteer.FullAddress });
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -250,11 +248,9 @@ internal class VolunteerImplementation : IVolunteer
                 Role = (DO.Role)volunteer.Role,
                 IsActive = volunteer.IsActive,
                 Password = volunteer.PasswordHash, // שמירת הסיסמה המוצפנת
-                CurrentAddress = volunteer.FullAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0 ? null
-                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0 ? null
-                : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                CurrentAddress = "",
+                Latitude = 0,
+                Longitude = 0,
                 MaxCallDistance = volunteer.MaxDistanceForCall,
                 DistancePreference = (DO.DistanceType)volunteer.DistanceType,
             };
@@ -262,6 +258,8 @@ internal class VolunteerImplementation : IVolunteer
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Volunteer.Create(doVolunteer); // Attempt to add the volunteer
             VolunteerManager.Observers.NotifyListUpdated(); // Notify observers that the volunteer list has been updated.
+
+            _ = VolunteerManager.AddressCalc(doVolunteer with { CurrentAddress = volunteer.FullAddress });
         }
         catch (DO.DalAlreadyExistsException)
         {

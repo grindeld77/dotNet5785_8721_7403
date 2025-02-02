@@ -373,5 +373,15 @@ internal static class VolunteerManager
             }
         }
     }
+
+    internal static async Task AddressCalc(DO.Volunteer volunteer)
+    {
+        (double latitude, double longitude) = await Tools.GeocodingHelper.GetCoordinates(volunteer.CurrentAddress);
+
+        DO.Volunteer newVolunteer = new DO.Volunteer();
+
+        newVolunteer = volunteer with { Latitude = latitude, Longitude = longitude };
+
+    }
 }
 
