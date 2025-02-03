@@ -8,7 +8,7 @@ public interface ICall : IObservable //stage 5
     int[] GetCallCountsByStatus();
 
     // return a sorted and filtered list of calls based on specified criteria.
-    IEnumerable<CallInList> GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField); 
+    IEnumerable<CallInList> GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField, BO.CallType? filter2); 
 
     // return details of a specific call by its ID. Throws an exception if the call is not found.
     Call GetCallDetails(int callId);

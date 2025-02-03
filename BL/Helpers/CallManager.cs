@@ -286,7 +286,7 @@ internal static class CallManager
         MailAddress? toAddress = null;
         lock (AdminManager.BlMutex)
             toAddress = new MailAddress(s_dal.Volunteer.Read(a.VolunteerId)!.Email, s_dal.Volunteer.Read(a.VolunteerId)!.FullName);
-        const string fromPassword = "pate iojy wgxd qkjx";
+        const string fromPassword = "yhmg gvrn twft wqsx";
         const string subject = "Assignment Cancelation";
         string body = "Your assignment is no longer under your treatment!\nThank you for your service.\nReason: " + a.CompletionStatus.ToString();
 
@@ -327,7 +327,7 @@ internal static class CallManager
             MailAddress? toAddress = null;
             lock (AdminManager.BlMutex)
                 toAddress = new MailAddress(s_dal.Volunteer.Read(Volunteer.Id)!.Email, s_dal.Volunteer.Read(Volunteer.Id)!.FullName);
-            const string fromPassword = "pate iojy wgxd qkjx";
+            const string fromPassword = "yhmg gvrn twft wqsx";
             const string subject = "New Call Open in your area";
             string body = "This call is open in your area!\n" + call.ToString();
 
@@ -385,14 +385,14 @@ internal static class CallManager
         return openCallsInList;
     }
 
-    internal static async Task AddressCalc(DO.Call call)
-    {
-        (double latitude, double longitude) = await Tools.GeocodingHelper.GetCoordinates(call.Address);
+    //internal static async Task AddressCalc(DO.Call call)
+    //{
+    //    (double latitude, double longitude) = await Tools.GeocodingHelper.GetCoordinates(call.Address);
 
-        DO.Call newcall = new DO.Call();
+    //    DO.Call newcall = new DO.Call();
 
-        newcall = call with { Latitude = latitude, Longitude = longitude };
+    //    newcall = call with { Latitude = latitude, Longitude = longitude };
 
-    }
+    //}
 }
 

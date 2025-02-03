@@ -460,7 +460,7 @@ Please select one of the following fields to sort by:
                                     else
                                         sortingField = sort;
                                 }
-                                foreach (var item in s_bl.Call.GetCalls(filterField, filterValue, sortingField)) // Display All Calls logic here
+                                foreach (var item in s_bl.Call.GetCalls(filterField, filterValue, sortingField, null)) // Display All Calls logic here
                                     Console.WriteLine(item);
                             }
                             break;
@@ -552,7 +552,7 @@ Please select one of the following fields to sort by:
                         case callMenu.DeleteAll:
                             {
                                 // Retrieve all calls from the data layer
-                                IEnumerable<CallInList> calls = s_bl.Call.GetCalls(null, null, BO.CallInListFields.CallId);
+                                IEnumerable<CallInList> calls = s_bl.Call.GetCalls(null, null, BO.CallInListFields.CallId, null);
 
                                 // If no calls to delete, throw an exception
                                 if (!calls.Any())

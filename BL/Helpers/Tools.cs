@@ -137,7 +137,7 @@ internal static class Tools
         /// <summary>
         /// Returns the coordinates (latitude and longitude) of a given address.
         /// </summary>
-        public static async Task <(double Latitude, double Longitude)> GetCoordinates(string address)
+        public static (double Latitude, double Longitude) GetCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
             {
@@ -204,49 +204,49 @@ internal static class Tools
         }
     }
     /// <summary>
-    /// function that checks if the coordinates of a call match the coordinates based on his address. 
+    /// function that checks if the coordinates of a call match the coordinates based on his address.
     /// we use the function GetAddressCoordinates to compare the expected coordinates with the received , allowing a small tolerance
     /// </summary>
-    //public static bool CheckAddressVolunteer(BO.Volunteer volunteer)
-    //{
-    //    if (volunteer.Latitude == null || volunteer.Longitude == null)
-    //    {
-    //        throw new Exception("Latitude or Longitude is missing in the Volunteer object.");
-    //    }
-    //    try
-    //    {
-    //        var (lat, lon) = await GeocodingHelper.GetCoordinates(volunteer.FullAddress);
-    //        const double tolerance = 0.0001;
-    //        bool isLatitudeMatch = Math.Abs(volunteer.Latitude.Value - lat) < tolerance;
-    //        bool isLongitudeMatch = Math.Abs(volunteer.Longitude.Value - lon) < tolerance;
-    //        return isLatitudeMatch && isLongitudeMatch;
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        throw new Exception("Error fetching coordinates for the volunteer address.", e);
-    //    }
-    //}
+    public static bool CheckAddressVolunteer(BO.Volunteer volunteer)
+    {
+        if (volunteer.Latitude == null || volunteer.Longitude == null)
+        {
+            throw new Exception("Latitude or Longitude is missing in the Volunteer object.");
+        }
+        try
+        {
+            var (lat, lon) = GeocodingHelper.GetCoordinates(volunteer.FullAddress);
+            const double tolerance = 0.0001;
+            bool isLatitudeMatch = Math.Abs(volunteer.Latitude.Value - lat) < tolerance;
+            bool isLongitudeMatch = Math.Abs(volunteer.Longitude.Value - lon) < tolerance;
+            return isLatitudeMatch && isLongitudeMatch;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error fetching coordinates for the volunteer address.", e);
+        }
+    }
 
     /// <summary>
     /// returns the status of the call based on the current time and the call's properties
     /// </summary>
-    //public static bool CheckAddressCall(BO.Call call)
-    //{
-    //    try
-    //    {
-    //        var (lat, lon) = GeocodingHelper.GetCoordinates(call.FullAddress);
-    //        const double tolerance = 0.0001;
-    //        bool isLatitudeMatch = Math.Abs((double)(call.Latitude - lat)) < tolerance;
-    //        bool isLongitudeMatch = Math.Abs((double)(call.Longitude - lon)) < tolerance;
-    //        return isLatitudeMatch && isLongitudeMatch;
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        throw new Exception("Error fetching coordinates for the volunteer address.");
-    //    }
-    //}
+    public static bool CheckAddressCall(BO.Call call)
+    {
+        try
+        {
+            var (lat, lon) = GeocodingHelper.GetCoordinates(call.FullAddress);
+            const double tolerance = 0.0001;
+            bool isLatitudeMatch = Math.Abs((double)(call.Latitude - lat)) < tolerance;
+            bool isLongitudeMatch = Math.Abs((double)(call.Longitude - lon)) < tolerance;
+            return isLatitudeMatch && isLongitudeMatch;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error fetching coordinates for the volunteer address.");
+        }
+    }
 
-    
+
     public static BO.CallStatus GetCallStatus(DO.Call call, IEnumerable<DO.Assignment> assignments)
     {
         var now = DateTime.Now;

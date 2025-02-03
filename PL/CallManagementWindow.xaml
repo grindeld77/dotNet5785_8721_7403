@@ -8,7 +8,7 @@
         Title="Call Management" 
         Loaded="Window_Loaded" Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Height="640" Width="750">
+        Height="640" Width="900">
 
     <Window.Resources>
         <local:CallStatusToIsActiveConverter x:Key="CallStatusToIsActiveConverter" />
@@ -102,10 +102,16 @@
                       SelectedValue="{Binding SelectedFilter}" 
                       Style="{StaticResource ComboBoxStyle}" />
 
+            <Label Content="Filter by Type:" VerticalAlignment="Center" Style="{StaticResource LabelStyle}" />
+            <ComboBox ItemsSource="{Binding Source={StaticResource OpenCallCollectionTypeKey}}" 
+                      SelectedValue="{Binding SelectedFilter2}" 
+                      Style="{StaticResource ComboBoxStyle}" />
+
             <Label Content="Sort by:" VerticalAlignment="Center" Margin="20,0,0,0" Style="{StaticResource LabelStyle}" />
             <ComboBox ItemsSource="{Binding Source={StaticResource CallCollectionSortKey}}"
                       SelectedValue="{Binding SelectedSort}" 
                       Style="{StaticResource ComboBoxStyle}"/>
+            
         </StackPanel>
 
         <!-- Calls ListView -->
@@ -159,6 +165,7 @@
 
                     <GridViewColumn Header="Last Volunteer" DisplayMemberBinding="{Binding LastVolunteer}" Width="150" />
                     <GridViewColumn Header="Total Assignments" DisplayMemberBinding="{Binding TotalAssignments}" Width="150" />
+                    <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" Width="150" />
                 </GridView>
             </ListView.View>
         </ListView>

@@ -29,16 +29,17 @@ internal class CallImplementation : ICall
             if (boCall.OpenTime >= boCall.MaxEndTime)
                 throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
-            //(boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
+
+            (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
 
             var call = new DO.Call
             {
                 Id = boCall.Id,
                 Status = (DO.CallStatus)boCall.Status,
                 Type = (DO.CallType)boCall.Type,
-                Address = "",
-                Latitude = 0,
-                Longitude = 0,
+                Address = boCall.FullAddress,
+                Latitude = (double)boCall.Latitude,
+                Longitude = (double)boCall.Longitude,
                 OpenedAt = boCall.OpenTime,
                 MaxCompletionTime = boCall.MaxEndTime,
                 Description = boCall.Description
@@ -47,11 +48,8 @@ internal class CallImplementation : ICall
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Call.Create(call);
 
+            CallManager.SendCallOpenMail(boCall);
             CallManager.Observers.NotifyListUpdated(); //stage 5
-
-            DO.Call created = _dal.Call.Read(c => c.OpenedAt == call.OpenedAt && c.Type == call.Type && c.Description == call.Description && c.MaxCompletionTime == call.MaxCompletionTime);
-
-            _ = CallManager.AddressCalc(created with { Address = boCall.FullAddress });
         }
         catch (Exception)
         {
@@ -204,7 +202,7 @@ internal class CallImplementation : ICall
     /// <param name="sortField"></param>
     /// <returns></returns>
     /// <exception cref="BO.BlGeneralException"></exception>
-    IEnumerable<BO.CallInList> ICall.GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField)
+    IEnumerable<BO.CallInList> ICall.GetCalls(BO.CallStatus? filterField, object? filterValue, BO.CallInListFields? sortField, BO.CallType? filter2)
     {
         try
         {
@@ -243,6 +241,50 @@ internal class CallImplementation : ICall
                         callsList = callsList.Where(call => call.Status == BO.CallStatus.InProgressAtRisk);
                         break;
                     case BO.CallStatus.ALL:
+                        break;
+                }
+            }
+            if  (filter2 != null)
+            {
+                switch (filter2) // Filter the calls based on the specified field
+                {
+                    case BO.CallType.NotAllocated:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.NotAllocated);
+                        break;
+                    case BO.CallType.MedicalEmergency:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.MedicalEmergency);
+                        break;
+                    case BO.CallType.PatientTransport:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.PatientTransport);
+                        break;
+                    case BO.CallType.TrafficAccident:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.TrafficAccident);
+                        break;
+                    case BO.CallType.FirstAid:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.FirstAid);
+                        break;
+                    case BO.CallType.Rescue:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.Rescue);
+                        break;
+                    case BO.CallType.FireEmergency:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.FireEmergency);
+                        break;
+                    case BO.CallType.CardiacEmergency:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.CardiacEmergency);
+                        break;
+                    case BO.CallType.Poisoning:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.Poisoning);
+                        break;
+                    case BO.CallType.AllergicReaction:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.AllergicReaction);
+                        break;
+                    case BO.CallType.MassCausalities:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.MassCausalities);
+                        break;
+                    case BO.CallType.TerrorAttack:
+                        callsList = callsList.Where(call => call.CallType == BO.CallType.TerrorAttack);
+                        break;
+                    case BO.CallType.None:
                         break;
                 }
             }

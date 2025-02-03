@@ -46,6 +46,26 @@ namespace PL
             set => SetValue(SelectedFilterProperty, value);
         }
 
+
+
+        public static readonly DependencyProperty SelectedFilter2Property =
+            DependencyProperty.Register("SelectedFilter2", typeof(BO.CallType), typeof(CallManagementWindow),
+            new PropertyMetadata(BO.CallType.None, onSelectedFilter2Change));
+
+        private static void onSelectedFilter2Change(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var window = d as CallManagementWindow;
+            window?.queryCallList();
+        }
+
+        public BO.CallType SelectedFilter2
+        {
+            get => (BO.CallType)GetValue(SelectedFilter2Property);
+            set => SetValue(SelectedFilter2Property, value);
+        }
+
+
+
         public static readonly DependencyProperty SelectedSortProperty =
     DependencyProperty.Register("SelectedSort", typeof(BO.CallInListFields), typeof(CallManagementWindow),
     new PropertyMetadata(BO.CallInListFields.CallId, onSelectedSorChange));
@@ -114,11 +134,17 @@ namespace PL
             {
                 if (SelectedFilter == BO.CallStatus.ALL)
                 {
-                    CallList = s_bl.Call.GetCalls(BO.CallStatus.ALL, null, SelectedSort);
+                    if (SelectedFilter2 == BO.CallType.None)
+                        CallList = s_bl.Call.GetCalls(BO.CallStatus.ALL, null, SelectedSort, BO.CallType.None);
+                    else
+                        CallList = s_bl.Call.GetCalls(BO.CallStatus.ALL, null, SelectedSort, SelectedFilter2);
                 }
                 else
                 {
-                    CallList = s_bl.Call.GetCalls(SelectedFilter, null, SelectedSort);
+                    if (SelectedFilter2 == BO.CallType.None)
+                        CallList = s_bl.Call.GetCalls(SelectedFilter, null, SelectedSort, BO.CallType.None);
+                    else
+                        CallList = s_bl.Call.GetCalls(SelectedFilter, null, SelectedSort, SelectedFilter2);
                 }
             }
             catch (Exception ex)
