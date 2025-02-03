@@ -673,19 +673,19 @@
     <CompletionStatus>Handled</CompletionStatus>
   </Assignment>
   <Assignment>
-    <Id>85</Id>
-    <CallId>6</CallId>
-    <VolunteerId>206797359</VolunteerId>
-    <EntryTime>2025-02-02T13:54:47</EntryTime>
-    <CompletionTime>2025-02-02T13:55:47</CompletionTime>
-    <CompletionStatus>Handled</CompletionStatus>
+    <Id>48</Id>
+    <CallId>52</CallId>
+    <VolunteerId>301815841</VolunteerId>
+    <EntryTime>2025-02-01T22:19:33</EntryTime>
+    <CompletionTime xsi:nil="true" />
+    <CompletionStatus xsi:nil="true" />
   </Assignment>
   <Assignment>
-    <Id>86</Id>
-    <CallId>35</CallId>
-    <VolunteerId>232027466</VolunteerId>
-    <EntryTime>2025-02-02T14:10:47</EntryTime>
-    <CompletionTime>2025-02-02T14:11:47</CompletionTime>
+    <Id>46</Id>
+    <CallId>29</CallId>
+    <VolunteerId>299686618</VolunteerId>
+    <EntryTime>2025-02-01T22:18:33</EntryTime>
+    <CompletionTime>2025-02-01T22:19:33</CompletionTime>
     <CompletionStatus>Handled</CompletionStatus>
   </Assignment>
   <Assignment>
@@ -702,6 +702,14 @@
     <VolunteerId>218630424</VolunteerId>
     <EntryTime>2025-02-02T14:21:47</EntryTime>
     <CompletionTime>2025-02-02T14:22:47</CompletionTime>
+    <CompletionStatus>Handled</CompletionStatus>
+  </Assignment>
+  <Assignment>
+    <Id>48</Id>
+    <CallId>52</CallId>
+    <VolunteerId>301815841</VolunteerId>
+    <EntryTime>2025-02-01T22:19:33</EntryTime>
+    <CompletionTime>2025-02-01T22:19:33</CompletionTime>
     <CompletionStatus>Handled</CompletionStatus>
   </Assignment>
 </ArrayOfAssignment>
