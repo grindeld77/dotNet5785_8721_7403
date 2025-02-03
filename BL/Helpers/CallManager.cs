@@ -285,7 +285,7 @@ internal static class CallManager
             toAddress = new MailAddress(s_dal.Volunteer.Read(a.VolunteerId)!.Email, s_dal.Volunteer.Read(a.VolunteerId)!.FullName);
         const string fromPassword = "yhmg gvrn twft wqsx";
         const string subject = "Assignment Cancelation";
-        string body = "Your assignment is no longer under your treatment!\nThank you for your service.\nReason: " + a.CompletionStatus.ToString();
+        string body = "Your assignment is no longer under your treatment!\nThank you for your service.\n";
 
         var smtp = new SmtpClient
         {
