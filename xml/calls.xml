@@ -694,17 +694,6 @@
     <Status>Closed</Status>
   </Call>
   <Call>
-    <Id>52</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Car accident with multiple injuries.</Description>
-    <Address>Allenby St 35, Tel Aviv</Address>
-    <Latitude>32.0673</Latitude>
-    <Longitude>34.7702</Longitude>
-    <OpenedAt>2025-02-01T21:55:33</OpenedAt>
-    <MaxCompletionTime>2025-02-01T22:36:33</MaxCompletionTime>
-    <Status>InProgress</Status>
-  </Call>
-  <Call>
     <Id>29</Id>
     <Type>Poisoning</Type>
     <Description>Emergency response for a cardiac issue.</Description>
@@ -713,6 +702,17 @@
     <Longitude>35.2273</Longitude>
     <OpenedAt>2025-02-01T21:48:33</OpenedAt>
     <MaxCompletionTime>2025-02-01T23:12:33</MaxCompletionTime>
+    <Status>Closed</Status>
+  </Call>
+  <Call>
+    <Id>52</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident with multiple injuries.</Description>
+    <Address>Allenby St 35, Tel Aviv</Address>
+    <Latitude>32.0673</Latitude>
+    <Longitude>34.7702</Longitude>
+    <OpenedAt>2025-02-01T21:55:33</OpenedAt>
+    <MaxCompletionTime>2025-02-01T22:36:33</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
 </ArrayOfCall>
