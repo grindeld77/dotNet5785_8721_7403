@@ -101,7 +101,7 @@ namespace PL
                     CallStatus.OpenAtRisk => Brushes.Orange,       // פתוח בסיכון - כתום
                     CallStatus.InProgressAtRisk => Brushes.DarkOrange, // בתהליך בסיכון - כתום כהה
                     _ => Brushes.White
-                };  
+                };
             }
             return Brushes.White;
         }

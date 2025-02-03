@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using Dal;
 using System.Security.Cryptography;
+using BCrypt;
 
 public static class Initialization
 {
@@ -397,12 +398,7 @@ public static class Initialization
     "Injury during a rescue mission.",
     "shooting terror attack",
     "car crash on highway"
-};/*    Open,               //call is open
-    InProgress,         //call is in progress
-    Closed,             //call is closed
-    Expired,            //call expired
-    OpenAtRisk,         //call is open and at risk
-    InProgressAtRisk    //call is in progress and at risk*/
+};
 
         for (int i = 0; i < 45; i++)
         {
@@ -499,104 +495,7 @@ public static class Initialization
             s_dal!.Call.Create(callToAdd);
         }
     }
-    //private static void createAssignments()
-    //{
-    //    IEnumerable<Volunteer> volunteersList = s_dal!.Volunteer.ReadAll();
-    //    IEnumerable<Call> callsList = s_dal!.Call.ReadAll();
-
-    //    DateTime currentTime = DateTime.Now; // Get the current system time
-    //    int i = 0;
-    //    foreach (var call in callsList) // Iterate over all calls
-    //    {
-
-
-    //        // Select a random volunteer from the list
-    //        int index = s_rand.Next(0, volunteersList.Count());
-    //        Volunteer selectedVolunteer = volunteersList.Skip(index).Take(1).FirstOrDefault();
-
-    //        // Set StartTime to be between the call's opening time and the current time
-    //        DateTime StartTime = call.OpenedAt.AddMinutes(s_rand.Next(1, Math.Max(1, (int)(currentTime - call.OpenedAt).TotalMinutes)) % 36);
-    //        DateTime? EndTime = null;
-    //        CompletionStatus? status;
-
-
-    //        switch (call.Status)
-    //        {
-    //            case CallStatus.Open:
-    //                {
-    //                    if (i % 5 == 0)
-    //                        continue;
-    //                    else
-    //                    {
-    //                        status = null;
-    //                        EndTime = call.MaxCompletionTime.HasValue && call.MaxCompletionTime < currentTime
-    //                            ? call.MaxCompletionTime
-    //                            : StartTime.AddMinutes(s_rand.Next(1, 60));
-    //                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-    //                        s_dal!.Assignment.Create(assignmentToAdd);
-    //                    }
-    //                }
-    //                break;
-    //            case CallStatus.Expired:
-    //                {
-    //                    if (i % 5 == 0)
-    //                        continue;
-    //                    else
-    //                    {
-    //                        status = CompletionStatus.Expired;
-    //                        if (call.MaxCompletionTime.HasValue)
-    //                        {
-    //                            EndTime = call.MaxCompletionTime.Value.AddMinutes(-s_rand.Next(1, 60));
-    //                        }
-    //                        else
-    //                        {
-    //                            EndTime = currentTime.AddMinutes(-s_rand.Next(1, 180)); // Ensure it's in the past
-    //                        }
-    //                        Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-    //                        s_dal!.Assignment.Create(assignmentToAdd);
-    //                    }
-    //                }
-    //                break;
-    //            case CallStatus.InProgressAtRisk:
-    //            case CallStatus.InProgress:
-    //                {
-    //                    status = null;
-    //                    EndTime = null; // Still ongoing
-    //                    Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-    //                    s_dal!.Assignment.Create(assignmentToAdd);
-    //                }
-    //                break;
-    //            case CallStatus.Closed:
-    //                {
-    //                    status = CompletionStatus.Handled;
-    //                    // חישוב הזמן המקסימלי האפשרי ל-EndTime
-    //                    DateTime maxEndTime = (DateTime)((currentTime < call.MaxCompletionTime) ? currentTime : call.MaxCompletionTime);
-
-    //                    // יצירת EndTime בתחום בין StartTime לבין maxEndTime
-
-    //                    if (StartTime < maxEndTime)
-    //                    {
-    //                        TimeSpan maxDuration = maxEndTime - StartTime; // טווח מרבי
-    //                        EndTime = StartTime.AddMinutes(s_rand.Next(1, (int)maxDuration.TotalMinutes + 1));
-    //                    }
-    //                    else
-    //                    {
-    //                        // אם StartTime גדול או שווה ל-maxEndTime, קובעים ש-EndTime יהיה שווה ל-maxEndTime
-    //                        EndTime = maxEndTime;
-    //                    }
-    //                    Assignment assignmentToAdd = new Assignment(0, call.Id, selectedVolunteer.Id, StartTime, EndTime, status);
-    //                    s_dal!.Assignment.Create(assignmentToAdd);
-    //                }
-    //                break;
-
-    //            case CallStatus.OpenAtRisk:
-    //                break;
-
-    //        }
-
-    //        i++;
-    //    }
-    //}
+ 
     public static void createAssignment()
     {
         var allCalls = s_dal!.Call.ReadAll();
@@ -670,13 +569,22 @@ public static class Initialization
     }
     // Helper method to generate a random alphanumeric password
     private static string GenerateRandomPassword(int minLength, int maxLength)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            int length = s_rand.Next(minLength, maxLength + 1);
-            return new string(Enumerable.Repeat(chars, length).Select(s => s[s_rand.Next(s.Length)]).ToArray());
-        }
+    {
+        Random s_rand = new Random(); // אובייקט אקראי בתוך הפונקציה
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int length = s_rand.Next(minLength, maxLength + 1);
 
-        public static void Do()//stage 4
+        // יצירת סיסמה אקראית
+        string randomPassword = new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[s_rand.Next(s.Length)]).ToArray());
+
+        // גיבוב הסיסמה באמצעות BCrypt
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(randomPassword);
+
+        return hashedPassword; // מחזיר את הסיסמה המחושבת
+    }
+
+    public static void Do()//stage 4
         {
             s_dal = DalApi.Factory.Get; //stage 4
             s_dal.ResetDB();

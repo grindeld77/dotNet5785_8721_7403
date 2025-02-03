@@ -1,6 +1,7 @@
 ﻿namespace DO;
 
-/// <summary>
+/// <summary>Install-Package BCrypt.Net-Next
+
 /// Call Entity represents a call request with all its properties.
 /// </summary>
 /// <param name="Id">Unique identifier for the call</param>
