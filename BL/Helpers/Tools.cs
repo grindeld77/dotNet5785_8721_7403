@@ -10,11 +10,6 @@ using System.Text;
 using System.Xml.Linq;
 internal static class Tools
 {
-    public static bool IsValidAddress(string fullAddress, out double latitude, out double longitude) // Validate the address and return the latitude and longitude by using a geocoding service
-    {
-        throw new NotImplementedException();
-    }
-
     public static string ToStringProperty<T>(this T t)
     {
         if (t == null)

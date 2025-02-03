@@ -113,8 +113,8 @@ public static class Initialization
 
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@ail.com";
-            string password = GenerateRandomPassword(6, 10);
-            Volunteer volunteerToAdd;
+            string password = s_rand.Next(10000000, 99999999).ToString();
+            Volunteer volunteerToAdd;   
 
             if (i == 1 || i == 2)
             {

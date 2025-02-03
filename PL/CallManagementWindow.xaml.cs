@@ -197,8 +197,6 @@ namespace PL
         {
             if (SelectedCall != null)
             {
-                try
-                {
                     if (MessageBox.Show("Are you sure you want to unassign the selected call?", "Confirm Unassignment",
                         MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
@@ -206,11 +204,6 @@ namespace PL
                         s_bl.Call.CancelCallAssignment(id , (int)SelectedCall.AssignmentId); //to do: fix this, this is not the correct way to unassign a call
                         callListObserver();
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error unassigning call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
         }
     }

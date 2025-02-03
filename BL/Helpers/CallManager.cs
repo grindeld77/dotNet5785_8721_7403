@@ -249,9 +249,6 @@ internal static class CallManager
         if (call.OpenTime >= call.MaxEndTime)
             throw new ArgumentException("Open time must be earlier than the maximum finish time.");
 
-        if (!Tools.IsValidAddress(call.FullAddress, out double latitude, out double longitude))
-          throw new ArgumentException("Address is not valid.");
-
         // Convert BO.Call to DO.Call
         var doCall = new DO.Call
         {
