@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PL"
         Title="Volunteers Management" Height="850" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        >
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <local:Converters x:Key="Converters" />
         <BooleanToVisibilityConverter x:Key="InverseBooleanConverter" />
@@ -77,13 +76,13 @@
             <!-- ID -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="ID:" Width="100" VerticalAlignment="Center" Foreground="#D32F2F" FontSize="20"  FontWeight="Bold"/>
-                <TextBox Text="{Binding CurrentVolunteer.Id}" Style="{StaticResource TextBoxStyle}" IsReadOnly="{Binding IsAddMode, Converter={StaticResource InverseBooleanConverter}}" />
+                <TextBox Text="{Binding CurrentVolunteer.Id}" Style="{StaticResource TextBoxStyle}" IsReadOnly="{Binding IsUpdateMode}" />
             </StackPanel>
 
             <!-- Password -->
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <TextBlock Text="Password:" Width="100" VerticalAlignment="Center" Foreground="#D32F2F" FontSize="20"  FontWeight="Bold"/>
-                <TextBox Text="{Binding CurrentVolunteer.PasswordHash}" Style="{StaticResource TextBoxStyle}" />
+                <TextBox Text="{Binding CurrentVolunteer.PasswordHash}" Style="{StaticResource TextBoxStyle}" IsReadOnly="{Binding IsUpdateMode}" />
             </StackPanel>
 
             <!-- Full Name -->
@@ -126,7 +125,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,20" HorizontalAlignment="Center">
                 <Button Content="{Binding ButtonText}" Click="SaveButton_Click" Style="{StaticResource RoundedButtonStyle}" />
                 <Button Content="Cancel" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}" />
-                <Button Content="Delete" Click="DeleteButton_Click" Visibility="{Binding IsDeleteButtonVisible, Converter={StaticResource Converters}}" Style="{StaticResource RoundedButtonStyle}" />
+                <Button Content="Delete" Click="DeleteButton_Click" Visibility="{Binding IsDeleteButtonVisible}" Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Call;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using static PL.Helpers;
@@ -36,11 +37,37 @@ namespace PL.Volunteer
         public Array Roles
         {
             get => (Array)GetValue(RolesProperty);
-            set => SetValue(RolesProperty, value);
+            set => SetValue(RolesProperty, value); 
         }
 
-        private int _volunteerId;
-        public bool IsAddMode { get; set; }
+        private int _volunteerId; 
+
+        public static readonly DependencyProperty IsAddModeProperty =
+                    DependencyProperty.Register("IsAddMode", typeof(bool), typeof(VolunteerWindow));
+
+        public bool IsAddMode
+        {
+            get => (bool)GetValue(IsAddModeProperty);
+            set => SetValue(IsAddModeProperty, value);
+        }
+
+        public static readonly DependencyProperty IsUpdateModeProperty =
+                    DependencyProperty.Register("IsUpdateMode", typeof(bool), typeof(VolunteerWindow));
+
+        public bool IsUpdateMode
+        {
+            get => (bool)GetValue(IsUpdateModeProperty);
+            set => SetValue(IsUpdateModeProperty, value);
+        }
+
+        public static readonly DependencyProperty IsDeleteButtonVisibleProperty =
+                    DependencyProperty.Register("IsDeleteButtonVisible", typeof(Visibility), typeof(VolunteerWindow), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility IsDeleteButtonVisible
+        {
+            get => (Visibility)GetValue(IsDeleteButtonVisibleProperty);
+            set => SetValue(IsDeleteButtonVisibleProperty, value);
+        }
 
         public VolunteerWindow(int requesting, int id = 0)
         {
@@ -50,15 +77,18 @@ namespace PL.Volunteer
             {
                 CurrentVolunteer = new BO.Volunteer();
                 ButtonText = "Add";
+                IsDeleteButtonVisible = Visibility.Collapsed;
                 IsAddMode = true;
+                IsUpdateMode = false;
             }
             else
             {
                 CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
                 ButtonText = "Update";
                 IsAddMode = false;
+                IsDeleteButtonVisible =  Visibility.Visible;
+                IsUpdateMode = true;
             }
-
             _volunteerId = requesting;
 
            Roles = Enum.GetValues(typeof(BO.Role));
@@ -78,32 +108,25 @@ namespace PL.Volunteer
 
         //private void Window_Loaded(object sender, RoutedEventArgs e)
         //{
-        //    try
+        //    if (!IsAddMode)
         //    {
-        //        if (CurrentVolunteer != null && CurrentVolunteer.Id > 0)
-        //        {
-        //            s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, volunteerObserver);
-        //        }
+        //        s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, volunteerObserver);
         //    }
-        //    catch (Exception ex)
+        //    else
         //    {
-        //        MessageBox.Show($"Error during Window_Loaded: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        CurrentVolunteer = new BO.Volunteer();
         //    }
         //}
 
         //private void Window_Closed(object sender, EventArgs e)
         //{
-        //    try
+        //    if (CurrentVolunteer == null)
         //    {
-        //        if (CurrentVolunteer != null && CurrentVolunteer.Id > 0)
-        //        {
-        //            s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, volunteerObserver);
-        //        }
-        //        s_bl.Volunteer.RemoveObserver(UpdateVolunteersList);
+        //        s_bl.Volunteer.RemoveObserver(volunteerObserver);
         //    }
-        //    catch (Exception ex)
+        //    else
         //    {
-        //        MessageBox.Show($"Error during Window_Closed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        s_bl.Volunteer.RemoveObserver(CurrentVolunteer!.Id, volunteerObserver);
         //    }
         //}
 
@@ -115,12 +138,13 @@ namespace PL.Volunteer
                 if (ButtonText == "Add")
                 {
                     s_bl.Volunteer.AddVolunteer(CurrentVolunteer);
+                    Close();
                 }
                 else
                 {
                     s_bl.Volunteer.UpdateVolunteer(_volunteerId, CurrentVolunteer);
+                    volunteerObserver();
                 }
-                volunteerObserver();
                 MessageBox.Show("Volunteer saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)

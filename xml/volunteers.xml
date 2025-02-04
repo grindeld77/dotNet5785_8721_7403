@@ -210,4 +210,32 @@
     <MaxCallDistance>35</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
+  <Volunteer>
+    <Id>328308721</Id>
+    <FullName>Omar Rafael</FullName>
+    <MobilePhone>0598138457</MobilePhone>
+    <Email>omar.rafael@ail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>1</Password>
+    <CurrentAddress>Horev St 17, Haifa</CurrentAddress>
+    <Latitude>32.7811</Latitude>
+    <Longitude>35.0105</Longitude>
+    <MaxCallDistance>41</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>323241265</Id>
+    <FullName>shimon khakshour</FullName>
+    <MobilePhone>0585557364</MobilePhone>
+    <Email>shimony2017@gmail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>shimon78900</Password>
+    <CurrentAddress>Meir Gershon 38, Jerusalem</CurrentAddress>
+    <Latitude>31.8196243</Latitude>
+    <Longitude>35.2488009</Longitude>
+    <MaxCallDistance />
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
 </Volunteers>
