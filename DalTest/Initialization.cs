@@ -9,13 +9,34 @@ using System.Collections;
 using Dal;
 using System.Security.Cryptography;
 using BCrypt;
+using System.Text;
+using System.Numerics;
 
 public static class Initialization
 {
+    public static string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha256.ComputeHash(bytes);
+            return Convert.ToBase64String(hashBytes);
+        }
+    }
+
+
     private static readonly Random s_rand = new();
     private static IDal? s_dal;
     private static void createVolunteers()
     {
+
+        Volunteer volunteer = new Volunteer(328308721, "Shimon Khakshour", "0585557364", "shimon78900@gmail.com", Role.Admin, true, HashPassword("shimon78900"), "HaShalom St 12, Herzliya", 32.1676, 34.8346, 50);
+        s_dal!.Volunteer.Create(volunteer);
+
+        Volunteer volunteer1 = new Volunteer(315407403, "Levi Grinfeld", "0534908895", "3610321@gmail.com", Role.Admin, true, HashPassword("3610321"), "Kfar Chabad, Lakuti Sichot Street 25", 34.849103, 31.990144, 55);
+        s_dal!.Volunteer.Create(volunteer1);
+
+
         // for those information i used in AI to get logical data for the volunteers (the address, the phone number, the email, the name)
         string[] volunteerNames =
             {
@@ -114,16 +135,12 @@ public static class Initialization
             string phone = "05" + s_rand.Next(10000000, 99999999).ToString();
             string email = volunteerNames[i].Replace(" ", ".").ToLower() + "@ail.com";
             string password = s_rand.Next(10000000, 99999999).ToString();
+            string encryptedPassword = HashPassword(password);
+
             Volunteer volunteerToAdd;   
 
-            if (i == 1 || i == 2)
-            {
-                volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Admin, true, password, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
-            }
-            else
-            {
-                volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Volunteer, true, password, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
-            }
+                volunteerToAdd = new Volunteer(id, volunteerNames[i], phone, email, Role.Volunteer, true, encryptedPassword, volunteerAddresses[i], volunteerLatitudes[i], volunteerLongitudes[i], distance);
+
             s_dal.Volunteer.Create(volunteerToAdd);
         }
     }

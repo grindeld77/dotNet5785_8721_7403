@@ -25,7 +25,10 @@ namespace PL
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         private volatile DispatcherOperation? _observerOperation = null; //stage 7
-
+        public class YourViewModel
+        {
+            public string Password { get; set; }
+        }
         public BO.Volunteer? CurrentVolunteer
         {
             get { return (BO.Volunteer)GetValue(CurrentVolunteerProperty); }
@@ -110,6 +113,11 @@ namespace PL
 
         private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
         {
+            string newPassword = NewPasswordTextBox.Text;
+            if (!string.IsNullOrEmpty(newPassword))
+            {
+                CurrentVolunteer.PasswordHash = newPassword;
+            }
             try
             {
                 s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
@@ -194,7 +202,6 @@ namespace PL
                 MessageBox.Show($"Failed to refresh data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

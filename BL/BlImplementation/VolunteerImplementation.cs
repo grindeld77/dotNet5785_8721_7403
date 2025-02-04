@@ -7,6 +7,8 @@ using DalApi;
 using Helpers;
 using System;
 using System.Security.AccessControl;
+using System.Text;
+using System.Security.Cryptography;
 
 internal class VolunteerImplementation : BlApi.IVolunteer
 {
@@ -19,9 +21,32 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <param name="password"></param>
     /// <returns></returns>
     /// <exception cref="BO.BlInvalidIdentificationException"></exception>
+    /// 
+
+    //string BlApi.IVolunteer.Login(int id, string password)
+    //{
+    //    DO.Volunteer? volunteer;
+    //    lock (AdminManager.BlMutex) //stage 7
+    //        volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
+
+    //    if (volunteer == null)
+    //    {
+    //        throw new BO.BlInvalidIdentificationException("This ID is not found.");
+    //    }
+
+    //    if (volunteer.Password != password)
+    //    {
+    //        throw new BO.BlInvalidIdentificationException("The password is incorrect.");
+    //    }
+    //    return volunteer.Role.ToString();
+    //}
+
     string BlApi.IVolunteer.Login(int id, string password)
     {
+        //return "Admin";
         DO.Volunteer? volunteer;
+
+        // קריאת המתנדב מתוך ה-DAL לפי ה-ID
         lock (AdminManager.BlMutex) //stage 7
             volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
 
@@ -30,8 +55,35 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             throw new BO.BlInvalidIdentificationException("This ID is not found.");
         }
 
+        // הצפנת הסיסמה שהוזנה
+        string encryptedPassword = HashPassword(password);
+
+        // השוואת הסיסמה המוצפנת לזו השמורה במערכת
+        if (encryptedPassword != volunteer.Password)
+        {
+            throw new BO.BlInvalidIdentificationException("The password is incorrect.");
+        }
+
+        // אם הסיסמה נכונה, מחזירים את התפקיד של המתנדב
         return volunteer.Role.ToString();
     }
+
+    // פונקציה להצפנת הסיסמה באמצעות SHA256
+    private string HashPassword(string password)
+    {
+        if (password == null)
+        {
+            return null;
+        }
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha256.ComputeHash(bytes);
+            return Convert.ToBase64String(hashBytes);
+        }
+    }
+
+
 
     /// <summary>
     /// Retrieves a collection of active volunteers in the system.
@@ -192,7 +244,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 Email = volunteer.Email ?? doVolunteere.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = doVolunteere.IsActive,
-                Password = doVolunteere.Password,
+                Password = HashPassword(volunteer.PasswordHash) ?? doVolunteere.Password,
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
                 Latitude = doVolunteere.Latitude,
                 Longitude = doVolunteere.Longitude,
@@ -210,11 +262,14 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             CallManager.Observers.NotifyListUpdated();
 
             // חישוב קואורדינטות בצורה אסינכרונית
-            var updatedVolunteer = await Tools.UpdateCoordinatesForVolunteerAsync(doVolunteerNew, volunteer.FullAddress);
+            if(volunteer.FullAddress!= doVolunteere.CurrentAddress)
+            {
+                var updatedVolunteer = await Tools.UpdateCoordinatesForVolunteerAsync(doVolunteerNew, volunteer.FullAddress);
 
-            // עדכון ה-DAL עם המתנדב המעודכן
-            lock (AdminManager.BlMutex)
-                _dal.Volunteer.Update(updatedVolunteer);
+                // עדכון ה-DAL עם המתנדב המעודכן
+                lock (AdminManager.BlMutex)
+                    _dal.Volunteer.Update(updatedVolunteer);
+            }
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -249,7 +304,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 Email = volunteer.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = volunteer.IsActive,
-                Password = volunteer.PasswordHash, // שמירת הסיסמה כפי שהיא
+                Password = HashPassword(volunteer.PasswordHash), // שמירת הסיסמה כפי שהיא
                 CurrentAddress = volunteer.FullAddress,
                 Latitude = null, // ערכים ראשוניים כ-null
                 Longitude = null,

@@ -106,12 +106,13 @@
                     <TextBox Text="{Binding CurrentVolunteer.Email}" Width="300"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="Password Hash:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.PasswordHash}" Width="300"/>
+                    <TextBlock Text="New password:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <TextBox x:Name="NewPasswordTextBox" Width="300"/>
                 </StackPanel>
+
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Full Address:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Width="300"/>
+                    <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Width="300" TextChanged="TextBox_TextChanged"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Role:" Width="200" VerticalAlignment="Center" FontWeight="Bold"/>
