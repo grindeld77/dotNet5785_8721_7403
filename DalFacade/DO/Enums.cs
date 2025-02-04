@@ -27,7 +27,7 @@ public enum CallType
     MassCausalities,     // Mass casualties
     TerrorAttack,        // Terror attack
     None                 // No call type
-}
+} 
 public enum CompletionStatus
 {
     Handled, //call was handled
