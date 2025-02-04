@@ -715,4 +715,37 @@
     <MaxCompletionTime>2025-02-04T18:19:02</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
+  <Call>
+    <Id>65</Id>
+    <Type>FireEmergency</Type>
+    <Description>fire!</Description>
+    <Address>Meir gershon 38, Jerusalem</Address>
+    <Latitude>31.8196243</Latitude>
+    <Longitude>35.2488009</Longitude>
+    <OpenedAt>2025-02-04T17:30:02</OpenedAt>
+    <MaxCompletionTime>2025-02-04T18:30:02</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>66</Id>
+    <Type>CardiacEmergency</Type>
+    <Description>heart attack old woman</Description>
+    <Address>Horev St 17, Haifa</Address>
+    <Latitude>32.7803661</Latitude>
+    <Longitude>34.9916436</Longitude>
+    <OpenedAt>2025-02-04T17:30:02</OpenedAt>
+    <MaxCompletionTime>2025-02-04T18:30:02</MaxCompletionTime>
+    <Status>Open</Status>
+  </Call>
+  <Call>
+    <Id>67</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Car accident </Description>
+    <Address>Horev 5, haifa</Address>
+    <Latitude>32.7812232</Latitude>
+    <Longitude>34.9908479</Longitude>
+    <OpenedAt>2025-02-04T17:30:02</OpenedAt>
+    <MaxCompletionTime>2025-02-04T18:30:02</MaxCompletionTime>
+    <Status>Closed</Status>
+  </Call>
 </ArrayOfCall>
