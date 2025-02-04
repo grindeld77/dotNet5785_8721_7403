@@ -12,6 +12,7 @@
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <local:SimulatorButtonContentConverter x:Key="SimulatorButtonContentConverter"/>
         <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <local:BoolToCheckmarkConverter x:Key="BoolToCheckmarkConverter"/>
 
         <ResourceDictionary x:Key="Theme">
             <ResourceDictionary.MergedDictionaries>

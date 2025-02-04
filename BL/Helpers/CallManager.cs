@@ -99,7 +99,7 @@ internal static class CallManager
         lock (AdminManager.BlMutex) //stage 7
         {
             return from a in list
-                   let c = s_dal.Call.Read(a.VolunteerId)
+                   let c = s_dal.Call.Read(a.CallId)
                    where a.CompletionStatus != null
                     select new BO.ClosedCallInList
                     {

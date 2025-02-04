@@ -116,7 +116,15 @@
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
-                    <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
+                    <GridViewColumn Header="Is Active" Width="150" 
+                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding IsActive, Converter={StaticResource BoolToCheckmarkConverter}}" 
+                       FontSize="16" FontWeight="Bold"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Completed Calls" DisplayMemberBinding="{Binding TotalCompletedCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Cancelled Calls" DisplayMemberBinding="{Binding TotalCancelledCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
                     <GridViewColumn Header="Expired Calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="150" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}"/>
