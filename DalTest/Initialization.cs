@@ -33,7 +33,7 @@ public static class Initialization
         Volunteer volunteer = new Volunteer(328308721, "Shimon Khakshour", "0585557364", "shimon78900@gmail.com", Role.Admin, true, HashPassword("shimon78900"), "HaShalom St 12, Herzliya", 32.1676, 34.8346, 50);
         s_dal!.Volunteer.Create(volunteer);
 
-        Volunteer volunteer1 = new Volunteer(315407403, "Levi Grinfeld", "0534908895", "3610321@gmail.com", Role.Admin, true, HashPassword("grinfeld770"), "Kfar Chabad, Lakuti Sichot Street 25", 34.849103, 31.990144, 55);
+        Volunteer volunteer1 = new Volunteer(315407403, "Levi Grinfeld", "0534908895", "3610321@gmail.com", Role.Volunteer, true, HashPassword("grinfeld770"), "Kfar Chabad, Lakuti Sichot Street 25", 34.849103, 31.990144, 55);
         s_dal!.Volunteer.Create(volunteer1);
 
 
