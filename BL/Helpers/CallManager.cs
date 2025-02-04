@@ -309,15 +309,15 @@ internal static class CallManager
     private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
     internal static async Task SendCallOpenMail(BO.Call call)
     {
-        List<DO.Volunteer> doVolunteers;
-        await _semaphore.WaitAsync(); // מחכה לנעילה אסינכרונית
+        IEnumerable<DO.Volunteer> doVolunteers;
+        await _semaphore.WaitAsync();
         try
         {
-            doVolunteers = s_dal.Volunteer.ReadAll().ToList();
+            doVolunteers = s_dal.Volunteer.ReadAll();
         }
         finally
         {
-            _semaphore.Release(); // משחרר את הנעילה
+            _semaphore.Release();
         }
 
         var Volunteers = doVolunteers.Where(volunteer => volunteer.MaxCallDistance >= VolunteerManager.CalculateDistance((double)volunteer.Latitude, (double)volunteer.Longitude, (double)call.Latitude, (double)call.Longitude))
@@ -326,7 +326,7 @@ internal static class CallManager
         {
             var fromAddress = new MailAddress("shimon78900@gmail.com");
             MailAddress? toAddress = null;
-            await _semaphore.WaitAsync(); // מחכה לנעילה אסינכרונית 
+            await _semaphore.WaitAsync(); 
             try
             {
                 var volunteerData = s_dal.Volunteer.Read(Volunteer.Id);
