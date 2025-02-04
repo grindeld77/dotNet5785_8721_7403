@@ -101,12 +101,13 @@ namespace PL.Call
                 if (ButtonText == "Add")
                 {
                     s_bl.Call.AddCall(CurrentCall);
+                    Close();
                 }
                 else
                 {
                     s_bl.Call.UpdateCall(CurrentCall);
+                    callObserver();
                 }
-                callObserver();
                 MessageBox.Show("Call saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
