@@ -1,11 +1,14 @@
-﻿namespace BlImplementation;
+﻿using static Helpers.Tools;
+
+namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
 using Helpers;
+using System;
 using System.Security.AccessControl;
 
-
-internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : BlApi.IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
@@ -16,7 +19,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="password"></param>
     /// <returns></returns>
     /// <exception cref="BO.BlInvalidIdentificationException"></exception>
-    string IVolunteer.Login(int id, string password)
+    string BlApi.IVolunteer.Login(int id, string password)
     {
         DO.Volunteer? volunteer;
         lock (AdminManager.BlMutex) //stage 7
@@ -37,7 +40,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="VolunteerParameter"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    IEnumerable<BO.VolunteerInList> IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter, BO.CallType? type)
+    IEnumerable<BO.VolunteerInList> BlApi.IVolunteer.GetVolunteers(bool? isActive, BO.VolunteerFieldVolunteerInList? VolunteerParameter, BO.CallType? type)
     {
         IEnumerable<DO.Volunteer> doVolunteers;
         IEnumerable<BO.VolunteerInList> volunteerInLists = null;
@@ -138,7 +141,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="BO.BlGeneralException"></exception>
-    BO.Volunteer IVolunteer.GetVolunteerDetails(int id)
+    BO.Volunteer BlApi.IVolunteer.GetVolunteerDetails(int id)
     {
         try
         {
@@ -164,26 +167,21 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="Exception"></exception>
     /// <exception cref="BO.BloesNotExistException"></exception>
     /// <exception cref="BO.BlGeneralException"></exception>
-    void IVolunteer.UpdateVolunteer(int requesterId, BO.Volunteer volunteer)
+    /// 
+    public async Task UpdateVolunteer(int requesterId, Volunteer volunteer)
     {
-        AdminManager.ThrowOnSimulatorIsRunning(); 
+        AdminManager.ThrowOnSimulatorIsRunning();
 
         try
         {
             DO.Volunteer doVolunteere;
-            lock (AdminManager.BlMutex) 
+            lock (AdminManager.BlMutex)
                 doVolunteere = _dal.Volunteer.Read(requesterId);
 
             if (requesterId != volunteer.Id && doVolunteere.Role != DO.Role.Admin)
                 throw new BO.BlInvalidRequestException("You are not authorized to update this volunteer.");
 
-            VolunteerManager.ValidateVolunteerData(volunteer); 
-            DO.Role Pos = doVolunteere.Role;
-
-            if ((doVolunteere.Role.ToString() != volunteer.Role.ToString()) && Pos != DO.Role.Admin)
-            {
-                throw new Exception("A volunteer could not change roles.");
-            }
+            VolunteerManager.ValidateVolunteerData(volunteer);
 
             // יצירת אובייקט מעודכן
             DO.Volunteer doVolunteerNew = new DO.Volunteer
@@ -194,19 +192,15 @@ internal class VolunteerImplementation : IVolunteer
                 Email = volunteer.Email ?? doVolunteere.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = doVolunteere.IsActive,
-                Password = doVolunteere.Password, // אחרת שמירת הסיסמה הקיימת
+                Password = doVolunteere.Password,
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0
-                    ? doVolunteere.Latitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0
-                    ? doVolunteere.Longitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                Latitude = doVolunteere.Latitude,
+                Longitude = doVolunteere.Longitude,
                 MaxCallDistance = volunteer.MaxDistanceForCall ?? doVolunteere.MaxCallDistance,
                 DistancePreference = doVolunteere.DistancePreference,
             };
 
-            // שמירת העדכון בבסיס הנתונים
+            // שמירת העדכון בבסיס הנתונים ללא שינוי קואורדינטות
             lock (AdminManager.BlMutex)
                 _dal.Volunteer.Update(doVolunteerNew);
 
@@ -215,6 +209,12 @@ internal class VolunteerImplementation : IVolunteer
             VolunteerManager.Observers.NotifyListUpdated();
             CallManager.Observers.NotifyListUpdated();
 
+            // חישוב קואורדינטות בצורה אסינכרונית
+            var updatedVolunteer = await Tools.UpdateCoordinatesForVolunteerAsync(doVolunteerNew, volunteer.FullAddress);
+
+            // עדכון ה-DAL עם המתנדב המעודכן
+            lock (AdminManager.BlMutex)
+                _dal.Volunteer.Update(updatedVolunteer);
         }
         catch (DO.DalDoesNotExistException)
         {
@@ -235,13 +235,12 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlException"></exception>
     public void AddVolunteer(BO.Volunteer volunteer)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.ThrowOnSimulatorIsRunning(); // stage 7
         VolunteerManager.ValidateVolunteerData(volunteer); // Validate volunteer data
+
         try
         {
-            // הצפנת הסיסמה
-            //string hashedPassword = VolunteerManager.HashPassword(volunteer.PasswordHash);
-
+            // יצירת אובייקט ה-DO ללא קואורדינטות
             DO.Volunteer doVolunteer = new DO.Volunteer
             {
                 Id = volunteer.Id,
@@ -250,22 +249,43 @@ internal class VolunteerImplementation : IVolunteer
                 Email = volunteer.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = volunteer.IsActive,
-                Password = volunteer.PasswordHash, // שמירת הסיסמה המוצפנת
+                Password = volunteer.PasswordHash, // שמירת הסיסמה כפי שהיא
                 CurrentAddress = volunteer.FullAddress,
-                Latitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude == 0
-                    ? volunteer.Latitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Latitude,
-                Longitude = Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude == 0
-                    ? volunteer.Longitude
-                    : Tools.GeocodingHelper.GetCoordinates(volunteer.FullAddress).Longitude,
+                Latitude = null, // ערכים ראשוניים כ-null
+                Longitude = null,
                 MaxCallDistance = volunteer.MaxDistanceForCall,
                 DistancePreference = (DO.DistanceType)volunteer.DistanceType,
             };
 
-            lock (AdminManager.BlMutex) //stage 7
-                _dal.Volunteer.Create(doVolunteer); // Attempt to add the volunteer
-            VolunteerManager.Observers.NotifyListUpdated(); // Notify observers that the volunteer list has been updated.
+            // שמירת הנתונים הראשוניים ב-DAL
+            lock (AdminManager.BlMutex)
+            {
+                _dal.Volunteer.Create(doVolunteer);
+            }
 
+            // עדכון התצוגה
+            VolunteerManager.Observers.NotifyListUpdated();
+
+            // קריאה לחישוב הקואורדינטות בצורה אסינכרונית
+            _ = UpdateCoordinatesForVolunteerAsync(doVolunteer, volunteer.FullAddress)
+                .ContinueWith(task =>
+                {
+                    if (task.IsCompletedSuccessfully)
+                    {
+                        var updatedVolunteer = task.Result;
+                        lock (AdminManager.BlMutex)
+                        {
+                            _dal.Volunteer.Update(updatedVolunteer); // עדכון הקואורדינטות ב-DAL
+                        }
+                        VolunteerManager.Observers.NotifyItemUpdated(updatedVolunteer.Id); // עדכון תצוגה
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        // טיפול בשגיאה (למשל: כתובת לא תקינה, בעיית רשת)
+                        // אפשר להוסיף לוג או הודעה לממשק המשתמש
+                        Console.WriteLine($"Failed to update coordinates for volunteer {volunteer.Id}: {task.Exception}");
+                    }
+                });
         }
         catch (DO.DalAlreadyExistsException)
         {
@@ -277,6 +297,9 @@ internal class VolunteerImplementation : IVolunteer
         }
     }
 
+
+
+
     /// <summary>
     /// Deletes a volunteer from the system.
     /// </summary>
@@ -284,7 +307,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlInvalidOperationException"></exception>
     /// <exception cref="BO.BloesNotExistException"></exception>
     /// <exception cref="BO.BlGeneralException"></exception>
-    void IVolunteer.DeleteVolunteer(int id)
+    void BlApi.IVolunteer.DeleteVolunteer(int id)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         DO.Assignment chak;
@@ -326,5 +349,8 @@ internal class VolunteerImplementation : IVolunteer
     // Removes an observer for a specific volunteer.
     public void RemoveObserver(int id, Action observer) =>
     VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+
+
+
     #endregion Stage 5
 }

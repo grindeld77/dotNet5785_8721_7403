@@ -14,24 +14,30 @@ internal class CallImplementation : ICall
     /// Add a new call to the system.
     /// </summary>
     /// <param name="boCall"></param>
-    void ICall.AddCall(BO.Call boCall)
+    /// 
+
+    public async Task AddCall(BO.Call boCall)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.ThrowOnSimulatorIsRunning(); // שלב 7
+
         try
         {
-            // Validate the call object
+            // בדוק אם האובייקט אינו null
             if (boCall == null)
                 throw new BO.BloesNotExistException(nameof(boCall));
-            
+
+            // בדוק אם הכתובת תקינה
             if (string.IsNullOrWhiteSpace(boCall.FullAddress))
                 throw new BO.BlInvalidAddressException("Address is required.");
 
+            // בדוק אם זמן פתיחה תקין
             if (boCall.OpenTime >= boCall.MaxEndTime)
                 throw new BO.BlInvalidTimeException("Open time must be earlier than the maximum finish time.");
 
+            // קבל את הקורדינטות באופן אסינכרוני
+            (boCall.Latitude, boCall.Longitude) = await Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
 
-            (boCall.Latitude, boCall.Longitude) = Tools.GeocodingHelper.GetCoordinates(boCall.FullAddress);
-
+            // צור אובייקט חדש מהנתונים
             var call = new DO.Call
             {
                 Id = boCall.Id,
@@ -45,18 +51,23 @@ internal class CallImplementation : ICall
                 Description = boCall.Description
             };
 
-            lock (AdminManager.BlMutex) //stage 7
+            // נעילה לצורך עדכון אטומי
+            lock (AdminManager.BlMutex)
+            {
                 _dal.Call.Create(call);
+            }
 
+            // שלח מייל וידע את התצפיתנים
             CallManager.SendCallOpenMail(boCall);
-            CallManager.Observers.NotifyListUpdated(); //stage 5
+            CallManager.Observers.NotifyListUpdated(); // שלב 5
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Handle exceptions from the data layer and rethrow as a BO exception
-            throw;
+            // טיפול בחריגות וזריקתן מחדש
+            throw char.IsDigit(ex.Message[0]) ? new BO.BlGeneralException("Failed to add the call.", ex) : ex;
         }
     }
+
 
     /// <summary>
     /// Assign a volunteer to a call.
@@ -511,5 +522,7 @@ internal class CallImplementation : ICall
     CallManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
     CallManager.Observers.RemoveObserver(id, observer); //stage 5
+
+
     #endregion Stage 5
 }

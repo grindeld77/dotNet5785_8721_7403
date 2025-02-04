@@ -1,48 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Volunteers>
   <Volunteer>
-    <Id>310547377</Id>
-    <FullName>Daniel Cohen</FullName>
-    <MobilePhone>0511646199</MobilePhone>
-    <Email>daniel.cohen@ail.com</Email>
-    <Role>Volunteer</Role>
-    <IsActive>true</IsActive>
-    <Password>96299908</Password>
-    <CurrentAddress>Dizengoff St 50, Tel Aviv</CurrentAddress>
-    <Latitude>32.0764</Latitude>
-    <Longitude>34.7745</Longitude>
-    <MaxCallDistance>58</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
-    <Id>206028011</Id>
-    <FullName>Michal Levy</FullName>
-    <MobilePhone>0555096260</MobilePhone>
-    <Email>michal.levy@ail.com</Email>
-    <Role>Admin</Role>
-    <IsActive>true</IsActive>
-    <Password>82220017</Password>
-    <CurrentAddress>Jaffa St 1, Jerusalem</CurrentAddress>
-    <Latitude>31.7823</Latitude>
-    <Longitude>35.2191</Longitude>
-    <MaxCallDistance>31</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
-    <Id>375912896</Id>
-    <FullName>Yossi Mizrahi</FullName>
-    <MobilePhone>0538613434</MobilePhone>
-    <Email>yossi.mizrahi@ail.com</Email>
-    <Role>Admin</Role>
-    <IsActive>true</IsActive>
-    <Password>64570421</Password>
-    <CurrentAddress>Rothschild Blvd 16, Tel Aviv</CurrentAddress>
-    <Latitude>32.0657</Latitude>
-    <Longitude>34.7741</Longitude>
-    <MaxCallDistance>42</MaxCallDistance>
-    <DistancePreference>Aerial</DistancePreference>
-  </Volunteer>
-  <Volunteer>
     <Id>321577199</Id>
     <FullName>Tomer Friedman</FullName>
     <MobilePhone>0519059761</MobilePhone>
@@ -222,6 +180,48 @@
     <Latitude>32.8172273</Latitude>
     <Longitude>35.0022169</Longitude>
     <MaxCallDistance>51</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>310547377</Id>
+    <FullName>Daniel Cohen</FullName>
+    <MobilePhone>0511646199</MobilePhone>
+    <Email>daniel.cohen@ail.com</Email>
+    <Role>Volunteer</Role>
+    <IsActive>true</IsActive>
+    <Password>96299908</Password>
+    <CurrentAddress>Hanasi 120, Ashdod</CurrentAddress>
+    <Latitude>31.8023552</Latitude>
+    <Longitude>34.6541197</Longitude>
+    <MaxCallDistance>58</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>206028011</Id>
+    <FullName>Michal Levy</FullName>
+    <MobilePhone>0555096260</MobilePhone>
+    <Email>michal.levy@ail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>82220017</Password>
+    <CurrentAddress>Rothschild 16, Tel Aviv</CurrentAddress>
+    <Latitude>32.0242493</Latitude>
+    <Longitude>34.7724276</Longitude>
+    <MaxCallDistance>31</MaxCallDistance>
+    <DistancePreference>Aerial</DistancePreference>
+  </Volunteer>
+  <Volunteer>
+    <Id>375912896</Id>
+    <FullName>Yossi Mizrahi</FullName>
+    <MobilePhone>0538613434</MobilePhone>
+    <Email>yossi.mizrahi@ail.com</Email>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+    <Password>64570421</Password>
+    <CurrentAddress>Rothschild 18, Tel Aviv</CurrentAddress>
+    <Latitude>32.0244175</Latitude>
+    <Longitude>34.772635</Longitude>
+    <MaxCallDistance>42</MaxCallDistance>
     <DistancePreference>Aerial</DistancePreference>
   </Volunteer>
 </Volunteers>

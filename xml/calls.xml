@@ -496,17 +496,6 @@
     <Status>Expired</Status>
   </Call>
   <Call>
-    <Id>46</Id>
-    <Type>TrafficAccident</Type>
-    <Description>Fire-related injuries in an industrial zone.</Description>
-    <Address>Mivtza Sinai St 5, Eilat</Address>
-    <Latitude>29.5534</Latitude>
-    <Longitude>34.9523</Longitude>
-    <OpenedAt>2025-01-27T16:24:02</OpenedAt>
-    <MaxCompletionTime>2025-01-27T17:47:02</MaxCompletionTime>
-    <Status>Expired</Status>
-  </Call>
-  <Call>
     <Id>47</Id>
     <Type>FirstAid</Type>
     <Description>Toxic chemical exposure in a workplace.</Description>
@@ -746,6 +735,17 @@
     <Longitude>34.9908479</Longitude>
     <OpenedAt>2025-02-04T17:30:02</OpenedAt>
     <MaxCompletionTime>2025-02-04T18:30:02</MaxCompletionTime>
+    <Status>Closed</Status>
+  </Call>
+  <Call>
+    <Id>46</Id>
+    <Type>TrafficAccident</Type>
+    <Description>Fire-related injuries in an industrial zone.</Description>
+    <Address>Mivtza Sinai St 5, Eilat</Address>
+    <Latitude>29.5534</Latitude>
+    <Longitude>34.9523</Longitude>
+    <OpenedAt>2025-01-27T16:24:02</OpenedAt>
+    <MaxCompletionTime>2025-01-27T17:47:02</MaxCompletionTime>
     <Status>Closed</Status>
   </Call>
 </ArrayOfCall>

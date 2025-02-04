@@ -20,7 +20,7 @@ public interface ICall : IObservable //stage 5
     void DeleteCall(int callId);
 
     // Adds a new call to the system. Ensures the data is valid. Throws an exception if a call with the same ID already exists.
-    void AddCall(Call call);
+    public Task AddCall(BO.Call boCall);
 
     // return a list of calls that are closed and have been handled by a specific volunteer.
     IEnumerable<ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? filterField, BO.ClosedCallInListFields? sortField);

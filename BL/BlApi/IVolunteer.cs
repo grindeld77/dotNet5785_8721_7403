@@ -1,5 +1,6 @@
 ﻿using BO;
 using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 namespace BlApi;
 public interface IVolunteer : IObservable //stage 5
@@ -14,8 +15,8 @@ public interface IVolunteer : IObservable //stage 5
     // get volunteer details by id, return the BO object, else if not found throw exception
     Volunteer GetVolunteerDetails(int id);
 
-    // update volunteer details, if not found throw exception
-    void UpdateVolunteer(int requesterId, BO.Volunteer volunteer);
+    // update volunteer details asynchronously, if not found throw exception
+    Task UpdateVolunteer(int requesterId, BO.Volunteer volunteer);
 
     // delete volunteer from the system, if not found throw exception 
     void DeleteVolunteer(int id);
@@ -23,3 +24,4 @@ public interface IVolunteer : IObservable //stage 5
     // add new volunteer to the system, if already exist throw exception
     void AddVolunteer(BO.Volunteer volunteer);
 }
+
