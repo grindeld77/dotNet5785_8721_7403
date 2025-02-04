@@ -299,14 +299,21 @@ internal static class VolunteerManager
         return volunteer.Role.ToString();
 
     }
+    static bool IsStrongPassword(string password)
+    {
+        if (password.Length < 6) return false;
+        if (!Regex.IsMatch(password, @"[A-Za-z]")) return false; // לפחות אות אחת
+        if (!Regex.IsMatch(password, @"\d")) return false; // לפחות מספר אחד
 
+        return true;
+    }
 
     public static void ValidateVolunteerData(BO.Volunteer volunteer)
     {
-        //if (!IsPasswordStrong(volunteer.PasswordHash))
-        //{
-        //    throw new ArgumentException("Password is not strong enough");
-        //}
+        if (!IsStrongPassword(volunteer.PasswordHash))
+        {
+            throw new BO.InvalidPasswordException("The password must contain at least 6 characters, at least one letter and at least one number.");
+        }
         if (!IsValidEmail(volunteer.Email))
         {
             throw new BO.InvalidEmailException("Invalid email address");

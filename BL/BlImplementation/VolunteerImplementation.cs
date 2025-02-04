@@ -9,6 +9,7 @@ using System;
 using System.Security.AccessControl;
 using System.Text;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 internal class VolunteerImplementation : BlApi.IVolunteer
 {
@@ -23,23 +24,6 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <exception cref="BO.BlInvalidIdentificationException"></exception>
     /// 
 
-    //string BlApi.IVolunteer.Login(int id, string password)
-    //{
-    //    DO.Volunteer? volunteer;
-    //    lock (AdminManager.BlMutex) //stage 7
-    //        volunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id);
-
-    //    if (volunteer == null)
-    //    {
-    //        throw new BO.BlInvalidIdentificationException("This ID is not found.");
-    //    }
-
-    //    if (volunteer.Password != password)
-    //    {
-    //        throw new BO.BlInvalidIdentificationException("The password is incorrect.");
-    //    }
-    //    return volunteer.Role.ToString();
-    //}
 
     string BlApi.IVolunteer.Login(int id, string password)
     {
@@ -83,7 +67,14 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
     }
 
+    static bool IsStrongPassword(string password)
+    {
+        if (password.Length < 6) return false;
+        if (!Regex.IsMatch(password, @"[A-Za-z]")) return false; // לפחות אות אחת
+        if (!Regex.IsMatch(password, @"\d")) return false; // לפחות מספר אחד
 
+        return true;
+    }
 
     /// <summary>
     /// Retrieves a collection of active volunteers in the system.
@@ -235,6 +226,12 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
             VolunteerManager.ValidateVolunteerData(volunteer);
 
+            string password = doVolunteere.Password;
+            if (volunteer.PasswordHash!= doVolunteere.Password)
+            {
+                password = HashPassword(volunteer.PasswordHash);
+            }
+
             // יצירת אובייקט מעודכן
             DO.Volunteer doVolunteerNew = new DO.Volunteer
             {
@@ -244,7 +241,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 Email = volunteer.Email ?? doVolunteere.Email,
                 Role = (DO.Role)volunteer.Role,
                 IsActive = doVolunteere.IsActive,
-                Password = HashPassword(volunteer.PasswordHash) ?? doVolunteere.Password,
+                Password = password,
                 CurrentAddress = volunteer.FullAddress ?? doVolunteere.CurrentAddress,
                 Latitude = doVolunteere.Latitude,
                 Longitude = doVolunteere.Longitude,
@@ -278,6 +275,10 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         catch (DO.DalException ex)
         {
             throw new BO.BlGeneralException("An error occurred while updating the volunteer.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while updating the volunteer: {ex.Message}", ex);
         }
     }
 
@@ -336,8 +337,6 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     }
                     else if (task.IsFaulted)
                     {
-                        // טיפול בשגיאה (למשל: כתובת לא תקינה, בעיית רשת)
-                        // אפשר להוסיף לוג או הודעה לממשק המשתמש
                         Console.WriteLine($"Failed to update coordinates for volunteer {volunteer.Id}: {task.Exception}");
                     }
                 });
@@ -349,6 +348,10 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         catch (DO.DalException)
         {
             throw new BO.BlException("An error occurred while updating the volunteer.");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while updating the volunteer: {ex.Message}", ex);
         }
     }
 

@@ -111,23 +111,26 @@ namespace PL
         }
 
 
-        private void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
+        private async void UpdateVolunteer_Click(object sender, RoutedEventArgs e)
         {
             string newPassword = NewPasswordTextBox.Text;
             if (!string.IsNullOrEmpty(newPassword))
             {
                 CurrentVolunteer.PasswordHash = newPassword;
             }
+
             try
             {
-                s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
+                await s_bl.Volunteer.UpdateVolunteer(CurrentVolunteer.Id, CurrentVolunteer);
                 MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error updating volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine("Exception details: " + ex.ToString()); // הדפסת השגיאה לקונסול
             }
         }
+
 
         private void ChangeActivityStatus_Click(object sender, RoutedEventArgs e)
         {
