@@ -306,24 +306,40 @@ internal static class CallManager
         }
     }
 
-
+    private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
     internal static async Task SendCallOpenMail(BO.Call call)
     {
-        IEnumerable<DO.Volunteer> doVolunteers;
-        lock (AdminManager.BlMutex) //stage 7
-            doVolunteers = s_dal.Volunteer.ReadAll();
+        List<DO.Volunteer> doVolunteers;
+        await _semaphore.WaitAsync(); // מחכה לנעילה אסינכרונית
+        try
+        {
+            doVolunteers = s_dal.Volunteer.ReadAll().ToList();
+        }
+        finally
+        {
+            _semaphore.Release(); // משחרר את הנעילה
+        }
 
-        var Volunteers = from Volunteer in doVolunteers
-                         where Volunteer.MaxCallDistance <= VolunteerManager.CalculateDistance((double)Volunteer.Latitude, (double)Volunteer.Longitude, (double)call.Latitude, (double)call.Longitude)
-                         where Volunteer.IsActive == true
-                         select Volunteer;
-
+        var Volunteers = doVolunteers.Where(volunteer => volunteer.MaxCallDistance >= VolunteerManager.CalculateDistance((double)volunteer.Latitude, (double)volunteer.Longitude, (double)call.Latitude, (double)call.Longitude))
+                                     .Where(volunteer => volunteer.IsActive);
         foreach (var Volunteer in Volunteers)
         {
             var fromAddress = new MailAddress("shimon78900@gmail.com");
             MailAddress? toAddress = null;
-            lock (AdminManager.BlMutex)
-                toAddress = new MailAddress(s_dal.Volunteer.Read(Volunteer.Id)!.Email, s_dal.Volunteer.Read(Volunteer.Id)!.FullName);
+            await _semaphore.WaitAsync(); // מחכה לנעילה אסינכרונית 
+            try
+            {
+                var volunteerData = s_dal.Volunteer.Read(Volunteer.Id);
+                if (volunteerData == null)
+                    continue;
+
+                toAddress = new MailAddress(volunteerData.Email, volunteerData.Email);
+            }
+            finally
+            {
+                _semaphore.Release(); // שחרור הנעילה
+            }
+            toAddress = new MailAddress(s_dal.Volunteer.Read(Volunteer.Id)!.Email, s_dal.Volunteer.Read(Volunteer.Id)!.FullName);
             const string fromPassword = "yhmg gvrn twft wqsx";
             const string subject = "New Call Open in your area";
             string body = "This call is open in your area!\n" + call.ToString();
