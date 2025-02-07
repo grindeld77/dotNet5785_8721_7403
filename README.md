@@ -30,6 +30,6 @@ https://github.com/grindeld77/dotNet5785_8721_7403/blob/aaa0373c70dc8972e036eafb
 https://github.com/grindeld77/dotNet5785_8721_7403/blob/aaa0373c70dc8972e036eafb29aa5cee82e120b3/PL/LoginWindow.xaml#L97
 תוספת אייקון: זה מווגדר כIcon לפרויקט ונמצא בתיקייה של התמונות שצורפו לגיט (ראית את זה בהגנה)
 תוספת טריגר נתונים : אני לא בטוח אם זה נחשב אבל הוספתי במקום אחד טריגר נתונים (זה הנקודה ה16 ככה שזה נתון לשיקולך אם להכליל אבל אצרף בכל זאת) 
-https://github.com/grindeld77/dotNet5785_8721_7403/blob/aaa0373c70dc8972e036eafb29aa5cee82e120b3/PL/CallManagementWindow.xaml#L144
+https://github.com/grindeld77/dotNet5785_8721_7403/blob/aaa0373c70dc8972e036eafb29aa5cee82e120b3/PL/CallManagementWindow.xaml#L144-L174
 
 
