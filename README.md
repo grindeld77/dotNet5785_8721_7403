@@ -104,4 +104,4 @@ Default Users:
 - [Levi Grinfeld](https://github.com/grindeld77)
 
 Course: Windows Systems Mini Project, 2025
-Instructor: -[Yair Goldstein] (https://github.com/yair-go)
+Instructor: [Yair Goldstein](https://github.com/yair-go)
