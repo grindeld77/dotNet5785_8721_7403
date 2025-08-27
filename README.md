@@ -1,138 +1,107 @@
-# MDA Volunteer Management System
+# 🚑 MDA Volunteer Management System
 
-A Windows-based system built as part of the *Windows Systems Mini Project* course. The system helps manage Magen David Adom (MDA) volunteers and emergency calls in a simple and efficient way.
-
-Developed with C#, .NET, and WPF, the project follows clean architecture principles, MVVM, and modern C# practices.
-
----
-
-## 📑 Table of Contents
-
-* [About the Project](#about-the-project)
-* [Technologies Used](#technologies-used)
-* [System Overview](#system-overview)
-* [Main Features](#main-features)
-* [How It Works](#how-it-works)
-* [Extra Features](#extra-features)
-* [Setup & Usage](#setup--usage)
-* [Screenshots](#screenshots)
-* [Credits](#credits)
+**A modern Windows application for managing Magen David Adom (MDA) volunteers and emergency calls.**
+Built in **C# with WPF** as part of the *Windows Systems Mini Project* course, this project combines clean architecture, real-time simulation, and a rich graphical interface to deliver a full-featured management system.
 
 ---
 
-## 📝 About the Project
+## 🎯 Motivation
 
-This project simulates how a volunteer organization (MDA) manages emergency calls and volunteer assignments.
+Volunteer organizations like MDA require quick, reliable, and easy-to-use systems to manage both volunteers and emergency calls.
+We wanted to explore:
 
-* **Managers** manage calls, volunteers, and system settings.
-* **Volunteers** accept calls, mark completion, and track their history.
-* A **simulator** advances time, showing overdue calls and risk alerts.
-
----
-
-## 🛠 Technologies Used
-
-| Category             | Tools & Concepts          |
-| -------------------- | ------------------------- |
-| Language & Framework | C#, .NET 8.0, WPF         |
-| Architecture         | Multi-Layer (DAL, BL, UI) |
-| Design Patterns      | MVVM, Singleton, Factory  |
-| Data Handling        | LINQ, XML Storage         |
-| Async & Simulation   | Threads, Timers           |
-| Version Control      | Git, GitHub               |
+* 🏗 Multi-layer architecture with clear separation of concerns
+* 🎨 Modern WPF UI using MVVM and data binding
+* ⏱ Asynchronous simulation for real-world scenarios
+* 🧩 Clean, modular code design suitable for extensions
 
 ---
 
-## 🏗 System Overview
+## ✨ Features
 
-The system consists of three main layers:
+| Category           | Highlights                                                            |
+| ------------------ | --------------------------------------------------------------------- |
+| **Volunteer Mgmt** | Add, edit, delete volunteers, set distance limits, view call history  |
+| **Call Handling**  | Open calls, assign volunteers, auto-detect overdue calls              |
+| **Simulation**     | System clock control, async time progression, risk alerts             |
+| **UI/UX**          | Modern WPF interface, filtering & sorting, password security features |
+| **Data Layer**     | In-memory & XML storage, LINQ-based queries, modular DAL & BL layers  |
+
+---
+
+## 🏗 Architecture Overview
 
 ```
-[ User Interface (WPF) ] <--> [ Business Logic (BL) ] <--> [ Data Layer (DAL + XML) ]
+MDA Volunteer System
+├── DAL        # Data Access Layer: CRUD, XML Storage
+├── BL         # Business Logic Layer: Rules, Validation, Services
+├── UI (WPF)   # Presentation Layer: MVVM, Data Binding, Views
+└── Simulation # Async system clock, overdue detection
 ```
 
-* **DAL:** Raw data handling (CRUD, XML)
-* **BL:** Business logic, rules, validation
-* **UI:** WPF-based interface using MVVM & Data Binding
+**Design Patterns:** MVVM, Singleton, Factory Method
+**Technologies:** C#, .NET 8.0, LINQ, XML, WPF
 
 ---
 
-## 🌟 Main Features
-
-**Manager:**
-
-* Manage volunteers & calls (Add/Edit/Delete)
-* View statistics and call history
-* Configure system settings & risk alerts
-* Run the simulation
-
-**Volunteer:**
-
-* Accept calls within a chosen distance
-* Complete or cancel calls
-* Track call history
-
-**Simulation:**
-
-* Asynchronously advances time
-* Detects overdue calls automatically
-
----
-
-## 🔄 How It Works
+## 🖥 System Flow
 
 ```mermaid
 flowchart TD
-    A[Manager Creates Call] --> B[Volunteers See Available Calls]
+    A[Manager Opens Call] --> B[Volunteers View Available Calls]
     B --> C[Volunteer Accepts Call]
     C --> D[Call Status = In Progress]
     D --> E{Completed or Canceled?}
-    E -->|Yes| F[Update Call Status]
-    E -->|No| G[Simulation Advances Time]
-    G --> H[Check Overdue Calls]
+    E -->|Completed| F[Mark as Done]
+    E -->|Canceled| G[Return to Open Calls]
+    G --> H[Simulation Detects Overdue Calls]
 ```
 
 ---
 
-## 🎯 Extra Features
+## 🧩 Extra Features (Bonuses)
 
-* Password encryption & strength checking
-* Double filtering & sorting in data grids
-* Show/hide password toggle in login screen
-* Custom icons & hover effects for buttons
-* Configurable risk thresholds for overdue alerts
-
----
-
-## ⚙️ Setup & Usage
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/MDA-Volunteer-System.git
-   ```
-2. Open with **Visual Studio 2022**
-3. Build & Run
-4. Default Users:
-
-   * **Manager:** `shimon78900`
-   * **Volunteer:** `grinfeld770`
+* 🔐 **Password Security** – Strong password validation & encryption
+* 🗂 **Advanced Filtering** – Multi-criteria filtering for volunteers & calls
+* 👁 **Show/Hide Password** toggle in login screen
+* 🎨 **UI Styling** – Icons, hover effects, clean layout
+* ⚡ **Performance** – Async simulation & LINQ optimization
 
 ---
 
-## 🖼 Screenshots
+## 🛠 How to Run
 
-| Screen               | Description           |
-| -------------------- | --------------------- |
-| Login Screen         | *Add screenshot here* |
-| Volunteer Management | *Add screenshot here* |
-| Call Management      | *Add screenshot here* |
-| Simulation Panel     | *Add screenshot here* |
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/MDA-Volunteer-System.git
+cd MDA-Volunteer-System
+
+# Open with Visual Studio 2022
+# Build & Run
+```
+
+Default Users:
+
+* **Manager:** shimon78900
+* **Volunteer:** grinfeld770
 
 ---
 
-## 👏 Credits
+## 🖼 Demo Screenshots
 
-* **Course:** Windows Systems Mini Project, 2025
-* **Developers:** Shimon Khakshour & Partner
-* **Instructor:** Yair Goldstein
+| Screen               | Description                             |
+| -------------------- | --------------------------------------- |
+| Login Screen         | Secure login for managers & volunteers  |
+| Volunteer Management | Add, edit, view volunteer details       |
+| Call Management      | Manage calls & assignments              |
+| Simulation Panel     | Real-time system clock & overdue alerts |
+
+---
+
+## 👨‍💻 Authors
+
+- [Shimon Khakshour](https://github.com/shimon2005)
+- [Levi Grinfeld](https://github.com/grindeld77)
+
+Course: Windows Systems Mini Project, 2025
+Instructor: -[Yair Goldstein] (https://github.com/yair-go)
