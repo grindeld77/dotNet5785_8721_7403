@@ -1,11 +1,12 @@
-# 🚑 Emergency Response Management System (MDA)
+# 🚑 MDA Volunteer Management System
 
 ![.NET 8.0](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 ![WPF](https://img.shields.io/badge/WPF-Windows_Presentation_Foundation-0078D7?style=for-the-badge&logo=windows&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-MVVM_%7C_Layered-4BC51D?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
-> **A high-performance simulation and dispatcher system for emergency services.** > Built with **C# & WPF**, focusing on real-time data processing, multithreading, and clean architecture.
+> **A high-performance simulation and dispatcher system for emergency services.**
+> Built with **C# & WPF**, focusing on real-time data processing, multithreading, and clean architecture.
 
 ---
 
@@ -14,7 +15,7 @@ This system is designed to manage the full lifecycle of emergency calls and volu
 
 ### 🔥 Key Highlights
 * **Real-Time Simulation:** A background thread engine controls the system clock, updating call urgencies and statuses live.
-* **Smart UI Visualization:** Uses advanced WPF `Converters` and `DataTriggers` to change interface colors dynamically based on call risk levels (Green 🟢 ➜ Red 🔴).
+* **Smart UI Visualization:** Uses advanced WPF `Converters` and `DataTriggers` to change interface colors dynamically based on call risk levels (Green 🟢 -> Red 🔴).
 * **MVVM Architecture:** Strict separation between Logic (BL), Data (DAL), and UI (PL) for maximum scalability.
 
 ---
@@ -24,14 +25,14 @@ This system is designed to manage the full lifecycle of emergency calls and volu
 | **Live Dashboard** | **Smart Call List** |
 |:---:|:---:|
 | Control the simulation clock and view real-time stats. | Dynamic progress bars indicating urgency. |
-| *Add `dashboard.png` here* | *Add `calls.png` here* |
+| <img src="screenshots/dashboard.png" width="400" /> | <img src="screenshots/calls_list.png" width="400" /> |
 
 | **Volunteer Dispatch** | **Risk Management** |
 |:---:|:---:|
 | Master-Detail view for assigning volunteers. | Auto-detection of overdue/risk calls. |
-| *Add `volunteer.png` here* | *Add `risk.png` here* |
+| <img src="screenshots/volunteer_view.png" width="400" /> | <img src="screenshots/risk_view.png" width="400" /> |
 
-> **Note:** Screenshots are available in the `screenshots` folder.
+> *Note: Screenshots are located in the `screenshots` folder.*
 
 ---
 
@@ -64,7 +65,7 @@ This system is designed to manage the full lifecycle of emergency calls and volu
     * Launch `dotNet5785_8721_7403.sln`.
     * Ensure `.NET 8.0 SDK` is installed.
 3.  **Build & Run**
-    * Set `PL` as the startup project.
+    * Set `PL` (Presentation Layer) as the startup project.
     * Press `F5` to run.
 
 ### 🔑 Default Credentials
@@ -78,22 +79,8 @@ This system is designed to manage the full lifecycle of emergency calls and volu
 The solution follows a strict **N-Tier Architecture**:
 
 ```mermaid
-## 🏗️ Architecture Design
-
-The solution follows a strict **N-Tier Architecture**:
-
-```mermaid
-graph TD;
-    PL[🖥️ PL - Presentation Layer] -->|Calls| BL[⚙️ BL - Business Logic];
-    BL -->|Reads/Writes| DAL[💾 DAL - Data Access Layer];
-    DAL -->|Persists| XML[(XML Files)];
-
----
-## 👨‍💻 Authors
-
-- [Shimon Khakshour](https://github.com/shimon2005)
-- [Levi Grinfeld](https://github.com/grindeld77)
-
-Course: Windows Systems Mini Project, 2025
-
-Instructor: [Yair Goldstein](https://github.com/yair-go)
+graph TD
+    PL[PL - Presentation Layer] --> BL[BL - Business Logic]
+    BL --> DAL[DAL - Data Access Layer]
+    DAL --> XML[(XML Files)]
+    
