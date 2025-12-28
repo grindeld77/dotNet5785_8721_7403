@@ -78,14 +78,15 @@ This system is designed to manage the full lifecycle of emergency calls and volu
 The solution follows a strict **N-Tier Architecture**:
 
 ```mermaid
+## 🏗️ Architecture Design
+
+The solution follows a strict **N-Tier Architecture**:
+
+```mermaid
 graph TD;
     PL[🖥️ PL - Presentation Layer] -->|Calls| BL[⚙️ BL - Business Logic];
     BL -->|Reads/Writes| DAL[💾 DAL - Data Access Layer];
     DAL -->|Persists| XML[(XML Files)];
-    
-    subgraph Core Logic
-    BL -- "Calculations & Rules" --> BL
-    end
 
 ---
 ## 👨‍💻 Authors
