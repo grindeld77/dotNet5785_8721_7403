@@ -83,4 +83,13 @@ graph TD
     PL[PL - Presentation Layer] --> BL[BL - Business Logic]
     BL --> DAL[DAL - Data Access Layer]
     DAL --> XML[(XML Files)]
+
+
+## 👨‍💻 Authors
+
+- [Shimon Khakshour](https://github.com/shimon2005)
+- [Levi Grinfeld](https://github.com/grindeld77)
+
+Course: Windows Systems Mini Project, 2025
+Instructor: [Yair Goldstein](https://github.com/yair-go)
     
